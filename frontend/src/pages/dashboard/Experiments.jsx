@@ -1,294 +1,3 @@
-// import { useEffect, useState } from "react";
-// import { motion, AnimatePresence } from "framer-motion";
-// import api from "../../services/api";
-// import { useTheme } from "../../context/ThemeContext";
-
-// function CreateModal({ onClose, onCreated }) {
-//   const { theme } = useTheme();
-//   const isDark = theme === "dark";
-//   const [form, setForm] = useState({
-//     name: "", description: "", goal: "purchase",
-//     variants: [
-//       { name: "Control", label: "A", description: "", traffic_split: 0.5 },
-//       { name: "Challenger", label: "B", description: "", traffic_split: 0.5 },
-//     ],
-//   });
-//   const [loading, setLoading] = useState(false);
-//   const [error, setError] = useState("");
-
-//   const handleSubmit = async (e) => {
-//     e.preventDefault();
-//     setLoading(true);
-//     setError("");
-//     try {
-//       await api.post("/experiments/", form);
-//       onCreated();
-//       onClose();
-//     } catch (err) {
-//       setError(err.response?.data?.detail || "Failed to create experiment");
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
-
-//   const inputClass = `w-full px-3 py-2.5 rounded-lg text-sm border focus:outline-none
-//     focus:ring-2 focus:ring-brand-violet/30 transition-colors ${
-//       isDark
-//         ? "bg-white/[0.04] border-white/10 text-white placeholder:text-white/30"
-//         : "bg-white border-gray-200 text-gray-900 placeholder:text-gray-400"
-//     }`;
-
-//   return (
-//     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-//       <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={onClose} />
-//       <motion.div
-//         initial={{ opacity: 0, scale: 0.95, y: 10 }}
-//         animate={{ opacity: 1, scale: 1, y: 0 }}
-//         exit={{ opacity: 0, scale: 0.95, y: 10 }}
-//         className={`relative z-10 w-full max-w-lg rounded-2xl border p-6 ${
-//           isDark
-//             ? "bg-brand-surface border-white/10"
-//             : "bg-white border-gray-200 shadow-xl"
-//         }`}
-//       >
-//         <div className="flex items-center justify-between mb-5">
-//           <h2 className={`font-display font-bold text-lg ${isDark ? "text-white" : "text-gray-900"}`}>
-//             New experiment
-//           </h2>
-//           <button onClick={onClose} className={`text-lg ${isDark ? "text-white/40 hover:text-white" : "text-gray-400 hover:text-gray-700"}`}>✕</button>
-//         </div>
-
-//         <form onSubmit={handleSubmit} className="space-y-4">
-//           <div>
-//             <label className={`block text-xs font-medium mb-1.5 ${isDark ? "text-white/50" : "text-gray-600"}`}>Experiment name</label>
-//             <input className={inputClass} value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} placeholder="Homepage headline test" required />
-//           </div>
-//           <div>
-//             <label className={`block text-xs font-medium mb-1.5 ${isDark ? "text-white/50" : "text-gray-600"}`}>Goal</label>
-//             <select className={inputClass} value={form.goal} onChange={(e) => setForm({ ...form, goal: e.target.value })}>
-//               <option value="purchase">Purchase</option>
-//               <option value="signup">Signup</option>
-//               <option value="click">Click</option>
-//               <option value="page_view">Page View</option>
-//             </select>
-//           </div>
-//           <div className="grid grid-cols-2 gap-3">
-//             {form.variants.map((v, i) => (
-//               <div key={i} className={`p-3 rounded-xl border ${
-//                 isDark ? "border-white/10 bg-white/[0.03]" : "border-gray-200 bg-gray-50"
-//               }`}>
-//                 <p className={`text-xs font-semibold mb-2 ${i === 0 ? "text-brand-violet" : "text-brand-blue"}`}>
-//                   Variant {v.label}
-//                 </p>
-//                 <input
-//                   className={`${inputClass} mb-2`}
-//                   value={v.name}
-//                   onChange={(e) => {
-//                     const vs = [...form.variants];
-//                     vs[i] = { ...vs[i], name: e.target.value };
-//                     setForm({ ...form, variants: vs });
-//                   }}
-//                   placeholder="Variant name"
-//                 />
-//                 <input
-//                   className={inputClass}
-//                   value={v.description}
-//                   onChange={(e) => {
-//                     const vs = [...form.variants];
-//                     vs[i] = { ...vs[i], description: e.target.value };
-//                     setForm({ ...form, variants: vs });
-//                   }}
-//                   placeholder="What's different?"
-//                 />
-//               </div>
-//             ))}
-//           </div>
-
-//           {error && <p className="text-sm text-red-400 bg-red-400/10 px-3 py-2 rounded-lg">{error}</p>}
-
-//           <div className="flex gap-3 pt-2">
-//             <button type="button" onClick={onClose}
-//               className={`flex-1 py-2.5 rounded-lg text-sm border transition-colors ${
-//                 isDark ? "border-white/10 text-white/60 hover:text-white" : "border-gray-200 text-gray-500 hover:text-gray-900"
-//               }`}>
-//               Cancel
-//             </button>
-//             <button type="submit" disabled={loading}
-//               className="flex-1 py-2.5 rounded-lg text-sm text-white font-medium
-//                          bg-gradient-to-r from-brand-violet to-brand-blue
-//                          disabled:opacity-60 hover:opacity-90 transition-opacity">
-//               {loading ? "Creating…" : "Create experiment"}
-//             </button>
-//           </div>
-//         </form>
-//       </motion.div>
-//     </div>
-//   );
-// }
-
-// export default function Experiments() {
-//   const { theme } = useTheme();
-//   const isDark = theme === "dark";
-//   const [experiments, setExperiments] = useState([]);
-//   const [loading, setLoading] = useState(true);
-//   const [showCreate, setShowCreate] = useState(false);
-
-//   const load = async () => {
-//     try {
-//       const res = await api.get("/experiments/");
-//       setExperiments(res.data);
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
-//   useEffect(() => { load(); }, []);
-
-//   const updateStatus = async (id, status) => {
-//     await api.patch(`/experiments/${id}`, { status });
-//     load();
-//   };
-
-//   const deleteExp = async (id) => {
-//     if (!confirm("Delete this experiment?")) return;
-//     await api.delete(`/experiments/${id}`);
-//     load();
-//   };
-
-//   return (
-//     <div className="space-y-6">
-//       <div className="flex items-center justify-between">
-//         <div>
-//           <h1 className={`text-xl font-display font-bold ${isDark ? "text-white" : "text-gray-900"}`}>Experiments</h1>
-//           <p className={`text-sm mt-1 ${isDark ? "text-white/40" : "text-gray-500"}`}>{experiments.length} total</p>
-//         </div>
-//         <button
-//           onClick={() => setShowCreate(true)}
-//           className="px-4 py-2 rounded-lg text-sm text-white font-medium
-//                      bg-gradient-to-r from-brand-violet to-brand-blue hover:opacity-90 transition-opacity
-//                      shadow-[0_0_20px_rgba(108,92,231,0.3)]"
-//         >
-//           + New experiment
-//         </button>
-//       </div>
-
-//       {loading ? (
-//         <div className="flex items-center justify-center h-48">
-//           <motion.div className="w-8 h-8 rounded-full border-2 border-brand-violet border-t-transparent"
-//             animate={{ rotate: 360 }} transition={{ duration: 0.8, repeat: Infinity, ease: "linear" }} />
-//         </div>
-//       ) : experiments.length === 0 ? (
-//         <div className={`flex flex-col items-center justify-center h-48 rounded-2xl border border-dashed ${
-//           isDark ? "border-white/10" : "border-gray-200"
-//         }`}>
-//           <p className={`text-sm ${isDark ? "text-white/40" : "text-gray-400"}`}>No experiments yet</p>
-//           <button onClick={() => setShowCreate(true)} className="mt-3 text-sm text-brand-violet hover:underline">
-//             Create your first one
-//           </button>
-//         </div>
-//       ) : (
-//         <div className="space-y-3">
-//           {experiments.map((e, i) => (
-//             <motion.div
-//               key={e.id}
-//               initial={{ opacity: 0, y: 12 }}
-//               animate={{ opacity: 1, y: 0 }}
-//               transition={{ delay: i * 0.05 }}
-//               className={`p-5 rounded-2xl border ${
-//                 isDark ? "bg-white/[0.03] border-white/10" : "bg-white border-gray-200 shadow-sm"
-//               }`}
-//             >
-//               <div className="flex items-start justify-between gap-4">
-//                 <div className="flex-1">
-//                   <div className="flex items-center gap-3">
-//                     <p className={`font-medium ${isDark ? "text-white" : "text-gray-900"}`}>{e.name}</p>
-//                     <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${
-//                       e.status === "running" ? "bg-emerald-500/10 text-emerald-500"
-//                         : e.status === "completed" ? "bg-brand-violet/10 text-brand-violet"
-//                         : e.status === "paused" ? "bg-amber-500/10 text-amber-500"
-//                         : "bg-gray-500/10 text-gray-500"
-//                     }`}>{e.status}</span>
-//                   </div>
-//                   <p className={`text-xs mt-1 ${isDark ? "text-white/40" : "text-gray-400"}`}>
-//                     Goal: {e.goal} · {e.variants.length} variants
-//                   </p>
-//                   <div className="flex gap-4 mt-3">
-//                     {e.variants.map((v) => (
-//                       <div key={v.id} className="flex items-center gap-2">
-//                         <div className={`w-5 h-5 rounded-full flex items-center justify-center text-white text-[10px] font-bold ${
-//                           v.label === "A" ? "bg-brand-violet" : "bg-brand-blue"
-//                         }`}>{v.label}</div>
-//                         <span className={`text-xs ${isDark ? "text-white/50" : "text-gray-500"}`}>
-//                           {v.name} — {(v.traffic_split * 100).toFixed(0)}%
-//                         </span>
-//                       </div>
-//                     ))}
-//                   </div>
-//                 </div>
-//                 <div className="flex items-center gap-2">
-//                   {e.status === "draft" && (
-//                     <button onClick={() => updateStatus(e.id, "running")}
-//                       className="text-xs px-3 py-1.5 rounded-lg bg-emerald-500/10 text-emerald-500 hover:bg-emerald-500/20 transition-colors">
-//                       Start
-//                     </button>
-//                   )}
-//                   {e.status === "running" && (
-//                     <button onClick={() => updateStatus(e.id, "paused")}
-//                       className="text-xs px-3 py-1.5 rounded-lg bg-amber-500/10 text-amber-500 hover:bg-amber-500/20 transition-colors">
-//                       Pause
-//                     </button>
-//                   )}
-//                   {e.status === "paused" && (
-//                     <button onClick={() => updateStatus(e.id, "running")}
-//                       className="text-xs px-3 py-1.5 rounded-lg bg-emerald-500/10 text-emerald-500 hover:bg-emerald-500/20 transition-colors">
-//                       Resume
-//                     </button>
-//                   )}
-//                   <button onClick={() => deleteExp(e.id)}
-//                     className={`text-xs px-3 py-1.5 rounded-lg transition-colors ${
-//                       isDark ? "text-white/30 hover:text-red-400 hover:bg-red-400/10" : "text-gray-400 hover:text-red-500 hover:bg-red-50"
-//                     }`}>
-//                     Delete
-//                   </button>
-//                 </div>
-//               </div>
-//             </motion.div>
-//           ))}
-//         </div>
-//       )}
-
-//       <AnimatePresence>
-//         {showCreate && (
-//           <CreateModal onClose={() => setShowCreate(false)} onCreated={load} />
-//         )}
-//       </AnimatePresence>
-//     </div>
-//   );
-// // 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import api from "../../services/api";
@@ -585,7 +294,7 @@ export default function Experiments() {
           )}
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
           {filtered.map((e, i) => {
             const sc = STATUS_CONFIG[e.status] || STATUS_CONFIG.draft;
             return (
@@ -609,12 +318,17 @@ export default function Experiments() {
                     isDark ? "bg-white/[0.05] text-white/40" : "bg-gray-100 text-gray-500"
                   }`}>{e.goal}</span>
                   <span className={`text-xs ${isDark ? "text-white/25" : "text-gray-400"}`}>
-                    {new Date(e.created_at).toLocaleDateString("en-IN", { day: "numeric", month: "short" })}
+                    {/* {new Date(e.created_at).toLocaleDateString("en-IN", { day: "numeric", month: "short" })} */e.created_at
+  ? new Date(e.created_at).toLocaleDateString("en-IN", {
+      day: "numeric",
+      month: "short",
+    })
+  : "No date"}
                   </span>
                 </div>
 
                 {/* Variant pills */}
-                <div className="flex gap-2 mb-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-4">
                   {e.variants.map((v) => (
                     <div key={v.id} className={`flex-1 px-3 py-2 rounded-xl ${
                       isDark ? "bg-white/[0.03] border border-white/[0.06]" : "bg-gray-50 border border-gray-100"
@@ -637,7 +351,7 @@ export default function Experiments() {
                 </div>
 
                 {/* Actions */}
-                <div className={`flex items-center gap-2 pt-3 border-t ${isDark ? "border-white/[0.05]" : "border-gray-100"}`}>
+                <div className={`grid grid-cols-2 gap-2 pt-3 border-t ${isDark ? "border-white/[0.05]" : "border-gray-100"}`}>
                   {e.status === "draft" && (
                     <button onClick={() => updateStatus(e.id, "running")}
                       className="flex-1 py-1.5 rounded-lg text-xs font-medium text-emerald-500 bg-emerald-500/10 hover:bg-emerald-500/20 transition-colors">
@@ -683,3 +397,9 @@ export default function Experiments() {
     </div>
   );
 }
+
+
+
+
+
+

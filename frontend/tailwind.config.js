@@ -5,13 +5,22 @@ export default {
   theme: {
     extend: {
       colors: {
+        // brand: {
+        //   violet: "#6C5CE7",
+        //   blue: "#4F8CFF",
+        //   black: "#0A0B14",
+        //   surface: "#11131F",
+        //   card: "#161827",
+        // },
         brand: {
-          violet: "#6C5CE7",
-          blue: "#4F8CFF",
-          black: "#0A0B14",
-          surface: "#11131F",
-          card: "#161827",
-        },
+  violet: "#6C5CE7",
+  blue: "#4F8CFF",
+  black: "#0A0B14",
+  surface: "#11131F",
+  card: "#161827",
+  "light-bg": "#F7F8FC",        // ← add
+  "light-surface": "#FFFFFF",   // ← add
+},
       },
       fontFamily: {
         display: ["'Sora'", "sans-serif"],

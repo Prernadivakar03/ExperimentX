@@ -304,6 +304,7 @@ import {
 } from "recharts";
 import api from "../../services/api";
 import { useTheme } from "../../context/ThemeContext";
+import Onboarding from "./Onboarding";
 
 const mockTimeSeries = [
   { day: "Jun 25", visitors: 312, conversions: 24 },
@@ -402,6 +403,11 @@ export default function Overview({ onNavigate }) {
 
   const sparkA = mockTimeSeries.map((d) => ({ v: d.visitors }));
   const sparkB = mockTimeSeries.map((d) => ({ v: d.conversions }));
+
+
+  if (!loading && experiments.length === 0) {
+  return <Onboarding onNavigate={onNavigate} />;
+}
 
   if (loading) {
     return (
