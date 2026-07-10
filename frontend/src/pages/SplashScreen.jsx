@@ -1,5 +1,4 @@
 
-
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import Navbar from "../components/Navbar";
@@ -7,11 +6,13 @@ import Navbar from "../components/Navbar";
 // import AIOrb from "../components/AIOrb";
 import HowItWorks from "../components/HowItWorks";
 import FeatureCards from "../components/FeatureCards";
-import Footer from "../components/Footer";
+// import Footer from "../components/Footer";
 import SparkleField from "../components/SparkleField";
 import Floating3DCards from "../components/Floating3DCards";
 // import VariantLabelCard from "../components/VariantLabelCard";
 import HeroExperimentVisual from "../components/HeroExperimentVisual";
+// Pricing removed from home – it’s a separate page now
+// import Pricing from "./Pricing";
 
 export default function SplashScreen() {
   return (
@@ -71,56 +72,14 @@ export default function SplashScreen() {
             </div>
           </motion.div>
 
-            {/* Particle split visual */}
-            {/* <motion.div
-  initial={{ opacity: 0, scale: 0.9 }}
-  animate={{ opacity: 1, scale: 1 }}
-  transition={{ duration: 0.8, delay: 0.2 }}
-  className="relative h-[460px] rounded-3xl overflow-hidden
-             bg-gray-50/80 dark:bg-[#05060d] backdrop-blur-sm
-             border border-gray-200 dark:border-white/10
-             shadow-[0_0_60px_rgba(108,92,231,0.15)]"
->
-  <ParticleSplit />
-
-  <div className="absolute top-4 left-1/2 -translate-x-1/2 px-3 py-1.5 rounded-lg
-                  bg-white dark:bg-brand-card border border-gray-200 dark:border-white/10 text-xs font-medium
-                  text-gray-700 dark:text-gray-200 z-10">
-    10,000 Visitors
-  </div>
-
-  <VariantLabelCard
-    position="left"
-    badge="A"
-    label="Variant A"
-    percent={50}
-    visitors="5,000"
-    color="violet"
-    barHeights={[40, 70, 55, 90, 60, 80, 45, 65]}
-  />
-  <VariantLabelCard
-    position="right"
-    badge="B"
-    label="Variant B"
-    percent={50}
-    visitors="5,000"
-    color="blue"
-    barHeights={[50, 65, 80, 55, 95, 70, 60, 85]}
-  />
-
-  <div className="absolute bottom-8 left-1/2 -translate-x-1/2">
-    <AIOrb />
-  </div>
-</motion.div> */}
-        <motion.div
-  initial={{ opacity: 0, scale: 0.9 }}
-  animate={{ opacity: 1, scale: 1 }}
-  transition={{ duration: 0.8, delay: 0.2 }}
->
-  <HeroExperimentVisual />
-</motion.div>
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+          >
+            <HeroExperimentVisual />
+          </motion.div>
         </section>
-           
 
         {/* Trusted by */}
         <section className="py-10 border-y border-gray-200 dark:border-white/10">
@@ -139,92 +98,67 @@ export default function SplashScreen() {
 
         <HowItWorks />
         <Floating3DCards />
+
+        {/* Pricing section removed – now a separate page at /pricing */}
+
         <FeatureCards />
 
-        {/* CTA banner */}
-        {/* <section className="max-w-5xl mx-auto px-6 py-16">
-          <div className="rounded-3xl bg-gradient-to-r from-brand-violet to-brand-blue px-8 py-12 text-center
-                          shadow-[0_0_60px_rgba(108,92,231,0.35)]">
-            <h3 className="text-2xl md:text-3xl font-display font-bold text-white">
-              Make data-driven decisions with confidence
-            </h3>
-            <Link
-              to="/register"
-              className="inline-block mt-6 px-6 py-3 rounded-lg bg-white text-brand-violet font-medium hover:opacity-90 transition-opacity"
-            >
-              Start Free Trial
-            </Link>
-          </div>
-        </section> */}
-
-
         {/* Premium CTA */}
-<section className="relative py-28 px-6 overflow-hidden">
-  {/* Background Glow */}
-  <div className="absolute inset-0 pointer-events-none">
-    <div className="absolute left-1/2 top-1/2 h-[500px] w-[500px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-brand-violet/20 blur-[140px]" />
-    <div className="absolute right-10 top-20 h-72 w-72 rounded-full bg-brand-blue/20 blur-[120px]" />
-    <div className="absolute left-10 bottom-0 h-64 w-64 rounded-full bg-brand-violet/10 blur-[120px]" />
-  </div>
+        <section className="relative py-28 px-6 overflow-hidden">
+          <div className="absolute inset-0 pointer-events-none">
+            <div className="absolute left-1/2 top-1/2 h-[500px] w-[500px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-brand-violet/20 blur-[140px]" />
+            <div className="absolute right-10 top-20 h-72 w-72 rounded-full bg-brand-blue/20 blur-[120px]" />
+            <div className="absolute left-10 bottom-0 h-64 w-64 rounded-full bg-brand-violet/10 blur-[120px]" />
+          </div>
 
-  <div
-    className="relative max-w-6xl mx-auto rounded-[32px]
-               border border-gray-200 dark:border-white/10
-               bg-white/80 dark:bg-brand-surface/80
-               backdrop-blur-xl
-               px-10 py-20 text-center
-               shadow-[0_40px_120px_rgba(108,92,231,0.18)]"
-  >
-    {/* Badge */}
-    <span className="inline-flex items-center gap-2 rounded-full bg-brand-violet/10 px-4 py-2 text-sm font-medium text-brand-violet">
-      ✨ AI-Powered Experimentation
-    </span>
+          <div
+            className="relative max-w-6xl mx-auto rounded-[32px]
+                       border border-gray-200 dark:border-white/10
+                       bg-white/80 dark:bg-brand-surface/80
+                       backdrop-blur-xl
+                       px-10 py-20 text-center
+                       shadow-[0_40px_120px_rgba(108,92,231,0.18)]"
+          >
+            <span className="inline-flex items-center gap-2 rounded-full bg-brand-violet/10 px-4 py-2 text-sm font-medium text-brand-violet">
+              ✨ AI-Powered Experimentation
+            </span>
 
-    {/* Heading */}
-    <h2 className="mt-8 text-4xl md:text-6xl font-display font-extrabold leading-tight text-gray-900 dark:text-white">
-      Stop Guessing.
-      <br />
-      <span className="bg-gradient-to-r from-brand-violet to-brand-blue bg-clip-text text-transparent">
-        Start Winning.
-      </span>
-    </h2>
+            <h2 className="mt-8 text-4xl md:text-6xl font-display font-extrabold leading-tight text-gray-900 dark:text-white">
+              Stop Guessing.
+              <br />
+              <span className="bg-gradient-to-r from-brand-violet to-brand-blue bg-clip-text text-transparent">
+                Start Winning.
+              </span>
+            </h2>
 
-    {/* Description */}
-    <p className="mx-auto mt-6 max-w-2xl text-lg text-gray-500 dark:text-gray-400">
-      Build experiments, discover winning variants with AI, and make every
-      decision backed by real user data.
-    </p>
+            <p className="mx-auto mt-6 max-w-2xl text-lg text-gray-500 dark:text-gray-400">
+              Build experiments, discover winning variants with AI, and make every
+              decision backed by real user data.
+            </p>
 
-    {/* Buttons */}
-    <div className="mt-10 flex flex-wrap justify-center gap-5">
-      <Link
-        to="/register"
-        className="rounded-xl bg-gradient-to-r from-brand-violet to-brand-blue px-8 py-4 font-semibold text-white shadow-[0_0_40px_rgba(108,92,231,0.45)] hover:scale-105 transition-all duration-300"
-      >
-        Start Free Trial
-      </Link>
+            <div className="mt-10 flex flex-wrap justify-center gap-5">
+              <Link
+                to="/register"
+                className="rounded-xl bg-gradient-to-r from-brand-violet to-brand-blue px-8 py-4 font-semibold text-white shadow-[0_0_40px_rgba(108,92,231,0.45)] hover:scale-105 transition-all duration-300"
+              >
+                Start Free Trial
+              </Link>
+              <button
+                className="rounded-xl border border-gray-300 dark:border-white/10 px-8 py-4 font-medium text-gray-700 dark:text-gray-200 hover:border-brand-violet hover:bg-brand-violet/5 transition-all duration-300"
+              >
+                Book a Demo
+              </button>
+            </div>
 
-      <button
-        className="rounded-xl border border-gray-300 dark:border-white/10 px-8 py-4 font-medium text-gray-700 dark:text-gray-200 hover:border-brand-violet hover:bg-brand-violet/5 transition-all duration-300"
-      >
-        Book a Demo
-      </button>
-    </div>
-
-    {/* Trust Indicators */}
-    <div className="mt-12 flex flex-wrap justify-center gap-8 text-sm text-gray-500 dark:text-gray-400">
-      <span>✓ No Credit Card</span>
-      <span>✓ 14-Day Free Trial</span>
-      <span>✓ Unlimited Experiments</span>
-      <span>✓ AI Insights Included</span>
-    </div>
-  </div>
-</section>
-
-        <Footer />
+            <div className="mt-12 flex flex-wrap justify-center gap-8 text-sm text-gray-500 dark:text-gray-400">
+              <span>✓ No Credit Card</span>
+              <span>✓ 14-Day Free Trial</span>
+              <span>✓ Unlimited Experiments</span>
+              <span>✓ AI Insights Included</span>
+            </div>
+          </div>
+        </section>
       </div>
     </div>
   );
-
-  
 }

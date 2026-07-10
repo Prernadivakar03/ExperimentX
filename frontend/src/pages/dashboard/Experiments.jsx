@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import api from "../../services/api";
 import { useTheme } from "../../context/ThemeContext";
+import ExperimentDetail from "./ExperimentDetail";
 
 const STATUS_CONFIG = {
   draft:     { color: "bg-gray-400/10 text-gray-400", dot: "bg-gray-400", label: "Draft" },
@@ -194,6 +195,8 @@ export default function Experiments() {
   const [filter, setFilter] = useState("all");
   const [search, setSearch] = useState("");
 
+  const [detailId, setDetailId] = useState(null);
+
   const load = async () => {
     try { const r = await api.get("/experiments/"); setExperiments(r.data); }
     finally { setLoading(false); }
@@ -219,6 +222,15 @@ export default function Experiments() {
   const cardCls = `rounded-2xl border p-5 transition-colors ${
     isDark ? "bg-[#0D0E1A] border-white/[0.07] hover:border-white/[0.12]" : "bg-white border-gray-200 shadow-sm hover:border-gray-300"
   }`;
+
+  if (detailId) {
+  return (
+    <ExperimentDetail
+      experimentId={detailId}
+      onBack={() => setDetailId(null)}
+    />
+  );
+}
 
   return (
     <div className="space-y-5">
@@ -304,8 +316,13 @@ export default function Experiments() {
                 className={cardCls}
               >
                 <div className="flex items-start justify-between gap-2 mb-3">
-                  <p className={`font-medium leading-snug ${isDark ? "text-white/85" : "text-gray-900"}`}>
-                    {e.name}
+                  <p
+                    className={`font-medium leading-snug cursor-pointer hover:text-brand-violet transition-colors ${
+                    isDark ? "text-white/85" : "text-gray-900"
+                    }`}
+                    onClick={() => setDetailId(e.id)}
+                  >
+                  {e.name}
                   </p>
                   <span className={`flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full flex-shrink-0 ${sc.color}`}>
                     <span className={`w-1.5 h-1.5 rounded-full ${sc.dot}`} />
@@ -376,6 +393,16 @@ export default function Experiments() {
                       </button>
                     </>
                   )}
+                  <button
+  onClick={() => setDetailId(e.id)}
+  className={`px-3 py-1.5 rounded-lg text-xs transition-colors ${
+    isDark
+      ? "text-white/30 hover:text-brand-violet hover:bg-brand-violet/10"
+      : "text-gray-400 hover:text-brand-violet hover:bg-brand-violet/5"
+  }`}
+>
+  View →
+</button>
                   <button onClick={() => deleteExp(e.id)}
                     className={`px-3 py-1.5 rounded-lg text-xs transition-colors ${
                       isDark ? "text-white/20 hover:text-red-400 hover:bg-red-400/10" : "text-gray-300 hover:text-red-500 hover:bg-red-50"
