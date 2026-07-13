@@ -69,7 +69,8 @@ function FloatingCard({ label, accent, headline, metric, metricLabel, delay, til
 
 export default function Floating3DCards() {
   return (
-    <section className="relative max-w-5xl mx-auto px-6 py-28">
+    // <section className="relative max-w-5xl mx-auto px-6 py-28">
+    <section className="relative max-w-5xl mx-auto px-6 py-20">
       <div className="text-center mb-16">
         <h2 className="text-3xl md:text-4xl font-display font-bold text-gray-900 dark:text-white">
           See the difference, instantly
