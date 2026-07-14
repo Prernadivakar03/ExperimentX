@@ -2,8 +2,8 @@ import os
 from groq import Groq
 
 client = Groq(api_key=os.getenv("GROQ_API_KEY"))
-MODEL = "llama-3.1-70b-versatile"   # free, fast, very capable
-
+# MODEL = "llama-3.1-70b-versatile"   # free, fast, very capable
+MODEL = "openai/gpt-oss-120b"
 
 def chat(system: str, user: str, max_tokens: int = 1000) -> str:
     """Simple single-turn chat. Returns the response text."""
