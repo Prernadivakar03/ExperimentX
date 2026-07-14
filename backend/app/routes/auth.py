@@ -3,6 +3,8 @@ from sqlalchemy.orm import Session
 from datetime import datetime, timedelta
 from jose import JWTError
 
+
+
 from app.database import get_db
 from app.models.user import User
 from app.models.token import RefreshToken
@@ -24,11 +26,20 @@ from app.schemas.user_schema import (
 
 router = APIRouter(prefix="/auth", tags=["auth"])
 
+from slowapi import Limiter
+from slowapi.util import get_remote_address
+from fastapi import Request
+
+limiter = Limiter(key_func=get_remote_address)
 
 # ── Register ──────────────────────────────────────────────────────────────────
 
+# @router.post("/register", response_model=TokenResponse, status_code=status.HTTP_201_CREATED)
+# def register(payload: RegisterRequest, db: Session = Depends(get_db)):
 @router.post("/register", response_model=TokenResponse, status_code=status.HTTP_201_CREATED)
-def register(payload: RegisterRequest, db: Session = Depends(get_db)):
+@limiter.limit("5/minute")
+def register(request: Request, payload: RegisterRequest, db: Session = Depends(get_db)):
+    ...
 
     existing = db.query(User).filter(User.email == payload.email).first()
     if existing:
@@ -51,9 +62,11 @@ def register(payload: RegisterRequest, db: Session = Depends(get_db)):
 
 
 # ── Login ─────────────────────────────────────────────────────────────────────
-
 @router.post("/login", response_model=TokenResponse)
-def login(payload: LoginRequest, db: Session = Depends(get_db)):
+@limiter.limit("10/minute")
+def login(request: Request, payload: LoginRequest, db: Session = Depends(get_db)):
+# @router.post("/login", response_model=TokenResponse)
+# def login(payload: LoginRequest, db: Session = Depends(get_db)):
 
     user = db.query(User).filter(User.email == payload.email).first()
 
