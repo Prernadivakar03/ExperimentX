@@ -1,300 +1,3 @@
-// import { useEffect, useState } from "react";
-// import { motion } from "framer-motion";
-// import {
-//   LineChart, Line, BarChart, Bar, PieChart, Pie, Cell,
-//   XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid
-// } from "recharts";
-// import api from "../../services/api";
-// import { useTheme } from "../../context/ThemeContext";
-
-// const COLORS = ["#6C5CE7", "#4F8CFF"];
-
-// function KPICard({ label, value, sub, color, delay }) {
-//   const { theme } = useTheme();
-//   const isDark = theme === "dark";
-//   return (
-//     <motion.div
-//       initial={{ opacity: 0, y: 16 }}
-//       animate={{ opacity: 1, y: 0 }}
-//       transition={{ delay }}
-//       className={`p-5 rounded-2xl border transition-colors duration-300 ${
-//         isDark
-//           ? "bg-white/[0.03] border-white/10"
-//           : "bg-white border-gray-200 shadow-sm"
-//       }`}
-//     >
-//       <p className={`text-xs font-medium mb-1 ${isDark ? "text-white/40" : "text-gray-500"}`}>{label}</p>
-//       <p className={`text-2xl font-display font-bold ${color}`}>{value}</p>
-//       {sub && <p className={`text-xs mt-1 ${isDark ? "text-white/30" : "text-gray-400"}`}>{sub}</p>}
-//     </motion.div>
-//   );
-// }
-
-// const mockVisitors = [
-//   { day: "Mon", visitors: 420 }, { day: "Tue", visitors: 680 },
-//   { day: "Wed", visitors: 590 }, { day: "Thu", visitors: 810 },
-//   { day: "Fri", visitors: 760 }, { day: "Sat", visitors: 430 },
-//   { day: "Sun", visitors: 560 },
-// ];
-
-// export default function Overview() {
-//   const { theme } = useTheme();
-//   const isDark = theme === "dark";
-//   const [stats, setStats] = useState(null);
-//   const [experiments, setExperiments] = useState([]);
-//   const [loading, setLoading] = useState(true);
-
-//   useEffect(() => {
-//     const load = async () => {
-//       try {
-//         const [statsRes, expRes] = await Promise.all([
-//           api.get("/analytics"),
-//           api.get("/experiments/"),
-//         ]);
-//         setStats(statsRes.data);
-//         setExperiments(expRes.data);
-//       } catch (e) {
-//         console.error(e);
-//       } finally {
-//         setLoading(false);
-//       }
-//     };
-//     load();
-//   }, []);
-
-//   const gridColor = isDark ? "rgba(255,255,255,0.06)" : "rgba(0,0,0,0.06)";
-//   const textColor = isDark ? "rgba(255,255,255,0.35)" : "rgba(0,0,0,0.35)";
-
-//   const barData = experiments.slice(0, 5).map((e) => ({
-//     name: e.name.length > 14 ? e.name.slice(0, 14) + "…" : e.name,
-//     A: e.variants[0]?.traffic_split * 100 || 50,
-//     B: e.variants[1]?.traffic_split * 100 || 50,
-//   }));
-
-//   const pieData = [
-//     { name: "Running", value: stats?.running_experiments || 0 },
-//     { name: "Completed", value: stats?.completed_experiments || 0 },
-//   ];
-
-//   if (loading) {
-//     return (
-//       <div className="flex items-center justify-center h-64">
-//         <motion.div
-//           className="w-8 h-8 rounded-full border-2 border-brand-violet border-t-transparent"
-//           animate={{ rotate: 360 }}
-//           transition={{ duration: 0.8, repeat: Infinity, ease: "linear" }}
-//         />
-//       </div>
-//     );
-//   }
-
-//   return (
-//     <div className="space-y-6">
-//       <div>
-//         <h1 className={`text-xl font-display font-bold ${isDark ? "text-white" : "text-gray-900"}`}>
-//           Overview
-//         </h1>
-//         <p className={`text-sm mt-1 ${isDark ? "text-white/40" : "text-gray-500"}`}>
-//           Track your experiments and key metrics
-//         </p>
-//       </div>
-
-//       {/* KPI cards */}
-//       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-//         <KPICard label="Visitors" value={stats?.total_visitors?.toLocaleString() || "0"} color="text-brand-violet" delay={0} />
-//         <KPICard label="Conversions" value={stats?.total_conversions?.toLocaleString() || "0"} color="text-brand-blue" delay={0.05} />
-//         <KPICard label="Page Views" value={stats?.total_page_views?.toLocaleString() || "0"} color="text-emerald-500" delay={0.1} />
-//         <KPICard label="Experiments" value={stats?.total_experiments || "0"} sub={`${stats?.running_experiments || 0} running`} color="text-fuchsia-500" delay={0.15} />
-//       </div>
-
-//       {/* Charts row */}
-//       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-//         {/* Visitors over time */}
-//         <motion.div
-//           initial={{ opacity: 0, y: 16 }}
-//           animate={{ opacity: 1, y: 0 }}
-//           transition={{ delay: 0.2 }}
-//           className={`md:col-span-2 p-5 rounded-2xl border ${
-//             isDark ? "bg-white/[0.03] border-white/10" : "bg-white border-gray-200 shadow-sm"
-//           }`}
-//         >
-//           <p className={`text-sm font-medium mb-4 ${isDark ? "text-white/70" : "text-gray-700"}`}>
-//             Visitors over time
-//           </p>
-//           <ResponsiveContainer width="100%" height={180}>
-//             <LineChart data={mockVisitors}>
-//               <CartesianGrid strokeDasharray="3 3" stroke={gridColor} />
-//               <XAxis dataKey="day" tick={{ fill: textColor, fontSize: 11 }} axisLine={false} tickLine={false} />
-//               <YAxis tick={{ fill: textColor, fontSize: 11 }} axisLine={false} tickLine={false} />
-//               <Tooltip
-//                 contentStyle={{
-//                   background: isDark ? "#161827" : "#fff",
-//                   border: `1px solid ${isDark ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.1)"}`,
-//                   borderRadius: "8px",
-//                   color: isDark ? "#fff" : "#111",
-//                 }}
-//               />
-//               <Line type="monotone" dataKey="visitors" stroke="#6C5CE7" strokeWidth={2} dot={false} />
-//             </LineChart>
-//           </ResponsiveContainer>
-//         </motion.div>
-
-//         {/* Experiment status pie */}
-//         <motion.div
-//           initial={{ opacity: 0, y: 16 }}
-//           animate={{ opacity: 1, y: 0 }}
-//           transition={{ delay: 0.25 }}
-//           className={`p-5 rounded-2xl border ${
-//             isDark ? "bg-white/[0.03] border-white/10" : "bg-white border-gray-200 shadow-sm"
-//           }`}
-//         >
-//           <p className={`text-sm font-medium mb-4 ${isDark ? "text-white/70" : "text-gray-700"}`}>
-//             Experiment status
-//           </p>
-//           <ResponsiveContainer width="100%" height={140}>
-//             <PieChart>
-//               <Pie data={pieData} cx="50%" cy="50%" innerRadius={40} outerRadius={65} dataKey="value" paddingAngle={4}>
-//                 {pieData.map((_, i) => (
-//                   <Cell key={i} fill={COLORS[i]} />
-//                 ))}
-//               </Pie>
-//               <Tooltip
-//                 contentStyle={{
-//                   background: isDark ? "#161827" : "#fff",
-//                   border: `1px solid ${isDark ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.1)"}`,
-//                   borderRadius: "8px",
-//                   color: isDark ? "#fff" : "#111",
-//                 }}
-//               />
-//             </PieChart>
-//           </ResponsiveContainer>
-//           <div className="flex justify-center gap-4 mt-2">
-//             {pieData.map((d, i) => (
-//               <div key={d.name} className="flex items-center gap-1.5">
-//                 <div className="w-2 h-2 rounded-full" style={{ background: COLORS[i] }} />
-//                 <span className={`text-xs ${isDark ? "text-white/50" : "text-gray-500"}`}>{d.name} ({d.value})</span>
-//               </div>
-//             ))}
-//           </div>
-//         </motion.div>
-//       </div>
-
-//       {/* A vs B bar chart */}
-//       {barData.length > 0 && (
-//         <motion.div
-//           initial={{ opacity: 0, y: 16 }}
-//           animate={{ opacity: 1, y: 0 }}
-//           transition={{ delay: 0.3 }}
-//           className={`p-5 rounded-2xl border ${
-//             isDark ? "bg-white/[0.03] border-white/10" : "bg-white border-gray-200 shadow-sm"
-//           }`}
-//         >
-//           <p className={`text-sm font-medium mb-4 ${isDark ? "text-white/70" : "text-gray-700"}`}>
-//             Traffic split by experiment
-//           </p>
-//           <ResponsiveContainer width="100%" height={180}>
-//             <BarChart data={barData}>
-//               <CartesianGrid strokeDasharray="3 3" stroke={gridColor} />
-//               <XAxis dataKey="name" tick={{ fill: textColor, fontSize: 11 }} axisLine={false} tickLine={false} />
-//               <YAxis tick={{ fill: textColor, fontSize: 11 }} axisLine={false} tickLine={false} />
-//               <Tooltip
-//                 contentStyle={{
-//                   background: isDark ? "#161827" : "#fff",
-//                   border: `1px solid ${isDark ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.1)"}`,
-//                   borderRadius: "8px",
-//                   color: isDark ? "#fff" : "#111",
-//                 }}
-//               />
-//               <Bar dataKey="A" fill="#6C5CE7" radius={[4, 4, 0, 0]} />
-//               <Bar dataKey="B" fill="#4F8CFF" radius={[4, 4, 0, 0]} />
-//             </BarChart>
-//           </ResponsiveContainer>
-//         </motion.div>
-//       )}
-
-//       {/* Recent experiments */}
-//       {experiments.length > 0 && (
-//         <motion.div
-//           initial={{ opacity: 0, y: 16 }}
-//           animate={{ opacity: 1, y: 0 }}
-//           transition={{ delay: 0.35 }}
-//           className={`p-5 rounded-2xl border ${
-//             isDark ? "bg-white/[0.03] border-white/10" : "bg-white border-gray-200 shadow-sm"
-//           }`}
-//         >
-//           <p className={`text-sm font-medium mb-4 ${isDark ? "text-white/70" : "text-gray-700"}`}>
-//             Recent experiments
-//           </p>
-//           <div className="space-y-3">
-//             {experiments.slice(0, 5).map((e) => (
-//               <div key={e.id} className={`flex items-center justify-between py-2.5 border-b last:border-0 ${
-//                 isDark ? "border-white/5" : "border-gray-100"
-//               }`}>
-//                 <div>
-//                   <p className={`text-sm font-medium ${isDark ? "text-white" : "text-gray-900"}`}>{e.name}</p>
-//                   <p className={`text-xs mt-0.5 ${isDark ? "text-white/40" : "text-gray-400"}`}>Goal: {e.goal}</p>
-//                 </div>
-//                 <span className={`text-xs font-medium px-2.5 py-1 rounded-full ${
-//                   e.status === "running"
-//                     ? "bg-emerald-500/10 text-emerald-500"
-//                     : e.status === "completed"
-//                       ? "bg-brand-violet/10 text-brand-violet"
-//                       : "bg-gray-500/10 text-gray-500"
-//                 }`}>
-//                   {e.status}
-//                 </span>
-//               </div>
-//             ))}
-//           </div>
-//         </motion.div>
-//       )}
-//     </div>
-//   );
-// }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
@@ -305,6 +8,7 @@ import {
 import api from "../../services/api";
 import { useTheme } from "../../context/ThemeContext";
 import Onboarding from "./Onboarding";
+import { SkeletonKPIRow, SkeletonChart, SkeletonTable } from "../../components/Skeleton";
 
 const mockTimeSeries = [
   { day: "Jun 25", visitors: 312, conversions: 24 },
@@ -410,13 +114,21 @@ export default function Overview({ onNavigate }) {
 }
 
   if (loading) {
-    return (
-      <div className="flex items-center justify-center h-64">
-        <motion.div className="w-8 h-8 rounded-full border-2 border-brand-violet border-t-transparent"
-          animate={{ rotate: 360 }} transition={{ duration: 0.8, repeat: Infinity, ease: "linear" }} />
+  return (
+    <div className="space-y-6">
+      <div>
+        <div className={`h-6 w-32 rounded-lg animate-pulse mb-2 ${isDark ? "bg-white/[0.06]" : "bg-gray-200"}`} />
+        <div className={`h-4 w-48 rounded-lg animate-pulse ${isDark ? "bg-white/[0.04]" : "bg-gray-100"}`} />
       </div>
-    );
-  }
+      <SkeletonKPIRow />
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+        <div className="lg:col-span-2"><SkeletonChart /></div>
+        <SkeletonCard />
+      </div>
+      <SkeletonTable />
+    </div>
+  );
+}
 
   const running = experiments.filter((e) => e.status === "running");
   const completed = experiments.filter((e) => e.status === "completed");

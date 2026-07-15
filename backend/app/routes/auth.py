@@ -29,6 +29,8 @@ router = APIRouter(prefix="/auth", tags=["auth"])
 from slowapi import Limiter
 from slowapi.util import get_remote_address
 from fastapi import Request
+from fastapi import Request
+from app.core.limiter import limiter
 
 limiter = Limiter(key_func=get_remote_address)
 
@@ -36,11 +38,15 @@ limiter = Limiter(key_func=get_remote_address)
 
 # @router.post("/register", response_model=TokenResponse, status_code=status.HTTP_201_CREATED)
 # def register(payload: RegisterRequest, db: Session = Depends(get_db)):
-@router.post("/register", response_model=TokenResponse, status_code=status.HTTP_201_CREATED)
-@limiter.limit("5/minute")
-def register(request: Request, payload: RegisterRequest, db: Session = Depends(get_db)):
-    ...
+# @router.post("/register", response_model=TokenResponse, status_code=status.HTTP_201_CREATED)
+# @limiter.limit("5/minute")
+# def register(request: Request, payload: RegisterRequest, db: Session = Depends(get_db)):
+#     ...
 
+@router.post("/register", response_model=TokenResponse, status_code=status.HTTP_201_CREATED)
+@limiter.limit("3/minute")
+def register(request: Request, payload: RegisterRequest, db: Session = Depends(get_db)):
+    # ... rest unchanged
     existing = db.query(User).filter(User.email == payload.email).first()
     if existing:
         raise HTTPException(
@@ -57,16 +63,23 @@ def register(request: Request, payload: RegisterRequest, db: Session = Depends(g
     db.add(user)
     db.commit()
     db.refresh(user)
+    from app.core.email import send_welcome
+    send_welcome(user.email, user.name)
 
     return _issue_tokens(user, db)
 
 
 # ── Login ─────────────────────────────────────────────────────────────────────
-@router.post("/login", response_model=TokenResponse)
-@limiter.limit("10/minute")
-def login(request: Request, payload: LoginRequest, db: Session = Depends(get_db)):
+# @router.post("/login", response_model=TokenResponse)
+# @limiter.limit("10/minute")
+# def login(request: Request, payload: LoginRequest, db: Session = Depends(get_db)):
 # @router.post("/login", response_model=TokenResponse)
 # def login(payload: LoginRequest, db: Session = Depends(get_db)):
+
+@router.post("/login", response_model=TokenResponse)
+@limiter.limit("5/minute")
+def login(request: Request, payload: LoginRequest, db: Session = Depends(get_db)):
+    # ... rest unchanged
 
     user = db.query(User).filter(User.email == payload.email).first()
 
@@ -143,21 +156,16 @@ def logout(payload: RefreshRequest, db: Session = Depends(get_db)):
 # ── Forgot password ───────────────────────────────────────────────────────────
 
 @router.post("/forgot-password", status_code=status.HTTP_200_OK)
-def forgot_password(payload: ForgotPasswordRequest, db: Session = Depends(get_db)):
-    """
-    In production: generate a signed reset token, email it, store a hash.
-    For MVP dev: the token is logged to the console so you can test the flow
-    without setting up an email provider.
-    """
+@limiter.limit("3/minute")
+def forgot_password(request: Request, payload: ForgotPasswordRequest, db: Session = Depends(get_db)):
+    from app.core.email import send_password_reset
+    from app.core.security import create_access_token
 
     user = db.query(User).filter(User.email == payload.email).first()
 
-    # Always return 200 — never reveal whether the email exists
-    if not user:
-        return {"message": "If that email exists, a reset link has been sent"}
-
-    reset_token = create_access_token(str(user.id))  # reuse JWT for simplicity in MVP
-    print(f"\n[DEV] Password reset token for {user.email}:\n{reset_token}\n")
+    if user:
+        reset_token = create_access_token(str(user.id))
+        send_password_reset(user.email, user.name, reset_token)
 
     return {"message": "If that email exists, a reset link has been sent"}
 

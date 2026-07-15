@@ -190,3 +190,111 @@ def _run_z_test(a: dict, b: dict) -> dict:
 def _norm_cdf(x: float) -> float:
     """Standard normal CDF via math.erf — no scipy needed."""
     return (1.0 + math.erf(x / math.sqrt(2))) / 2.0
+
+
+
+
+from datetime import datetime, timedelta
+
+@router.get("/analytics/{experiment_id}/timeseries")
+def get_timeseries(
+    experiment_id: UUID,
+    days: int = 7,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    experiment = db.query(Experiment).filter(
+        Experiment.id == experiment_id,
+        Experiment.owner_id == current_user.id,
+    ).first()
+
+    if not experiment:
+        raise HTTPException(status_code=404, detail="Experiment not found")
+
+    result = []
+    today = datetime.utcnow().date()
+
+    for i in range(days - 1, -1, -1):
+        day = today - timedelta(days=i)
+        day_start = datetime(day.year, day.month, day.day)
+        day_end = day_start + timedelta(days=1)
+
+        day_data = {"day": day.strftime("%b %d")}
+
+        for variant in experiment.variants:
+            visitors = db.query(Visitor).filter(
+                Visitor.experiment_id == experiment_id,
+                Visitor.variant_id == variant.id,
+                Visitor.created_at >= day_start,
+                Visitor.created_at < day_end,
+            ).count()
+
+            conversions = db.query(Conversion).filter(
+                Conversion.experiment_id == experiment_id,
+                Conversion.variant_id == variant.id,
+                Conversion.timestamp >= day_start,
+                Conversion.timestamp < day_end,
+            ).count()
+
+            rate = round((conversions / visitors * 100), 2) if visitors > 0 else 0
+            day_data[f"variant_{variant.label}_visitors"] = visitors
+            day_data[f"variant_{variant.label}_rate"] = rate
+
+        result.append(day_data)
+
+    return result
+
+@router.get("/analytics/{experiment_id}/visitors")
+def get_visitors(
+    experiment_id: UUID,
+    page: int = 1,
+    limit: int = 20,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    experiment = db.query(Experiment).filter(
+        Experiment.id == experiment_id,
+        Experiment.owner_id == current_user.id,
+    ).first()
+
+    if not experiment:
+        raise HTTPException(status_code=404, detail="Experiment not found")
+
+    offset = (page - 1) * limit
+    total = db.query(Visitor).filter(Visitor.experiment_id == experiment_id).count()
+
+    visitors = (
+        db.query(Visitor)
+        .filter(Visitor.experiment_id == experiment_id)
+        .order_by(Visitor.created_at.desc())
+        .offset(offset)
+        .limit(limit)
+        .all()
+    )
+
+    rows = []
+    for v in visitors:
+        conversions = db.query(Conversion).filter(
+            Conversion.visitor_id == v.id
+        ).count()
+
+        events_count = db.query(Event).filter(
+            Event.visitor_id == v.id
+        ).count()
+
+        rows.append({
+            "id": str(v.id),
+            "fingerprint": v.fingerprint[:12] + "...",
+            "variant": v.variant.label if v.variant else "?",
+            "variant_name": v.variant.name if v.variant else "?",
+            "events": events_count,
+            "converted": conversions > 0,
+            "created_at": v.created_at.isoformat(),
+        })
+
+    return {
+        "total": total,
+        "page": page,
+        "pages": (total + limit - 1) // limit,
+        "visitors": rows,
+    }
