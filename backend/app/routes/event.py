@@ -71,6 +71,15 @@ def track_conversion(payload: ConversionCreate, db: Session = Depends(get_db)):
         visitor_id=payload.visitor_id,
         goal=payload.goal,
     )
+
+    event = Event(
+        experiment_id=payload.experiment_id,
+        variant_id=payload.variant_id,
+        visitor_id=payload.visitor_id,
+        event_type=payload.event_type,
+        value=payload.value,
+    )
+    
     db.add(conversion)
     db.commit()
 

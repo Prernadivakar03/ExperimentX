@@ -1,4 +1,5 @@
-from sqlalchemy import Column, String, DateTime, ForeignKey, Enum as SAEnum
+
+from sqlalchemy import Column, String, Integer, DateTime, ForeignKey, Enum as SAEnum
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import relationship
 from datetime import datetime
@@ -33,6 +34,19 @@ class Experiment(Base):
     name = Column(String, nullable=False)
     description = Column(String, nullable=True)
     goal = Column(String, nullable=False)   # e.g. "purchase", "signup", "click"
+
+
+    goal = Column(String, nullable=False)
+    planned_duration_days = Column(Integer, nullable=True)
+    target_sample_size = Column(Integer, nullable=True)
+    scheduled_start_at = Column(DateTime, nullable=True)   # if set, auto-starts at this UTC time
+    scheduled_end_at = Column(DateTime, nullable=True)     # if set, auto-completes at this UTC time
+    timezone = Column(String, nullable=False, default="UTC")
+    
+    # ----- NEW FIELDS -----
+    planned_duration_days = Column(Integer, nullable=True)
+    target_sample_size = Column(Integer, nullable=True)
+    # -----------------------
 
     status = Column(
         SAEnum(ExperimentStatus),

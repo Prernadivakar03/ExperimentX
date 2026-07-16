@@ -29,6 +29,11 @@ def create_experiment(
         name=payload.name,
         description=payload.description,
         goal=payload.goal,
+        planned_duration_days=payload.planned_duration_days,
+        target_sample_size=payload.target_sample_size,
+        scheduled_start_at=payload.scheduled_start_at,
+        scheduled_end_at=payload.scheduled_end_at,
+        timezone=payload.timezone,
         status=ExperimentStatus.draft,
     )
     db.add(experiment)

@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
+from sqlalchemy import Column, Integer, String, DateTime, ForeignKey , Float 
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import relationship
 from datetime import datetime
@@ -33,7 +33,8 @@ class Event(Base):
     event_type = Column(String, nullable=False)
 
     timestamp = Column(DateTime, default=datetime.utcnow)
-
+    event_type = Column(String, nullable=False)
+    value = Column(Float, nullable=True)   # e.g. order amount for "purchase" events, used by revenue/AOV metrics
     # Relationships
     experiment = relationship("Experiment", back_populates="events")
     variant = relationship("Variant", back_populates="events")

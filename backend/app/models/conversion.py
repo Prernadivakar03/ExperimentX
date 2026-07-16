@@ -30,7 +30,7 @@
 
 
 
-from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
+from sqlalchemy import Column, Integer, String, DateTime, ForeignKey , Float
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import relationship
 from datetime import datetime
@@ -63,7 +63,7 @@ class Conversion(Base):
 
     # What goal was completed — matches experiment.goal
     goal = Column(String, nullable=False)
-
+    value = Column(Float, nullable=True)
     timestamp = Column(DateTime, default=datetime.utcnow)
 
     # Relationships
