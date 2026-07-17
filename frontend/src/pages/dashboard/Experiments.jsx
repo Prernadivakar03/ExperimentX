@@ -1,3 +1,4 @@
+
 // import { useEffect, useState } from "react";
 // import { motion, AnimatePresence } from "framer-motion";
 // import api from "../../services/api";
@@ -34,21 +35,21 @@
 //   const labelCls = `block text-xs font-medium mb-1.5 ${isDark ? "text-white/45" : "text-gray-600"}`;
 
 //   const handleSubmit = async () => {
-//   if (!form.name) { setError("Experiment name is required"); return; }
-//   setLoading(true);
-//   setError("");
-//   try {
-//     await api.post("/experiments/", form);
-//     toast.success("Experiment created! Set it to Running to start collecting data.");
-//     onCreated();
-//     onClose();
-//   } catch (err) {
-//     const d = err.response?.data?.detail;
-//     setError(Array.isArray(d) ? d.map((x) => x.msg).join(", ") : d || "Failed to create");
-//   } finally {
-//     setLoading(false);
-//   }
-// };
+//     if (!form.name) { setError("Experiment name is required"); return; }
+//     setLoading(true);
+//     setError("");
+//     try {
+//       await api.post("/experiments/", form);
+//       toast.success("Experiment created! Set it to Running to start collecting data.");
+//       onCreated();
+//       onClose();
+//     } catch (err) {
+//       const d = err.response?.data?.detail;
+//       setError(Array.isArray(d) ? d.map((x) => x.msg).join(", ") : d || "Failed to create");
+//     } finally {
+//       setLoading(false);
+//     }
+//   };
 
 //   return (
 //     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
@@ -209,25 +210,25 @@
 //   useEffect(() => { load(); }, []);
 
 //   const updateStatus = async (id, status) => {
-//   try {
-//     await api.patch(`/experiments/${id}`, { status });
-//     toast.success(`Experiment ${status}`);
-//     load();
-//   } catch {
-//     toast.error("Failed to update experiment");
-//   }
-// };
+//     try {
+//       await api.patch(`/experiments/${id}`, { status });
+//       toast.success(`Experiment ${status}`);
+//       load();
+//     } catch {
+//       toast.error("Failed to update experiment");
+//     }
+//   };
 
 //   const deleteExp = async (id) => {
-//   if (!confirm("Delete this experiment? This cannot be undone.")) return;
-//   try {
-//     await api.delete(`/experiments/${id}`);
-//     toast.success("Experiment deleted");
-//     load();
-//   } catch {
-//     toast.error("Failed to delete experiment");
-//   }
-// };
+//     if (!confirm("Delete this experiment? This cannot be undone.")) return;
+//     try {
+//       await api.delete(`/experiments/${id}`);
+//       toast.success("Experiment deleted");
+//       load();
+//     } catch {
+//       toast.error("Failed to delete experiment");
+//     }
+//   };
 
 //   const filtered = experiments.filter((e) => {
 //     const matchFilter = filter === "all" || e.status === filter;
@@ -241,15 +242,32 @@
 //     isDark ? "bg-[#0D0E1A] border-white/[0.07] hover:border-white/[0.12]" : "bg-white border-gray-200 shadow-sm hover:border-gray-300"
 //   }`;
 
+//   // --- Show experiment detail if selected ---
 //   if (detailId) {
-//   return (
-//     <ExperimentDetail
-//       experimentId={detailId}
-//       onBack={() => setDetailId(null)}
-//     />
-//   );
-// }
+//     return (
+//       <ExperimentDetail
+//         experimentId={detailId}
+//         onBack={() => setDetailId(null)}
+//       />
+//     );
+//   }
 
+//   // --- Show skeleton while loading ---
+//   if (loading) {
+//     return (
+//       <div className="space-y-5">
+//         <div className="flex items-center justify-between">
+//           <div className={`h-6 w-36 rounded-lg animate-pulse ${isDark ? "bg-white/[0.06]" : "bg-gray-200"}`} />
+//           <div className={`h-9 w-36 rounded-xl animate-pulse ${isDark ? "bg-white/[0.06]" : "bg-gray-200"}`} />
+//         </div>
+//         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+//           {[0,1,2,3,4,5].map(i => <SkeletonCard key={i} />)}
+//         </div>
+//       </div>
+//     );
+//   }
+
+//   // --- Normal render (data loaded) ---
 //   return (
 //     <div className="space-y-5">
 //       <div className="flex items-center justify-between flex-wrap gap-3">
@@ -302,12 +320,7 @@
 //       </div>
 
 //       {/* Experiment cards */}
-//       {loading ? (
-//         <div className="flex items-center justify-center h-40">
-//           <motion.div className="w-8 h-8 rounded-full border-2 border-brand-violet border-t-transparent"
-//             animate={{ rotate: 360 }} transition={{ duration: 0.8, repeat: Infinity, ease: "linear" }} />
-//         </div>
-//       ) : filtered.length === 0 ? (
+//       {filtered.length === 0 ? (
 //         <div className={`flex flex-col items-center justify-center py-16 rounded-2xl border border-dashed ${
 //           isDark ? "border-white/[0.07]" : "border-gray-200"
 //         }`}>
@@ -353,12 +366,12 @@
 //                     isDark ? "bg-white/[0.05] text-white/40" : "bg-gray-100 text-gray-500"
 //                   }`}>{e.goal}</span>
 //                   <span className={`text-xs ${isDark ? "text-white/25" : "text-gray-400"}`}>
-//                     {/* {new Date(e.created_at).toLocaleDateString("en-IN", { day: "numeric", month: "short" })} */e.created_at
-//   ? new Date(e.created_at).toLocaleDateString("en-IN", {
-//       day: "numeric",
-//       month: "short",
-//     })
-//   : "No date"}
+//                     {e.created_at
+//                       ? new Date(e.created_at).toLocaleDateString("en-IN", {
+//                           day: "numeric",
+//                           month: "short",
+//                         })
+//                       : "No date"}
 //                   </span>
 //                 </div>
 
@@ -412,15 +425,15 @@
 //                     </>
 //                   )}
 //                   <button
-//   onClick={() => setDetailId(e.id)}
-//   className={`px-3 py-1.5 rounded-lg text-xs transition-colors ${
-//     isDark
-//       ? "text-white/30 hover:text-brand-violet hover:bg-brand-violet/10"
-//       : "text-gray-400 hover:text-brand-violet hover:bg-brand-violet/5"
-//   }`}
-// >
-//   View →
-// </button>
+//                     onClick={() => setDetailId(e.id)}
+//                     className={`px-3 py-1.5 rounded-lg text-xs transition-colors ${
+//                       isDark
+//                         ? "text-white/30 hover:text-brand-violet hover:bg-brand-violet/10"
+//                         : "text-gray-400 hover:text-brand-violet hover:bg-brand-violet/5"
+//                     }`}
+//                   >
+//                     View →
+//                   </button>
 //                   <button onClick={() => deleteExp(e.id)}
 //                     className={`px-3 py-1.5 rounded-lg text-xs transition-colors ${
 //                       isDark ? "text-white/20 hover:text-red-400 hover:bg-red-400/10" : "text-gray-300 hover:text-red-500 hover:bg-red-50"
@@ -502,80 +515,6 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import api from "../../services/api";
@@ -595,11 +534,17 @@ function CreateModal({ onClose, onCreated, isDark }) {
   const [step, setStep] = useState(1);
   const [form, setForm] = useState({
     name: "", description: "", goal: "purchase",
+    planned_duration_days: null,
+    target_sample_size: null,
+    scheduled_start_at: null,
+    scheduled_end_at: null,
+    timezone: Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC",
     variants: [
       { name: "Control", label: "A", description: "", traffic_split: 0.5 },
       { name: "Challenger", label: "B", description: "", traffic_split: 0.5 },
     ],
   });
+  const [showSchedule, setShowSchedule] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -616,7 +561,13 @@ function CreateModal({ onClose, onCreated, isDark }) {
     setLoading(true);
     setError("");
     try {
-      await api.post("/experiments/", form);
+      // Convert local datetime inputs to UTC ISO strings for the backend
+      const payload = {
+        ...form,
+        scheduled_start_at: form.scheduled_start_at ? new Date(form.scheduled_start_at).toISOString() : null,
+        scheduled_end_at: form.scheduled_end_at ? new Date(form.scheduled_end_at).toISOString() : null,
+      };
+      await api.post("/experiments/", payload);
       toast.success("Experiment created! Set it to Running to start collecting data.");
       onCreated();
       onClose();
@@ -690,6 +641,63 @@ function CreateModal({ onClose, onCreated, isDark }) {
                     <option value="click">Button click</option>
                     <option value="page_view">Page view</option>
                   </select>
+                </div>
+
+                {/* ── Scheduling section ── */}
+                <div>
+                  <button
+                    type="button"
+                    onClick={() => setShowSchedule(!showSchedule)}
+                    className={`flex items-center gap-1.5 text-xs font-medium ${
+                      isDark ? "text-white/45 hover:text-white/70" : "text-gray-500 hover:text-gray-700"
+                    }`}
+                  >
+                    <svg className={`w-3.5 h-3.5 transition-transform ${showSchedule ? "rotate-90" : ""}`} fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24">
+                      <path strokeLinecap="round" d="M9 5l7 7-7 7" />
+                    </svg>
+                    Scheduling & sample size (optional)
+                  </button>
+
+                  <AnimatePresence>
+                    {showSchedule && (
+                      <motion.div
+                        initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }}
+                        className="overflow-hidden"
+                      >
+                        <div className="grid grid-cols-2 gap-3 mt-3">
+                          <div>
+                            <label className={labelCls}>Planned duration (days)</label>
+                            <input type="number" min={1} className={inputCls}
+                              value={form.planned_duration_days ?? ""}
+                              onChange={(e) => setForm({ ...form, planned_duration_days: e.target.value ? Number(e.target.value) : null })}
+                              placeholder="14" />
+                          </div>
+                          <div>
+                            <label className={labelCls}>Target sample size</label>
+                            <input type="number" min={1} className={inputCls}
+                              value={form.target_sample_size ?? ""}
+                              onChange={(e) => setForm({ ...form, target_sample_size: e.target.value ? Number(e.target.value) : null })}
+                              placeholder="10000" />
+                          </div>
+                          <div>
+                            <label className={labelCls}>Auto-start at</label>
+                            <input type="datetime-local" className={inputCls}
+                              value={form.scheduled_start_at ?? ""}
+                              onChange={(e) => setForm({ ...form, scheduled_start_at: e.target.value || null })} />
+                          </div>
+                          <div>
+                            <label className={labelCls}>Auto-end at</label>
+                            <input type="datetime-local" className={inputCls}
+                              value={form.scheduled_end_at ?? ""}
+                              onChange={(e) => setForm({ ...form, scheduled_end_at: e.target.value || null })} />
+                          </div>
+                        </div>
+                        <p className={`text-[11px] mt-2 ${isDark ? "text-white/25" : "text-gray-400"}`}>
+                          Leave start/end blank to control status manually. Times are in your local timezone ({form.timezone}).
+                        </p>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                 </div>
               </motion.div>
             ) : (

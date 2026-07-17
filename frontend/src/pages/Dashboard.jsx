@@ -450,7 +450,8 @@ import Settings from "./dashboard/Settings";
 import SDKIntegration from "./dashboard/SDKIntegration";
 import Onboarding from "./dashboard/Onboarding";
 import Visitors from "./dashboard/Visitors"; // <-- NEW IMPORT
-
+import FeatureFlags from "./dashboard/FeatureFlags";
+import MetricBuilder from "./dashboard/MetricBuilder";
 
 const NAV = [
   {
@@ -467,6 +468,22 @@ const NAV = [
     icon: (
       <svg className="w-[18px] h-[18px]" fill="none" stroke="currentColor" strokeWidth={1.8} viewBox="0 0 24 24">
         <path strokeLinecap="round" strokeLinejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+      </svg>
+    ),
+  },
+  {
+    id: "flags", label: "Feature Flags",
+    icon: (
+      <svg className="w-[18px] h-[18px]" fill="none" stroke="currentColor" strokeWidth={1.8} viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M3 3v18h18M7 14l3-3 3 3 5-5" />
+      </svg>
+    ),
+  },
+  {
+    id: "metrics", label: "Metrics",
+    icon: (
+      <svg className="w-[18px] h-[18px]" fill="none" stroke="currentColor" strokeWidth={1.8} viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M7 12l3-3 3 3 4-4M3 21h18" />
       </svg>
     ),
   },
@@ -518,8 +535,10 @@ const NAV = [
 const PAGES = {
   overview: Overview,
   experiments: Experiments,
+  flags: FeatureFlags,
+  metrics: MetricBuilder,
   analytics: Analytics,
-  visitors: Visitors,   // <-- ADDED
+  visitors: Visitors,
   sdk: SDKIntegration,
   ai: AIInsights,
   settings: Settings,
