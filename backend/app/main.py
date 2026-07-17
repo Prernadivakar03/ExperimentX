@@ -134,7 +134,8 @@ from slowapi import _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
 import os
 from contextlib import asynccontextmanager
-
+from app.models.organization import Organization, Membership
+from app.routes.organizations import router as organizations_router
 from app.database import Base, engine
 from app.core.limiter import limiter
 from app.core.scheduler import start_scheduler, stop_scheduler
@@ -217,7 +218,7 @@ app.include_router(flags_router)
 app.include_router(mutual_exclusion_router)
 app.include_router(holdout_router)
 app.include_router(metrics_router)
-
+app.include_router(organizations_router)
 
 # ── Health & root endpoints ──────────────────────────────────────────────────
 @app.get("/")
