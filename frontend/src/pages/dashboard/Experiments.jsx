@@ -18,11 +18,17 @@
 //   const [step, setStep] = useState(1);
 //   const [form, setForm] = useState({
 //     name: "", description: "", goal: "purchase",
+//     planned_duration_days: null,
+//     target_sample_size: null,
+//     scheduled_start_at: null,
+//     scheduled_end_at: null,
+//     timezone: Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC",
 //     variants: [
 //       { name: "Control", label: "A", description: "", traffic_split: 0.5 },
 //       { name: "Challenger", label: "B", description: "", traffic_split: 0.5 },
 //     ],
 //   });
+//   const [showSchedule, setShowSchedule] = useState(false);
 //   const [loading, setLoading] = useState(false);
 //   const [error, setError] = useState("");
 
@@ -39,7 +45,13 @@
 //     setLoading(true);
 //     setError("");
 //     try {
-//       await api.post("/experiments/", form);
+//       // Convert local datetime inputs to UTC ISO strings for the backend
+//       const payload = {
+//         ...form,
+//         scheduled_start_at: form.scheduled_start_at ? new Date(form.scheduled_start_at).toISOString() : null,
+//         scheduled_end_at: form.scheduled_end_at ? new Date(form.scheduled_end_at).toISOString() : null,
+//       };
+//       await api.post("/experiments/", payload);
 //       toast.success("Experiment created! Set it to Running to start collecting data.");
 //       onCreated();
 //       onClose();
@@ -113,6 +125,63 @@
 //                     <option value="click">Button click</option>
 //                     <option value="page_view">Page view</option>
 //                   </select>
+//                 </div>
+
+//                 {/* ── Scheduling section ── */}
+//                 <div>
+//                   <button
+//                     type="button"
+//                     onClick={() => setShowSchedule(!showSchedule)}
+//                     className={`flex items-center gap-1.5 text-xs font-medium ${
+//                       isDark ? "text-white/45 hover:text-white/70" : "text-gray-500 hover:text-gray-700"
+//                     }`}
+//                   >
+//                     <svg className={`w-3.5 h-3.5 transition-transform ${showSchedule ? "rotate-90" : ""}`} fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24">
+//                       <path strokeLinecap="round" d="M9 5l7 7-7 7" />
+//                     </svg>
+//                     Scheduling & sample size (optional)
+//                   </button>
+
+//                   <AnimatePresence>
+//                     {showSchedule && (
+//                       <motion.div
+//                         initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }}
+//                         className="overflow-hidden"
+//                       >
+//                         <div className="grid grid-cols-2 gap-3 mt-3">
+//                           <div>
+//                             <label className={labelCls}>Planned duration (days)</label>
+//                             <input type="number" min={1} className={inputCls}
+//                               value={form.planned_duration_days ?? ""}
+//                               onChange={(e) => setForm({ ...form, planned_duration_days: e.target.value ? Number(e.target.value) : null })}
+//                               placeholder="14" />
+//                           </div>
+//                           <div>
+//                             <label className={labelCls}>Target sample size</label>
+//                             <input type="number" min={1} className={inputCls}
+//                               value={form.target_sample_size ?? ""}
+//                               onChange={(e) => setForm({ ...form, target_sample_size: e.target.value ? Number(e.target.value) : null })}
+//                               placeholder="10000" />
+//                           </div>
+//                           <div>
+//                             <label className={labelCls}>Auto-start at</label>
+//                             <input type="datetime-local" className={inputCls}
+//                               value={form.scheduled_start_at ?? ""}
+//                               onChange={(e) => setForm({ ...form, scheduled_start_at: e.target.value || null })} />
+//                           </div>
+//                           <div>
+//                             <label className={labelCls}>Auto-end at</label>
+//                             <input type="datetime-local" className={inputCls}
+//                               value={form.scheduled_end_at ?? ""}
+//                               onChange={(e) => setForm({ ...form, scheduled_end_at: e.target.value || null })} />
+//                           </div>
+//                         </div>
+//                         <p className={`text-[11px] mt-2 ${isDark ? "text-white/25" : "text-gray-400"}`}>
+//                           Leave start/end blank to control status manually. Times are in your local timezone ({form.timezone}).
+//                         </p>
+//                       </motion.div>
+//                     )}
+//                   </AnimatePresence>
 //                 </div>
 //               </motion.div>
 //             ) : (
@@ -515,6 +584,87 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import api from "../../services/api";
@@ -566,6 +716,8 @@ function CreateModal({ onClose, onCreated, isDark }) {
         ...form,
         scheduled_start_at: form.scheduled_start_at ? new Date(form.scheduled_start_at).toISOString() : null,
         scheduled_end_at: form.scheduled_end_at ? new Date(form.scheduled_end_at).toISOString() : null,
+        // ⚠️ If your backend schema does NOT include 'timezone', remove it from the payload.
+        // Otherwise, keep it.
       };
       await api.post("/experiments/", payload);
       toast.success("Experiment created! Set it to Running to start collecting data.");
@@ -789,8 +941,15 @@ export default function Experiments() {
   const [detailId, setDetailId] = useState(null);
 
   const load = async () => {
-    try { const r = await api.get("/experiments/"); setExperiments(r.data); }
-    finally { setLoading(false); }
+    try {
+      const r = await api.get("/experiments/");
+      setExperiments(r.data);
+    } catch (err) {
+      console.error("Failed to load experiments:", err);
+      toast.error("Could not load experiments");
+    } finally {
+      setLoading(false);
+    }
   };
   useEffect(() => { load(); }, []);
 

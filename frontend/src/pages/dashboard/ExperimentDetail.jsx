@@ -6,16 +6,46 @@ import {
 } from "recharts";
 import api from "../../services/api";
 import { useTheme } from "../../context/ThemeContext";
+import AIInsightsPanel from "../../components/experiment/AIInsightsPanel";
+import ActivityTimeline from "../../components/experiment/ActivityTimeline";
 
-const mockTimeline = [
-  { day: "Day 1", A: 12, B: 11 },
-  { day: "Day 2", A: 18, B: 22 },
-  { day: "Day 3", A: 24, B: 31 },
-  { day: "Day 4", A: 29, B: 38 },
-  { day: "Day 5", A: 33, B: 44 },
-  { day: "Day 6", A: 38, B: 51 },
-  { day: "Day 7", A: 41, B: 58 },
-];
+// ─── Helper to transform API timeseries into chart data ───
+// This function attempts to normalise various response shapes.
+// If your API returns something else, adjust the mapping below.
+function transformTimeseries(data) {
+  if (!data) return [];
+  
+  // If data is already an array with `day`, `A`, `B` – return as-is.
+  if (Array.isArray(data) && data.length && 'day' in data[0] && ('A' in data[0] || 'B' in data[0])) {
+    return data;
+  }
+
+  // If data is an object with a `days` array (common pattern)
+  if (data.days && Array.isArray(data.days)) {
+    return data.days;
+  }
+
+  // If data is an array but uses different keys, try to map them.
+  if (Array.isArray(data) && data.length) {
+    // Example: [{ date: "...", variants: [{ label: "A", conversion_rate: 12.3 }] }]
+    if ('date' in data[0] && 'variants' in data[0]) {
+      return data.map(item => {
+        const a = item.variants.find(v => v.label === "A");
+        const b = item.variants.find(v => v.label === "B");
+        return {
+          day: item.date,
+          A: a?.conversion_rate ?? 0,
+          B: b?.conversion_rate ?? 0,
+        };
+      });
+    }
+    // If it's just an array of numbers? That's unlikely; return empty.
+  }
+
+  // Last resort: return empty array.
+  console.warn("Unrecognised timeseries format:", data);
+  return [];
+}
 
 function StatCard({ label, value, sub, color, isDark }) {
   return (
@@ -54,6 +84,7 @@ export default function ExperimentDetail({ experimentId, onBack }) {
   const isDark = theme === "dark";
   const [experiment, setExperiment] = useState(null);
   const [stats, setStats] = useState(null);
+  const [timeseries, setTimeseries] = useState([]);
   const [loading, setLoading] = useState(true);
   const [updating, setUpdating] = useState(false);
 
@@ -62,19 +93,30 @@ export default function ExperimentDetail({ experimentId, onBack }) {
     setLoading(true);
     Promise.all([
       api.get(`/experiments/${experimentId}`),
-      api.get(`/analytics/${experimentId}`).catch(() => null),
-    ]).then(([expRes, statsRes]) => {
+      api.get(`/experiments/analytics/${experimentId}`).catch(() => null),
+      api.get(`/experiments/analytics/${experimentId}/timeseries`).catch(() => null),
+    ]).then(([expRes, statsRes, tsRes]) => {
       setExperiment(expRes.data);
       setStats(statsRes?.data || null);
+      // Normalise timeseries data
+      const rawTs = tsRes?.data;
+      setTimeseries(transformTimeseries(rawTs));
+    }).catch((err) => {
+      console.error("Failed to load experiment details:", err);
     }).finally(() => setLoading(false));
   }, [experimentId]);
 
   const updateStatus = async (status) => {
     setUpdating(true);
-    await api.patch(`/experiments/${experimentId}`, { status });
-    const res = await api.get(`/experiments/${experimentId}`);
-    setExperiment(res.data);
-    setUpdating(false);
+    try {
+      await api.patch(`/experiments/${experimentId}`, { status });
+      const res = await api.get(`/experiments/${experimentId}`);
+      setExperiment(res.data);
+    } catch (err) {
+      console.error("Failed to update status:", err);
+    } finally {
+      setUpdating(false);
+    }
   };
 
   const gc = isDark ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.05)";
@@ -176,11 +218,11 @@ export default function ExperimentDetail({ experimentId, onBack }) {
       </div>
 
       {/* KPI row — from real analytics data */}
-      {stats && (
+      {stats ? (
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-          <StatCard label="Total visitors" value={stats.summary.total_visitors?.toLocaleString() || 0} isDark={isDark} color="text-brand-violet" />
-          <StatCard label="Conversions" value={stats.summary.total_conversions?.toLocaleString() || 0} isDark={isDark} color="text-brand-blue" />
-          <StatCard label="Page views" value={stats.summary.total_page_views?.toLocaleString() || 0} isDark={isDark} color="text-emerald-500" />
+          <StatCard label="Total visitors" value={stats.summary?.total_visitors?.toLocaleString() || 0} isDark={isDark} color="text-brand-violet" />
+          <StatCard label="Conversions" value={stats.summary?.total_conversions?.toLocaleString() || 0} isDark={isDark} color="text-brand-blue" />
+          <StatCard label="Page views" value={stats.summary?.total_page_views?.toLocaleString() || 0} isDark={isDark} color="text-emerald-500" />
           <StatCard
             label="Confidence"
             value={stats.statistics?.confidence ? `${stats.statistics.confidence}%` : "—"}
@@ -188,6 +230,10 @@ export default function ExperimentDetail({ experimentId, onBack }) {
             isDark={isDark}
             color={stats.statistics?.is_significant ? "text-emerald-500" : isDark ? "text-white" : "text-gray-900"}
           />
+        </div>
+      ) : (
+        <div className={`text-center py-4 text-sm ${isDark ? "text-white/25" : "text-gray-400"}`}>
+          No analytics data available yet. Start the experiment and send events.
         </div>
       )}
 
@@ -266,10 +312,10 @@ export default function ExperimentDetail({ experimentId, onBack }) {
         })}
       </div>
 
-      {/* Charts */}
+      {/* ─── Charts section (real data) ─── */}
       {stats?.variants?.length > 0 && (
         <>
-          {/* Conversion rate over time (mock — replace with real when you have time-series) */}
+          {/* Conversion rate over time */}
           <motion.div
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
@@ -289,26 +335,35 @@ export default function ExperimentDetail({ experimentId, onBack }) {
                 ))}
               </div>
             </div>
-            <ResponsiveContainer width="100%" height={200}>
-              <AreaChart data={mockTimeline}>
-                <defs>
-                  <linearGradient id="gA" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#6C5CE7" stopOpacity={0.25} />
-                    <stop offset="95%" stopColor="#6C5CE7" stopOpacity={0} />
-                  </linearGradient>
-                  <linearGradient id="gB" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#4F8CFF" stopOpacity={0.2} />
-                    <stop offset="95%" stopColor="#4F8CFF" stopOpacity={0} />
-                  </linearGradient>
-                </defs>
-                <CartesianGrid strokeDasharray="3 3" stroke={gc} />
-                <XAxis dataKey="day" tick={{ fill: tc, fontSize: 11 }} axisLine={false} tickLine={false} />
-                <YAxis tick={{ fill: tc, fontSize: 11 }} axisLine={false} tickLine={false} unit="%" />
-                <Tooltip content={(p) => <CustomTooltip {...p} isDark={isDark} />} />
-                <Area type="monotone" dataKey="A" name="Variant A" stroke="#6C5CE7" fill="url(#gA)" strokeWidth={2} dot={false} />
-                <Area type="monotone" dataKey="B" name="Variant B" stroke="#4F8CFF" fill="url(#gB)" strokeWidth={2} dot={false} />
-              </AreaChart>
-            </ResponsiveContainer>
+
+            {timeseries.length === 0 ? (
+              <div className={`flex items-center justify-center h-[200px] text-xs rounded-xl ${
+                isDark ? "bg-white/[0.02] text-white/20" : "bg-gray-50 text-gray-300"
+              }`}>
+                No timeseries data yet — check back once the experiment has been running a few days
+              </div>
+            ) : (
+              <ResponsiveContainer width="100%" height={200}>
+                <AreaChart data={timeseries}>
+                  <defs>
+                    <linearGradient id="gA" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#6C5CE7" stopOpacity={0.25} />
+                      <stop offset="95%" stopColor="#6C5CE7" stopOpacity={0} />
+                    </linearGradient>
+                    <linearGradient id="gB" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#4F8CFF" stopOpacity={0.2} />
+                      <stop offset="95%" stopColor="#4F8CFF" stopOpacity={0} />
+                    </linearGradient>
+                  </defs>
+                  <CartesianGrid strokeDasharray="3 3" stroke={gc} vertical={false} />
+                  <XAxis dataKey="day" tick={{ fontSize: 11, fill: tc }} axisLine={false} tickLine={false} />
+                  <YAxis tick={{ fontSize: 11, fill: tc }} axisLine={false} tickLine={false} />
+                  <Tooltip content={(p) => <CustomTooltip {...p} isDark={isDark} />} />
+                  <Area type="monotone" dataKey="A" name="Variant A" stroke="#6C5CE7" fill="url(#gA)" strokeWidth={2} dot={false} />
+                  <Area type="monotone" dataKey="B" name="Variant B" stroke="#4F8CFF" fill="url(#gB)" strokeWidth={2} dot={false} />
+                </AreaChart>
+              </ResponsiveContainer>
+            )}
           </motion.div>
 
           {/* Significance panel */}
@@ -409,6 +464,15 @@ ExperimentX.trackConversion('${experiment.goal}', '${experiment.id}');`}
           </pre>
         </div>
       </motion.div>
+
+      {/* AI Insights */}
+      <div>
+        <p className={`text-sm font-semibold mb-3 ${isDark ? "text-white/70" : "text-gray-700"}`}>AI Insights</p>
+        <AIInsightsPanel experimentId={experimentId} isDark={isDark} />
+      </div>
+
+      {/* Timeline */}
+      <ActivityTimeline experimentId={experimentId} isDark={isDark} />
     </div>
   );
 }
