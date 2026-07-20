@@ -1,34 +1,3 @@
-# from sqlalchemy import Column, Integer, String, DateTime
-# from datetime import datetime
-
-# from app.database import Base
-
-
-# class Conversion(Base):
-#     __tablename__ = "conversions"
-
-#     id = Column(
-#         Integer,
-#         primary_key=True,
-#         index=True
-#     )
-
-#     user_id = Column(
-#         String,
-#         nullable=False
-#     )
-
-#     timestamp = Column(
-#         DateTime,
-#         default=datetime.utcnow
-#     )
-
-
-
-
-
-
-
 
 from sqlalchemy import Column, Integer, String, DateTime, ForeignKey , Float
 from sqlalchemy.dialects.postgresql import UUID

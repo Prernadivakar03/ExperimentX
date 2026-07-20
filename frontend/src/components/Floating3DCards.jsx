@@ -135,8 +135,35 @@ export default function Floating3DCards() {
             bg: "bg-gradient-to-br from-brand-blue/30 to-brand-blue/10",
             bar: "bg-brand-blue",
           }}
+
+
         />
       </div>
     </section>
   );
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

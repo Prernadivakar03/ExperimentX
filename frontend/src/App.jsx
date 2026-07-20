@@ -1,6 +1,7 @@
 
-
+import { useState } from "react";
 import { Routes, Route } from "react-router-dom";
+import Preloader from "./components/Preloader";
 import SplashScreen from "./pages/SplashScreen";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -10,18 +11,33 @@ import VariantA from "./pages/VariantA";
 import VariantB from "./pages/VariantB";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Product from "./pages/Product";
-import Pricing from "./pages/Pricing";   
+import Pricing from "./pages/Pricing";
 import MarketingLayout from "./layouts/MarketingLayout";
 
 function App() {
+  // Show preloader only on first visit (per session)
+  const [showPreloader, setShowPreloader] = useState(() => {
+    return !sessionStorage.getItem("experimentx_preloader_shown");
+  });
+
+  const handlePreloaderComplete = () => {
+    sessionStorage.setItem("experimentx_preloader_shown", "true");
+    setShowPreloader(false);
+  };
+
+  // If preloader should be shown, render it; otherwise, render the app routes
+  if (showPreloader) {
+    return <Preloader onComplete={handlePreloaderComplete} />;
+  }
+
   return (
     <Routes>
       {/* Public marketing pages with shared Navbar & Footer */}
       <Route element={<MarketingLayout />}>
         <Route path="/" element={<SplashScreen />} />
         <Route path="/product" element={<Product />} />
-        <Route path="/pricing" element={<Pricing />} /> 
-        {/* Add /pricing, /solutions, /docs, /about, /contact here later */}
+        <Route path="/pricing" element={<Pricing />} />
+        {/* Add /solutions, /docs, /about, /contact here later */}
       </Route>
 
       {/* Auth routes (no navbar/footer) */}
@@ -45,13 +61,3 @@ function App() {
 }
 
 export default App;
-
-
-
-
-
-
-
-
-
-
