@@ -1,6 +1,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { LogoMark } from "./Logo";
 
 const LOADING_MESSAGES = [
   "Initializing experiment engine",
@@ -174,8 +175,8 @@ function ProgressRing({ progress }) {
   );
 }
 
-// ─── Interactive magnetic wordmark ───
-function InteractiveWordmark() {
+// ─── Interactive magnetic lockup (icon + wordmark) ───
+function InteractiveLockup() {
   const x = useMotionValue(0);
   const y = useMotionValue(0);
 
@@ -204,23 +205,14 @@ function InteractiveWordmark() {
         transformPerspective: 800,
         transformStyle: "preserve-3d",
       }}
-      className="cursor-default select-none"
+      className="cursor-default select-none flex flex-col items-center gap-4"
     >
-      <motion.span
-        className="block text-6xl sm:text-7xl md:text-8xl font-display font-black tracking-[-0.04em] leading-none"
-        animate={{ backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"] }}
-        transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
-        style={{
-          background:
-            "linear-gradient(90deg, #fff 0%, #6C5CE7 30%, #4A90E2 60%, #fff 100%)",
-          backgroundSize: "200% auto",
-          WebkitBackgroundClip: "text",
-          WebkitTextFillColor: "transparent",
-          backgroundClip: "text",
-        }}
-      >
+      <div style={{ filter: "drop-shadow(0 0 28px rgba(108,92,231,0.45))" }}>
+        <LogoMark size={72} />
+      </div>
+      <span className="block text-4xl sm:text-5xl md:text-6xl font-display font-bold tracking-tight text-white">
         ExperimentX
-      </motion.span>
+      </span>
     </motion.div>
   );
 }
@@ -279,7 +271,7 @@ export default function Preloader({ onComplete }) {
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
             className="relative z-10"
           >
-            <InteractiveWordmark />
+            <InteractiveLockup />
           </motion.div>
 
           {/* Rotating messages */}

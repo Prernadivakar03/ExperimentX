@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useTheme } from "../context/ThemeContext";
 import ThemeToggle from "./ThemeToggle";
+import Logo from "./Logo";
 
 function AuthCanvas({ isDark }) {
   const canvasRef = useRef(null);
@@ -248,25 +249,7 @@ export default function AuthLayout({ title, subtitle, children, footer }) {
       {/* Top bar */}
       <div className="absolute top-6 left-6 right-6 z-20 flex items-center justify-between">
         <Link to="/" className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-brand-violet to-brand-blue
-                          flex items-center justify-center
-                          shadow-[0_0_20px_rgba(108,92,231,0.5)]">
-            <svg width="16" height="16" viewBox="0 0 40 40" fill="none">
-              <path d="M6 6 L34 34 M34 6 L6 34" stroke="white" strokeWidth="6" strokeLinecap="round" />
-            </svg>
-          </div>
-          <div>
-            <span className={`font-display font-bold text-base ${
-              isDark ? "text-white" : "text-gray-900"
-            }`}>
-              Experiment<span className="text-brand-violet">X</span>
-            </span>
-            <p className={`text-[9px] leading-none -mt-0.5 hidden sm:block ${
-              isDark ? "text-white/30" : "text-gray-400"
-            }`}>
-              Build AI Experiments Faster
-            </p>
-          </div>
+          <Logo className="w-8 h-8 object-contain" />
         </Link>
         <div className="flex items-center gap-3">
   <Link
@@ -333,3 +316,54 @@ export default function AuthLayout({ title, subtitle, children, footer }) {
     </div>
   );
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

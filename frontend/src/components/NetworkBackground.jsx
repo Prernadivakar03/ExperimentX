@@ -3,9 +3,9 @@ import { useEffect, useRef } from "react";
 import { useTheme } from "../context/ThemeContext";
 
 export default function NetworkBackground({
-  nodeCount = 70,
+  nodeCount = 80,
   maxDistance = 150,
-  speed = 0.6,
+  speed = 1.5,
   className = "absolute inset-0 w-full h-full pointer-events-none",
 }) {
   const canvasRef = useRef(null);

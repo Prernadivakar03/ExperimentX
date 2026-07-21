@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from datetime import datetime, timedelta
 from jose import JWTError
-
+from app.models.organization import Organization, Membership, MemberRole
 
 
 from app.database import get_db
@@ -43,10 +43,34 @@ limiter = Limiter(key_func=get_remote_address)
 # def register(request: Request, payload: RegisterRequest, db: Session = Depends(get_db)):
 #     ...
 
+# @router.post("/register", response_model=TokenResponse, status_code=status.HTTP_201_CREATED)
+# @limiter.limit("3/minute")
+# def register(request: Request, payload: RegisterRequest, db: Session = Depends(get_db)):
+#     # ... rest unchanged
+#     existing = db.query(User).filter(User.email == payload.email).first()
+#     if existing:
+#         raise HTTPException(
+#             status_code=status.HTTP_409_CONFLICT,
+#             detail="An account with this email already exists",
+#         )
+
+#     user = User(
+#         name=payload.name,
+#         email=payload.email,
+#         password_hash=hash_password(payload.password),
+#         company=payload.company,
+#     )
+#     db.add(user)
+#     db.commit()
+#     db.refresh(user)
+#     from app.core.email import send_welcome
+#     send_welcome(user.email, user.name)
+
+#     return _issue_tokens(user, db)
+
 @router.post("/register", response_model=TokenResponse, status_code=status.HTTP_201_CREATED)
 @limiter.limit("3/minute")
 def register(request: Request, payload: RegisterRequest, db: Session = Depends(get_db)):
-    # ... rest unchanged
     existing = db.query(User).filter(User.email == payload.email).first()
     if existing:
         raise HTTPException(
@@ -61,13 +85,34 @@ def register(request: Request, payload: RegisterRequest, db: Session = Depends(g
         company=payload.company,
     )
     db.add(user)
+    db.flush()  # get user.id before creating the org
+
+    # Every user gets a personal organization on signup — this is what
+    # organization_id on experiments/flags/etc. points to until they invite
+    # teammates or create additional orgs.
+    org_name = f"{payload.company}'s Workspace" if payload.company else f"{payload.name}'s Workspace"
+    organization = Organization(
+        name=org_name,
+        created_by=user.id,
+    )
+    db.add(organization)
+    db.flush()
+
+    membership = Membership(
+        organization_id=organization.id,
+        user_id=user.id,
+        role=MemberRole.admin,
+        accepted_at=datetime.utcnow(),
+    )
+    db.add(membership)
+
     db.commit()
     db.refresh(user)
+
     from app.core.email import send_welcome
     send_welcome(user.email, user.name)
 
     return _issue_tokens(user, db)
-
 
 # ── Login ─────────────────────────────────────────────────────────────────────
 # @router.post("/login", response_model=TokenResponse)
