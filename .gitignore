@@ -1,4 +1,28 @@
+# node_modules/
+# dist/
+# .env.local
+# .env
+
+
+
+# Frontend
 node_modules/
 dist/
-.env.local
+
+# Python virtual environment
+backend/venv/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Environment variables
 .env
+.env.local
+
+# OS files
+.DS_Store
+
+# Database files
+*.db
