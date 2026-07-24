@@ -248,6 +248,10 @@ def assign_variant(payload: AssignRequest, db: Session = Depends(get_db)):
         experiment_id=payload.experiment_id,
         variant_id=assigned_variant.id,
         fingerprint=payload.fingerprint,
+        device=payload.device,
+        browser=payload.browser,
+        traffic_source=payload.traffic_source,
+        is_returning=payload.is_returning,
     )
     db.add(visitor)
     db.commit()

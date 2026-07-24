@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import api from "../../services/api";
 import toast from "react-hot-toast";
 
+
 function ResultCard({ isDark, children }) {
   return (
     <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}

@@ -54,7 +54,6 @@ def track_conversion(payload: ConversionCreate, db: Session = Depends(get_db)):
             detail="Visitor not found for this experiment",
         )
 
-    # Validate goal matches the experiment
     experiment = db.query(Experiment).filter(
         Experiment.id == payload.experiment_id
     ).first()
@@ -65,12 +64,25 @@ def track_conversion(payload: ConversionCreate, db: Session = Depends(get_db)):
             detail=f"Goal '{payload.goal}' does not match experiment goal '{experiment.goal}'",
         )
 
+    # Avoid double-counting: don't record a second conversion for the same
+    # visitor + goal if the SDK's trackConversion fires more than once
+    # (e.g. retry after a flaky network, or a page that calls it twice).
+    existing = db.query(Conversion).filter(
+        Conversion.visitor_id == payload.visitor_id,
+        Conversion.experiment_id == payload.experiment_id,
+        Conversion.goal == payload.goal,
+    ).first()
+    if existing:
+        return {"message": "Conversion already recorded for this visitor — ignored duplicate"}
+
     conversion = Conversion(
         experiment_id=payload.experiment_id,
         variant_id=payload.variant_id,
         visitor_id=payload.visitor_id,
         goal=payload.goal,
+        value=payload.value,  # was previously dropped entirely
     )
+    db.add(conversion)
 
     event = Event(
         experiment_id=payload.experiment_id,
@@ -79,8 +91,8 @@ def track_conversion(payload: ConversionCreate, db: Session = Depends(get_db)):
         event_type=payload.event_type,
         value=payload.value,
     )
-    
-    db.add(conversion)
+    db.add(event)  # was built but never added to the session before — silently discarded
+
     db.commit()
 
     return {"message": "Conversion tracked"}

@@ -7,6 +7,7 @@ import {
 import api from "../../services/api";
 import { useTheme } from "../../context/ThemeContext";
 import AIInsightsPanel from "../../components/experiment/AIInsightsPanel";
+import MLInsightsPanel from "../../components/experiment/MLInsightsPanel";
 import ActivityTimeline from "../../components/experiment/ActivityTimeline";
 
 // ─── Helper to transform API timeseries into chart data ───
@@ -469,6 +470,7 @@ ExperimentX.trackConversion('${experiment.goal}', '${experiment.id}');`}
       <div>
         <p className={`text-sm font-semibold mb-3 ${isDark ? "text-white/70" : "text-gray-700"}`}>AI Insights</p>
         <AIInsightsPanel experimentId={experimentId} isDark={isDark} />
+        <MLInsightsPanel experimentId={experimentId} isDark={isDark} />
       </div>
 
       {/* Timeline */}

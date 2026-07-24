@@ -26,3 +26,7 @@ __pycache__/
 
 # Database files
 *.db
+
+
+# ML model artifacts
+backend/app/ml/artifacts/

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>ExperimentX SDK test</title>
+</head>
+<body>
+  <h1>SDK test page</h1>
+  <p id="status">Loading...</p>
+  <button id="convert-btn">Simulate conversion</button>
+
+  <script src="sdk.js"></script>
+  <script>
+    // Point this at your running backend — change the port if yours differs
+    ExperimentX.init({ apiUrl: "http://localhost:8000" });
+
+    // Replace this with a real experiment id from your database that has
+    // status = "running" (not "draft" or "completed" — /assign only
+    // works for running experiments)
+    const EXPERIMENT_ID = "23ddb704-3755-40f6-ab0e-6cd1f48143ab";
+
+    ExperimentX.getVariant(EXPERIMENT_ID).then((variant) => {
+      document.getElementById("status").textContent = variant
+        ? `Assigned to variant: ${variant.label} (${variant.name})`
+        : "Not eligible (holdout / mutual exclusion / experiment not running)";
+    });
+
+    document.getElementById("convert-btn").onclick = () => {
+      ExperimentX.trackConversion(EXPERIMENT_ID, "Increase conversion", 49.99);
+      alert("Conversion sent — check your dashboard's Visitors or Analytics page");
+    };
+  </script>
+</body>
+</html>
