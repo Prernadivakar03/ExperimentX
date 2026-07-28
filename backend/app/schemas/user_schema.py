@@ -26,6 +26,8 @@ class UserResponse(BaseModel):
     email: str
     company: Optional[str]
     created_at: datetime
+    organization_id: Optional[UUID] = None
+    role: Optional[str] = None
 
     class Config:
         from_attributes = True

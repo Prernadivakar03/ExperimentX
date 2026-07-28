@@ -194,7 +194,7 @@ app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 # ── CORS ──────────────────────────────────────────────────────────────────────
 ALLOWED_ORIGINS = os.getenv(
     "ALLOWED_ORIGINS",
-    "http://localhost:5173,http://localhost:3000"
+    "http://localhost:5173, http://localhost:3000 , http://localhost:5500"
 ).split(",")
 
 app.add_middleware(
@@ -207,6 +207,7 @@ app.add_middleware(
 
 # ── Create database tables (if not using Alembic in production) ────────────
 Base.metadata.create_all(bind=engine)
+
 
 # ── Include routers ──────────────────────────────────────────────────────────
 app.include_router(auth_router)

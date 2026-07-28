@@ -118,7 +118,7 @@ def register(request: Request, payload: RegisterRequest, db: Session = Depends(g
     for invite in pending_invites:
         invite.user_id = user.id
         invite.accepted_at = datetime.utcnow()
-        
+
     db.commit()
     db.refresh(user)
 
@@ -230,9 +230,44 @@ def forgot_password(request: Request, payload: ForgotPasswordRequest, db: Sessio
 
 # ── Helper ────────────────────────────────────────────────────────────────────
 
+# def _issue_tokens(user: User, db: Session) -> dict:
+#     access = create_access_token(str(user.id))
+#     refresh = create_refresh_token(str(user.id))
+
+#     # Persist refresh token so we can revoke it later
+#     expires = datetime.utcnow() + timedelta(days=REFRESH_TOKEN_EXPIRE_DAYS)
+#     stored = RefreshToken(
+#         user_id=user.id,
+#         token=refresh,
+#         expires_at=expires,
+#     )
+#     db.add(stored)
+#     db.commit()
+
+#     return {
+#         "access_token": access,
+#         "refresh_token": refresh,
+#         "token_type": "bearer",
+#         "user": user,
+#     }
+
 def _issue_tokens(user: User, db: Session) -> dict:
     access = create_access_token(str(user.id))
     refresh = create_refresh_token(str(user.id))
+
+    # Find the user's primary organization
+    membership = (
+        db.query(Membership)
+        .filter(
+            Membership.user_id == user.id,
+            Membership.accepted_at.isnot(None),
+        )
+        .order_by(Membership.accepted_at.asc())
+        .first()
+    )
+
+    organization_id = membership.organization_id if membership else None
+    role = membership.role.value if membership and membership.role else None
 
     # Persist refresh token so we can revoke it later
     expires = datetime.utcnow() + timedelta(days=REFRESH_TOKEN_EXPIRE_DAYS)
@@ -248,5 +283,13 @@ def _issue_tokens(user: User, db: Session) -> dict:
         "access_token": access,
         "refresh_token": refresh,
         "token_type": "bearer",
-        "user": user,
+        "user": {
+            "id": user.id,
+            "name": user.name,
+            "email": user.email,
+            "company": user.company,
+            "created_at": user.created_at,
+            "organization_id": organization_id,
+            "role": role,
+        },
     }
