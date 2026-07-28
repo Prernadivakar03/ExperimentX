@@ -12,14 +12,18 @@ const api = axios.create({
 });
 
 // Attach access token to every request
+// Attach access token and active organization to every request
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem("experimentx_access_token");
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
+  const activeOrgId = localStorage.getItem("experimentx_active_org_id");
+  if (activeOrgId) {
+    config.headers["X-Organization-Id"] = activeOrgId;
+  }
   return config;
 });
-
 // On 401 — try refreshing once, then redirect to login
 let isRefreshing = false;
 let pendingQueue = [];

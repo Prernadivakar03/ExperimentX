@@ -447,7 +447,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from uuid import UUID
 from app.core.activity import log_activity
-from app.core.rbac import check_org_access, get_primary_org_id
+from app.core.rbac import check_org_access, get_primary_org_id, get_active_org_id
 
 from app.database import get_db
 from app.dependencies import get_current_user
@@ -467,13 +467,89 @@ router = APIRouter(prefix="/experiments", tags=["experiments"])
 
 # ── Create ────────────────────────────────────────────────────────────────────
 
+# @router.post("/", response_model=ExperimentResponse, status_code=status.HTTP_201_CREATED)
+# def create_experiment(
+#     payload: ExperimentCreate,
+#     db: Session = Depends(get_db),
+#     current_user: User = Depends(get_current_user),
+# ):
+#     org_id = get_primary_org_id(current_user, db)
+#     check_org_access(org_id, current_user, db, minimum_role=MemberRole.editor)
+
+#     experiment = Experiment(
+#         owner_id=current_user.id,
+#         organization_id=org_id,
+#         name=payload.name,
+#         description=payload.description,
+#         goal=payload.goal,
+#         planned_duration_days=payload.planned_duration_days,
+#         target_sample_size=payload.target_sample_size,
+#         scheduled_start_at=payload.scheduled_start_at,
+#         scheduled_end_at=payload.scheduled_end_at,
+#         timezone=payload.timezone,
+#         status=ExperimentStatus.draft,
+#     )
+#     db.add(experiment)
+#     db.flush()
+
+#     for v in payload.variants:
+#         variant = Variant(
+#             experiment_id=experiment.id,
+#             name=v.name,
+#             label=v.label,
+#             description=v.description,
+#             traffic_split=v.traffic_split,
+#         )
+#         db.add(variant)
+
+#     db.commit()
+#     db.refresh(experiment)
+
+#     log_activity(
+#         db,
+#         current_user.id,
+#         "experiment.created",
+#         experiment.id,
+#         {"name": experiment.name}
+#     )
+
+#     return experiment
+
+
+# # ── List ──────────────────────────────────────────────────────────────────────
+
+# @router.get("/", response_model=list[ExperimentResponse])
+# def list_experiments(
+#     db: Session = Depends(get_db),
+#     current_user: User = Depends(get_current_user),
+# ):
+#     # List everything in orgs the user is an accepted member of — not just
+#     # what they personally created. This is the actual behavior change from
+#     # solo ownership to team visibility.
+#     from app.models.organization import Membership
+
+#     org_ids = [
+#         m.organization_id for m in
+#         db.query(Membership).filter(
+#             Membership.user_id == current_user.id,
+#             Membership.accepted_at.isnot(None),
+#         ).all()
+#     ]
+
+#     return (
+#         db.query(Experiment)
+#         .filter(Experiment.organization_id.in_(org_ids))
+#         .order_by(Experiment.created_at.desc())
+#         .all()
+#     )
+
 @router.post("/", response_model=ExperimentResponse, status_code=status.HTTP_201_CREATED)
 def create_experiment(
     payload: ExperimentCreate,
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
+    org_id: UUID = Depends(get_active_org_id),
 ):
-    org_id = get_primary_org_id(current_user, db)
     check_org_access(org_id, current_user, db, minimum_role=MemberRole.editor)
 
     experiment = Experiment(
@@ -495,54 +571,30 @@ def create_experiment(
     for v in payload.variants:
         variant = Variant(
             experiment_id=experiment.id,
-            name=v.name,
-            label=v.label,
-            description=v.description,
+            name=v.name, label=v.label, description=v.description,
             traffic_split=v.traffic_split,
         )
         db.add(variant)
 
     db.commit()
     db.refresh(experiment)
-
-    log_activity(
-        db,
-        current_user.id,
-        "experiment.created",
-        experiment.id,
-        {"name": experiment.name}
-    )
-
+    log_activity(db, current_user.id, "experiment.created", experiment.id, {"name": experiment.name})
     return experiment
 
-
-# ── List ──────────────────────────────────────────────────────────────────────
 
 @router.get("/", response_model=list[ExperimentResponse])
 def list_experiments(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
+    org_id: UUID = Depends(get_active_org_id),
 ):
-    # List everything in orgs the user is an accepted member of — not just
-    # what they personally created. This is the actual behavior change from
-    # solo ownership to team visibility.
-    from app.models.organization import Membership
-
-    org_ids = [
-        m.organization_id for m in
-        db.query(Membership).filter(
-            Membership.user_id == current_user.id,
-            Membership.accepted_at.isnot(None),
-        ).all()
-    ]
-
+    check_org_access(org_id, current_user, db, minimum_role=MemberRole.viewer)
     return (
         db.query(Experiment)
-        .filter(Experiment.organization_id.in_(org_ids))
+        .filter(Experiment.organization_id == org_id)
         .order_by(Experiment.created_at.desc())
         .all()
     )
-
 
 # ── Get one ───────────────────────────────────────────────────────────────────
 

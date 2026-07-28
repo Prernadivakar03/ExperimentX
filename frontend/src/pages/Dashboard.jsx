@@ -1,81 +1,4 @@
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -90,12 +13,14 @@ import AIInsights from "./dashboard/AIInsights";
 import Settings from "./dashboard/Settings";
 import SDKIntegration from "./dashboard/SDKIntegration";
 import Onboarding from "./dashboard/Onboarding";
-import Visitors from "./dashboard/Visitors"; // <-- NEW IMPORT
+import Visitors from "./dashboard/Visitors"; 
 import FeatureFlags from "./dashboard/FeatureFlags";
 import MetricBuilder from "./dashboard/MetricBuilder";
 import { LogoMark } from "../components/Logo";
 import NetworkBackground from "../components/NetworkBackground";
 import Team from "./dashboard/Team";
+import OrgSwitcher from "../components/OrgSwitcher";
+import HoldoutGroups from "./dashboard/HoldoutGroups";
 
 const NAV = [
   {
@@ -156,6 +81,14 @@ const NAV = [
     ),
   },
   {
+    id: "holdout", label: "Holdout Groups",
+    icon: (
+      <svg className="w-[18px] h-[18px]" fill="none" stroke="currentColor" strokeWidth={1.8} viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+      </svg>
+    ),
+  },
+  {
     id: "sdk", label: "SDK & API",
     icon: (
       <svg className="w-[18px] h-[18px]" fill="none" stroke="currentColor" strokeWidth={1.8} viewBox="0 0 24 24">
@@ -188,7 +121,8 @@ const PAGES = {
   metrics: MetricBuilder,
   analytics: Analytics,
   visitors: Visitors,
-   team: Team, 
+  team: Team, 
+  holdout: HoldoutGroups,
   sdk: SDKIntegration,
   ai: AIInsights,
   settings: Settings,
@@ -410,7 +344,7 @@ export default function Dashboard() {
               </svg>
               New experiment
             </button>
-
+            <OrgSwitcher isDark={isDark} />
             <ThemeToggle />
 
             {/* Avatar dropdown */}
