@@ -26,7 +26,7 @@ Two ways to use this:
 
     membership = check_org_access(experiment.organization_id, current_user, db, MemberRole.editor)
 """
-from fastapi import Depends, HTTPException, status
+from fastapi import Depends, HTTPException, status, Header
 from sqlalchemy.orm import Session
 from uuid import UUID
 from typing import Optional
@@ -104,3 +104,34 @@ def require_role(minimum_role: MemberRole):
         return check_org_access(org_id, current_user, db, minimum_role)
 
     return _check
+
+
+# =============================================================================
+# New function for multi‑organization support
+# =============================================================================
+
+def get_active_org_id(
+    x_organization_id: Optional[str] = Header(None, alias="X-Organization-Id"),
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+) -> UUID:
+    """
+    Reads the org the frontend has selected via the X-Organization-Id
+    header. Falls back to the user's primary (first) org if no header is
+    sent — keeps every existing call site working unchanged until the
+    frontend switcher is wired in.
+    """
+    if x_organization_id:
+        org_id = UUID(x_organization_id)
+        membership = db.query(Membership).filter(
+            Membership.organization_id == org_id,
+            Membership.user_id == current_user.id,
+            Membership.accepted_at.isnot(None),
+        ).first()
+        if not membership:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Not a member of the selected organization",
+            )
+        return org_id
+    return get_primary_org_id(current_user, db)

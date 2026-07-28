@@ -27,6 +27,8 @@ class MembershipResponse(BaseModel):
     id: UUID
     user_id: Optional[UUID]
     invited_email: Optional[str]
+    user_name: Optional[str] = None    # NEW — was missing entirely, frontend
+    user_email: Optional[str] = None   # would have shown raw UUIDs otherwise
     role: MemberRole
     accepted_at: Optional[datetime]
     invited_at: datetime
@@ -37,3 +39,5 @@ class MembershipResponse(BaseModel):
 
 class RoleUpdateRequest(BaseModel):
     role: MemberRole
+
+

@@ -105,7 +105,20 @@ def register(request: Request, payload: RegisterRequest, db: Session = Depends(g
         accepted_at=datetime.utcnow(),
     )
     db.add(membership)
-
+    # Auto-accept any pending invites sent to this email before they had
+    # an account — without this, someone invited to a team who signs up
+    # fresh would only get their own personal org, and the invite would
+    # sit there permanently unlinked.
+    from app.models.organization import Membership as MembershipModel
+    pending_invites = db.query(MembershipModel).filter(
+        MembershipModel.invited_email == payload.email,
+        MembershipModel.user_id.is_(None),
+        MembershipModel.accepted_at.is_(None),
+    ).all()
+    for invite in pending_invites:
+        invite.user_id = user.id
+        invite.accepted_at = datetime.utcnow()
+        
     db.commit()
     db.refresh(user)
 
