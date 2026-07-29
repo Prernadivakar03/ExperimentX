@@ -96,7 +96,8 @@ export default function Overview({ onNavigate }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    Promise.all([api.get("/analytics"), api.get("/experiments/")])
+    // Promise.all([api.get("/analytics"), api.get("/experiments/")])
+    Promise.all([api.get("/analytics/"), api.get("/experiments/")])
       .then(([s, e]) => { setStats(s.data); setExperiments(e.data); })
       .catch(console.error)
       .finally(() => setLoading(false));

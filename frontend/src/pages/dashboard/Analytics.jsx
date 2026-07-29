@@ -39,8 +39,8 @@ export default function Analytics() {
     if (!selected) return;
     setLoading(true);
     Promise.all([
-      api.get(`/experiments/analytics/${selected}`),
-      api.get(`/experiments/analytics/${selected}/timeseries?days=7`)
+      api.get(`/analytics/${selected}`),
+      api.get(`/analytics/${selected}/timeseries?days=7`)
         .catch(() => ({ data: [] })),
     ])
       .then(([statsRes, tsRes]) => {

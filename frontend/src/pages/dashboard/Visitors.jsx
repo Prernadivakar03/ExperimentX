@@ -23,6 +23,7 @@ export default function Visitors() {
   useEffect(() => {
     if (!selected) return;
     setLoading(true);
+    // api.get(`/analytics/${selected.id}/visitors?page=${page}&limit=20`)
     api.get(`/analytics/${selected.id}/visitors?page=${page}&limit=20`)
       .then((r) => setData(r.data))
       .catch(() => setData(null))

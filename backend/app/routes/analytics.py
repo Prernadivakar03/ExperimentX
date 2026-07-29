@@ -396,6 +396,448 @@
 
 
 
+# from fastapi import APIRouter, Depends, HTTPException
+# from sqlalchemy.orm import Session
+# from sqlalchemy import func
+# from uuid import UUID
+# import math
+# from datetime import datetime, timedelta
+
+# from app.database import get_db
+# from app.dependencies import get_current_user
+# from app.models.user import User
+# from app.models.experiment import Experiment
+# from app.models.variant import Variant
+# from app.models.visitor import Visitor
+# from app.models.event import Event
+# from app.models.conversion import Conversion
+# from app.core.stats import (
+#     srm_check,
+#     multi_variant_test,
+#     sample_size_calculator,
+#     bootstrap_ci,
+#     peeking_warning,
+# )
+# from app.schemas.stats_schema import SampleSizeRequest
+
+# router = APIRouter(prefix="/experiments", tags=["experiments"])
+# # router = APIRouter(prefix="/analytics", tags=["analytics"])
+
+# # @router.get("/analytics/{experiment_id}/timeseries")
+# @router.get("/{experiment_id}/timeseries") 
+# def get_timeseries(
+#     experiment_id: UUID,
+#     days: int = 7,
+#     db: Session = Depends(get_db),
+#     current_user: User = Depends(get_current_user),
+# ):
+#     experiment = db.query(Experiment).filter(
+#         Experiment.id == experiment_id,
+#         Experiment.owner_id == current_user.id,
+#     ).first()
+
+#     if not experiment:
+#         raise HTTPException(status_code=404, detail="Experiment not found")
+
+#     result = []
+#     today = datetime.utcnow().date()
+
+#     for i in range(days - 1, -1, -1):
+#         day = today - timedelta(days=i)
+#         day_start = datetime(day.year, day.month, day.day)
+#         day_end = day_start + timedelta(days=1)
+
+#         day_data = {"day": day.strftime("%b %d")}
+
+#         for variant in experiment.variants:
+#             visitors = db.query(Visitor).filter(
+#                 Visitor.experiment_id == experiment_id,
+#                 Visitor.variant_id == variant.id,
+#                 Visitor.created_at >= day_start,
+#                 Visitor.created_at < day_end,
+#             ).count()
+
+#             conversions = db.query(Conversion).filter(
+#                 Conversion.experiment_id == experiment_id,
+#                 Conversion.variant_id == variant.id,
+#                 Conversion.timestamp >= day_start,
+#                 Conversion.timestamp < day_end,
+#             ).count()
+
+#             rate = round((conversions / visitors * 100), 2) if visitors > 0 else 0
+#             day_data[f"variant_{variant.label}_visitors"] = visitors
+#             day_data[f"variant_{variant.label}_rate"] = rate
+
+#         result.append(day_data)
+
+#     return result
+
+
+# # @router.get("/analytics/{experiment_id}/visitors")
+# @router.get("/{experiment_id}/visitors") 
+# def get_visitors(
+#     experiment_id: UUID,
+#     page: int = 1,
+#     limit: int = 20,
+#     db: Session = Depends(get_db),
+#     current_user: User = Depends(get_current_user),
+# ):
+#     experiment = db.query(Experiment).filter(
+#         Experiment.id == experiment_id,
+#         Experiment.owner_id == current_user.id,
+#     ).first()
+
+#     if not experiment:
+#         raise HTTPException(status_code=404, detail="Experiment not found")
+
+#     offset = (page - 1) * limit
+#     total = db.query(Visitor).filter(Visitor.experiment_id == experiment_id).count()
+
+#     visitors = (
+#         db.query(Visitor)
+#         .filter(Visitor.experiment_id == experiment_id)
+#         .order_by(Visitor.created_at.desc())
+#         .offset(offset)
+#         .limit(limit)
+#         .all()
+#     )
+
+#     rows = []
+#     for v in visitors:
+#         conversions = db.query(Conversion).filter(
+#             Conversion.visitor_id == v.id
+#         ).count()
+
+#         events_count = db.query(Event).filter(
+#             Event.visitor_id == v.id
+#         ).count()
+
+#         rows.append({
+#             "id": str(v.id),
+#             "fingerprint": v.fingerprint[:12] + "...",
+#             "variant": v.variant.label if v.variant else "?",
+#             "variant_name": v.variant.name if v.variant else "?",
+#             "events": events_count,
+#             "converted": conversions > 0,
+#             "created_at": v.created_at.isoformat(),
+#         })
+
+#     return {
+#         "total": total,
+#         "page": page,
+#         "pages": (total + limit - 1) // limit,
+#         "visitors": rows,
+#     }
+
+
+# # @router.get("/analytics/{experiment_id}")
+# @router.get("/{experiment_id}")    
+# def get_analytics(
+#     experiment_id: UUID,
+#     db: Session = Depends(get_db),
+#     current_user: User = Depends(get_current_user),
+# ):
+#     experiment = db.query(Experiment).filter(
+#         Experiment.id == experiment_id,
+#         Experiment.owner_id == current_user.id,
+#     ).first()
+
+#     if not experiment:
+#         raise HTTPException(status_code=404, detail="Experiment not found")
+
+#     variants = db.query(Variant).filter(Variant.experiment_id == experiment_id).all()
+
+#     variant_stats = []
+#     for variant in variants:
+#         visitors = db.query(Visitor).filter(
+#             Visitor.experiment_id == experiment_id,
+#             Visitor.variant_id == variant.id,
+#         ).count()
+
+#         clicks = db.query(Event).filter(
+#             Event.experiment_id == experiment_id,
+#             Event.variant_id == variant.id,
+#             Event.event_type == "button_click",
+#         ).count()
+
+#         page_views = db.query(Event).filter(
+#             Event.experiment_id == experiment_id,
+#             Event.variant_id == variant.id,
+#             Event.event_type == "page_view",
+#         ).count()
+
+#         conversions = db.query(Conversion).filter(
+#             Conversion.experiment_id == experiment_id,
+#             Conversion.variant_id == variant.id,
+#         ).count()
+
+#         conv_rate = round((conversions / visitors * 100), 2) if visitors > 0 else 0.0
+#         ctr = round((clicks / page_views * 100), 2) if page_views > 0 else 0.0
+
+#         variant_stats.append({
+#             "variant_id": str(variant.id),
+#             "label": variant.label,
+#             "name": variant.name,
+#             "traffic_split": variant.traffic_split,
+#             "visitors": visitors,
+#             "page_views": page_views,
+#             "clicks": clicks,
+#             "conversions": conversions,
+#             "conversion_rate": conv_rate,
+#             "ctr": ctr,
+#         })
+
+#     # --- Compute totals ---
+#     total_visitors = sum(v["visitors"] for v in variant_stats)
+#     total_conversions = sum(v["conversions"] for v in variant_stats)
+#     total_clicks = sum(v["clicks"] for v in variant_stats)
+#     total_page_views = sum(v["page_views"] for v in variant_stats)
+
+#     # --- Statistics ---
+#     stats_result = None
+#     bootstrap_result = None
+
+#     if len(variant_stats) == 2:
+#         stats_result = _run_z_test(variant_stats[0], variant_stats[1])
+#         bootstrap_result = bootstrap_ci(
+#             variant_stats[0]["visitors"], variant_stats[0]["conversions"],
+#             variant_stats[1]["visitors"], variant_stats[1]["conversions"],
+#         )
+#     elif len(variant_stats) > 2:
+#         stats_result = multi_variant_test(variant_stats)
+
+#     srm_result = srm_check(variant_stats) if variant_stats else {"checked": False}
+
+#     days_running = (datetime.utcnow() - experiment.created_at).days
+
+#     # --- Peeking warning with real targets from the experiment ---
+#     peeking_result = peeking_warning(
+#         current_sample_size=total_visitors,
+#         planned_sample_size=experiment.target_sample_size,
+#         days_running=days_running,
+#         planned_duration_days=experiment.planned_duration_days,
+#     )
+
+#     return {
+#         "experiment_id": str(experiment_id),
+#         "experiment_name": experiment.name,
+#         "goal": experiment.goal,
+#         "status": experiment.status,
+#         "summary": {
+#             "total_visitors": total_visitors,
+#             "total_conversions": total_conversions,
+#             "total_clicks": total_clicks,
+#             "total_page_views": total_page_views,
+#         },
+#         "variants": variant_stats,
+#         "statistics": stats_result,
+#         "bootstrap_ci": bootstrap_result,
+#         "srm": srm_result,
+#         "peeking_warning": peeking_result,
+#     }
+
+
+# # ── Dashboard overview (all experiments for current user) ────────────────
+
+# # @router.get("/analytics")
+# @router.get("/") 
+# def dashboard_overview(
+#     db: Session = Depends(get_db),
+#     current_user: User = Depends(get_current_user),
+# ):
+#     experiments = db.query(Experiment).filter(
+#         Experiment.owner_id == current_user.id
+#     ).all()
+
+#     if not experiments:
+#         return {
+#             "total_visitors": 0,
+#             "total_page_views": 0,
+#             "total_clicks": 0,
+#             "total_conversions": 0,
+#             "total_experiments": 0,
+#             "running_experiments": 0,
+#             "completed_experiments": 0,
+#         }
+
+#     experiment_ids = [e.id for e in experiments]
+
+#     total_visitors = db.query(Visitor).filter(
+#         Visitor.experiment_id.in_(experiment_ids)
+#     ).count()
+
+#     total_page_views = db.query(Event).filter(
+#         Event.experiment_id.in_(experiment_ids),
+#         Event.event_type == "page_view",
+#     ).count()
+
+#     total_clicks = db.query(Event).filter(
+#         Event.experiment_id.in_(experiment_ids),
+#         Event.event_type == "button_click",
+#     ).count()
+
+#     total_conversions = db.query(Conversion).filter(
+#         Conversion.experiment_id.in_(experiment_ids)
+#     ).count()
+
+#     running = sum(1 for e in experiments if e.status.value == "running")
+#     completed = sum(1 for e in experiments if e.status.value == "completed")
+
+#     return {
+#         "total_visitors": total_visitors,
+#         "total_page_views": total_page_views,
+#         "total_clicks": total_clicks,
+#         "total_conversions": total_conversions,
+#         "total_experiments": len(experiments),
+#         "running_experiments": running,
+#         "completed_experiments": completed,
+#     }
+
+
+# # ── Sample size calculator endpoint ───────────────────────────────────────
+
+# # @router.post("/analytics/sample-size")
+# @router.post("/sample-size")    
+# def calculate_sample_size(
+#     payload: SampleSizeRequest,
+#     current_user: User = Depends(get_current_user),
+# ):
+#     return sample_size_calculator(
+#         baseline_rate=payload.baseline_rate,
+#         mde=payload.mde,
+#         alpha=payload.alpha,
+#         power=payload.power,
+#         variants=payload.variants,
+#     )
+
+
+# # ── Helper: Z-test for two variants ──────────────────────────────────────
+
+# def _run_z_test(a: dict, b: dict) -> dict:
+#     """
+#     Two-proportion Z-test.
+#     Returns p_value, z_score, confidence, is_significant, and winner label.
+#     """
+#     n_a, conv_a = a["visitors"], a["conversions"]
+#     n_b, conv_b = b["visitors"], b["conversions"]
+
+#     if n_a == 0 or n_b == 0:
+#         return {"error": "Not enough visitors to compute significance"}
+
+#     p_a = conv_a / n_a
+#     p_b = conv_b / n_b
+#     p_pool = (conv_a + conv_b) / (n_a + n_b)
+
+#     denominator = math.sqrt(p_pool * (1 - p_pool) * (1 / n_a + 1 / n_b))
+
+#     if denominator == 0:
+#         return {"error": "Cannot compute — no conversions yet"}
+
+#     z = (p_b - p_a) / denominator
+#     p_value = 2 * (1 - _norm_cdf(abs(z)))
+#     confidence = round((1 - p_value) * 100, 2)
+#     is_significant = p_value < 0.05
+
+#     if is_significant:
+#         winner = b["label"] if p_b > p_a else a["label"]
+#     else:
+#         winner = None
+
+#     return {
+#         "z_score": round(z, 4),
+#         "p_value": round(p_value, 6),
+#         "confidence": confidence,
+#         "is_significant": is_significant,
+#         "winner": winner,
+#     }
+
+
+# def _norm_cdf(x: float) -> float:
+#     """Standard normal CDF via math.erf — no scipy needed."""
+#     return (1.0 + math.erf(x / math.sqrt(2))) / 2.0
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from sqlalchemy import func
@@ -406,37 +848,37 @@ from datetime import datetime, timedelta
 from app.database import get_db
 from app.dependencies import get_current_user
 from app.models.user import User
+from app.models.organization import MemberRole
 from app.models.experiment import Experiment
 from app.models.variant import Variant
 from app.models.visitor import Visitor
 from app.models.event import Event
 from app.models.conversion import Conversion
+from app.core.rbac import check_org_access
 from app.core.stats import (
-    srm_check,
-    multi_variant_test,
-    sample_size_calculator,
-    bootstrap_ci,
-    peeking_warning,
+    srm_check, multi_variant_test, sample_size_calculator, bootstrap_ci, peeking_warning,
 )
 from app.schemas.stats_schema import SampleSizeRequest
 
-router = APIRouter(prefix="/experiments", tags=["experiments"])
+router = APIRouter(prefix="/analytics", tags=["analytics"])
 
 
-@router.get("/analytics/{experiment_id}/timeseries")
+def _get_experiment_authorized(experiment_id: UUID, user: User, db: Session) -> Experiment:
+    experiment = db.query(Experiment).filter(Experiment.id == experiment_id).first()
+    if not experiment:
+        raise HTTPException(status_code=404, detail="Experiment not found")
+    check_org_access(experiment.organization_id, user, db, minimum_role=MemberRole.viewer)
+    return experiment
+
+
+@router.get("/{experiment_id}/timeseries")
 def get_timeseries(
     experiment_id: UUID,
     days: int = 7,
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ):
-    experiment = db.query(Experiment).filter(
-        Experiment.id == experiment_id,
-        Experiment.owner_id == current_user.id,
-    ).first()
-
-    if not experiment:
-        raise HTTPException(status_code=404, detail="Experiment not found")
+    experiment = _get_experiment_authorized(experiment_id, current_user, db)
 
     result = []
     today = datetime.utcnow().date()
@@ -445,24 +887,17 @@ def get_timeseries(
         day = today - timedelta(days=i)
         day_start = datetime(day.year, day.month, day.day)
         day_end = day_start + timedelta(days=1)
-
         day_data = {"day": day.strftime("%b %d")}
 
         for variant in experiment.variants:
             visitors = db.query(Visitor).filter(
-                Visitor.experiment_id == experiment_id,
-                Visitor.variant_id == variant.id,
-                Visitor.created_at >= day_start,
-                Visitor.created_at < day_end,
+                Visitor.experiment_id == experiment_id, Visitor.variant_id == variant.id,
+                Visitor.created_at >= day_start, Visitor.created_at < day_end,
             ).count()
-
             conversions = db.query(Conversion).filter(
-                Conversion.experiment_id == experiment_id,
-                Conversion.variant_id == variant.id,
-                Conversion.timestamp >= day_start,
-                Conversion.timestamp < day_end,
+                Conversion.experiment_id == experiment_id, Conversion.variant_id == variant.id,
+                Conversion.timestamp >= day_start, Conversion.timestamp < day_end,
             ).count()
-
             rate = round((conversions / visitors * 100), 2) if visitors > 0 else 0
             day_data[f"variant_{variant.label}_visitors"] = visitors
             day_data[f"variant_{variant.label}_rate"] = rate
@@ -472,7 +907,7 @@ def get_timeseries(
     return result
 
 
-@router.get("/analytics/{experiment_id}/visitors")
+@router.get("/{experiment_id}/visitors")
 def get_visitors(
     experiment_id: UUID,
     page: int = 1,
@@ -480,120 +915,72 @@ def get_visitors(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ):
-    experiment = db.query(Experiment).filter(
-        Experiment.id == experiment_id,
-        Experiment.owner_id == current_user.id,
-    ).first()
-
-    if not experiment:
-        raise HTTPException(status_code=404, detail="Experiment not found")
+    _get_experiment_authorized(experiment_id, current_user, db)
 
     offset = (page - 1) * limit
     total = db.query(Visitor).filter(Visitor.experiment_id == experiment_id).count()
-
     visitors = (
-        db.query(Visitor)
-        .filter(Visitor.experiment_id == experiment_id)
-        .order_by(Visitor.created_at.desc())
-        .offset(offset)
-        .limit(limit)
-        .all()
+        db.query(Visitor).filter(Visitor.experiment_id == experiment_id)
+        .order_by(Visitor.created_at.desc()).offset(offset).limit(limit).all()
     )
 
     rows = []
     for v in visitors:
-        conversions = db.query(Conversion).filter(
-            Conversion.visitor_id == v.id
-        ).count()
-
-        events_count = db.query(Event).filter(
-            Event.visitor_id == v.id
-        ).count()
-
+        conversions = db.query(Conversion).filter(Conversion.visitor_id == v.id).count()
+        events_count = db.query(Event).filter(Event.visitor_id == v.id).count()
         rows.append({
-            "id": str(v.id),
-            "fingerprint": v.fingerprint[:12] + "...",
+            "id": str(v.id), "fingerprint": v.fingerprint[:12] + "...",
             "variant": v.variant.label if v.variant else "?",
             "variant_name": v.variant.name if v.variant else "?",
-            "events": events_count,
-            "converted": conversions > 0,
+            "events": events_count, "converted": conversions > 0,
             "created_at": v.created_at.isoformat(),
         })
 
-    return {
-        "total": total,
-        "page": page,
-        "pages": (total + limit - 1) // limit,
-        "visitors": rows,
-    }
+    return {"total": total, "page": page, "pages": (total + limit - 1) // limit, "visitors": rows}
 
 
-@router.get("/analytics/{experiment_id}")
+@router.get("/{experiment_id}")
 def get_analytics(
     experiment_id: UUID,
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ):
-    experiment = db.query(Experiment).filter(
-        Experiment.id == experiment_id,
-        Experiment.owner_id == current_user.id,
-    ).first()
-
-    if not experiment:
-        raise HTTPException(status_code=404, detail="Experiment not found")
-
+    experiment = _get_experiment_authorized(experiment_id, current_user, db)
     variants = db.query(Variant).filter(Variant.experiment_id == experiment_id).all()
 
     variant_stats = []
     for variant in variants:
         visitors = db.query(Visitor).filter(
-            Visitor.experiment_id == experiment_id,
-            Visitor.variant_id == variant.id,
+            Visitor.experiment_id == experiment_id, Visitor.variant_id == variant.id,
         ).count()
-
         clicks = db.query(Event).filter(
-            Event.experiment_id == experiment_id,
-            Event.variant_id == variant.id,
+            Event.experiment_id == experiment_id, Event.variant_id == variant.id,
             Event.event_type == "button_click",
         ).count()
-
         page_views = db.query(Event).filter(
-            Event.experiment_id == experiment_id,
-            Event.variant_id == variant.id,
+            Event.experiment_id == experiment_id, Event.variant_id == variant.id,
             Event.event_type == "page_view",
         ).count()
-
         conversions = db.query(Conversion).filter(
-            Conversion.experiment_id == experiment_id,
-            Conversion.variant_id == variant.id,
+            Conversion.experiment_id == experiment_id, Conversion.variant_id == variant.id,
         ).count()
 
         conv_rate = round((conversions / visitors * 100), 2) if visitors > 0 else 0.0
         ctr = round((clicks / page_views * 100), 2) if page_views > 0 else 0.0
 
         variant_stats.append({
-            "variant_id": str(variant.id),
-            "label": variant.label,
-            "name": variant.name,
-            "traffic_split": variant.traffic_split,
-            "visitors": visitors,
-            "page_views": page_views,
-            "clicks": clicks,
-            "conversions": conversions,
-            "conversion_rate": conv_rate,
-            "ctr": ctr,
+            "variant_id": str(variant.id), "label": variant.label, "name": variant.name,
+            "traffic_split": variant.traffic_split, "visitors": visitors, "page_views": page_views,
+            "clicks": clicks, "conversions": conversions, "conversion_rate": conv_rate, "ctr": ctr,
         })
 
-    # --- Compute totals ---
     total_visitors = sum(v["visitors"] for v in variant_stats)
     total_conversions = sum(v["conversions"] for v in variant_stats)
     total_clicks = sum(v["clicks"] for v in variant_stats)
     total_page_views = sum(v["page_views"] for v in variant_stats)
 
-    # --- Statistics ---
     stats_result = None
     bootstrap_result = None
-
     if len(variant_stats) == 2:
         stats_result = _run_z_test(variant_stats[0], variant_stats[1])
         bootstrap_result = bootstrap_ci(
@@ -604,149 +991,97 @@ def get_analytics(
         stats_result = multi_variant_test(variant_stats)
 
     srm_result = srm_check(variant_stats) if variant_stats else {"checked": False}
-
     days_running = (datetime.utcnow() - experiment.created_at).days
-
-    # --- Peeking warning with real targets from the experiment ---
     peeking_result = peeking_warning(
-        current_sample_size=total_visitors,
-        planned_sample_size=experiment.target_sample_size,
-        days_running=days_running,
-        planned_duration_days=experiment.planned_duration_days,
+        current_sample_size=total_visitors, planned_sample_size=experiment.target_sample_size,
+        days_running=days_running, planned_duration_days=experiment.planned_duration_days,
     )
 
     return {
-        "experiment_id": str(experiment_id),
-        "experiment_name": experiment.name,
-        "goal": experiment.goal,
-        "status": experiment.status,
+        "experiment_id": str(experiment_id), "experiment_name": experiment.name,
+        "goal": experiment.goal, "status": experiment.status,
         "summary": {
-            "total_visitors": total_visitors,
-            "total_conversions": total_conversions,
-            "total_clicks": total_clicks,
-            "total_page_views": total_page_views,
+            "total_visitors": total_visitors, "total_conversions": total_conversions,
+            "total_clicks": total_clicks, "total_page_views": total_page_views,
         },
-        "variants": variant_stats,
-        "statistics": stats_result,
-        "bootstrap_ci": bootstrap_result,
-        "srm": srm_result,
-        "peeking_warning": peeking_result,
+        "variants": variant_stats, "statistics": stats_result, "bootstrap_ci": bootstrap_result,
+        "srm": srm_result, "peeking_warning": peeking_result,
     }
 
 
-# ── Dashboard overview (all experiments for current user) ────────────────
-
-@router.get("/analytics")
+@router.get("/")
 def dashboard_overview(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ):
-    experiments = db.query(Experiment).filter(
-        Experiment.owner_id == current_user.id
-    ).all()
+    from app.models.organization import Membership
+    org_ids = [
+        m.organization_id for m in
+        db.query(Membership).filter(
+            Membership.user_id == current_user.id, Membership.accepted_at.isnot(None),
+        ).all()
+    ]
+    experiments = db.query(Experiment).filter(Experiment.organization_id.in_(org_ids)).all()
 
     if not experiments:
         return {
-            "total_visitors": 0,
-            "total_page_views": 0,
-            "total_clicks": 0,
-            "total_conversions": 0,
-            "total_experiments": 0,
-            "running_experiments": 0,
-            "completed_experiments": 0,
+            "total_visitors": 0, "total_page_views": 0, "total_clicks": 0, "total_conversions": 0,
+            "total_experiments": 0, "running_experiments": 0, "completed_experiments": 0,
         }
 
     experiment_ids = [e.id for e in experiments]
-
-    total_visitors = db.query(Visitor).filter(
-        Visitor.experiment_id.in_(experiment_ids)
-    ).count()
-
+    total_visitors = db.query(Visitor).filter(Visitor.experiment_id.in_(experiment_ids)).count()
     total_page_views = db.query(Event).filter(
-        Event.experiment_id.in_(experiment_ids),
-        Event.event_type == "page_view",
+        Event.experiment_id.in_(experiment_ids), Event.event_type == "page_view",
     ).count()
-
     total_clicks = db.query(Event).filter(
-        Event.experiment_id.in_(experiment_ids),
-        Event.event_type == "button_click",
+        Event.experiment_id.in_(experiment_ids), Event.event_type == "button_click",
     ).count()
-
-    total_conversions = db.query(Conversion).filter(
-        Conversion.experiment_id.in_(experiment_ids)
-    ).count()
+    total_conversions = db.query(Conversion).filter(Conversion.experiment_id.in_(experiment_ids)).count()
 
     running = sum(1 for e in experiments if e.status.value == "running")
     completed = sum(1 for e in experiments if e.status.value == "completed")
 
     return {
-        "total_visitors": total_visitors,
-        "total_page_views": total_page_views,
-        "total_clicks": total_clicks,
-        "total_conversions": total_conversions,
-        "total_experiments": len(experiments),
-        "running_experiments": running,
+        "total_visitors": total_visitors, "total_page_views": total_page_views,
+        "total_clicks": total_clicks, "total_conversions": total_conversions,
+        "total_experiments": len(experiments), "running_experiments": running,
         "completed_experiments": completed,
     }
 
 
-# ── Sample size calculator endpoint ───────────────────────────────────────
-
-@router.post("/analytics/sample-size")
+@router.post("/sample-size")
 def calculate_sample_size(
     payload: SampleSizeRequest,
     current_user: User = Depends(get_current_user),
 ):
     return sample_size_calculator(
-        baseline_rate=payload.baseline_rate,
-        mde=payload.mde,
-        alpha=payload.alpha,
-        power=payload.power,
-        variants=payload.variants,
+        baseline_rate=payload.baseline_rate, mde=payload.mde,
+        alpha=payload.alpha, power=payload.power, variants=payload.variants,
     )
 
 
-# ── Helper: Z-test for two variants ──────────────────────────────────────
-
 def _run_z_test(a: dict, b: dict) -> dict:
-    """
-    Two-proportion Z-test.
-    Returns p_value, z_score, confidence, is_significant, and winner label.
-    """
     n_a, conv_a = a["visitors"], a["conversions"]
     n_b, conv_b = b["visitors"], b["conversions"]
-
     if n_a == 0 or n_b == 0:
         return {"error": "Not enough visitors to compute significance"}
-
     p_a = conv_a / n_a
     p_b = conv_b / n_b
     p_pool = (conv_a + conv_b) / (n_a + n_b)
-
     denominator = math.sqrt(p_pool * (1 - p_pool) * (1 / n_a + 1 / n_b))
-
     if denominator == 0:
         return {"error": "Cannot compute — no conversions yet"}
-
     z = (p_b - p_a) / denominator
     p_value = 2 * (1 - _norm_cdf(abs(z)))
     confidence = round((1 - p_value) * 100, 2)
     is_significant = p_value < 0.05
-
-    if is_significant:
-        winner = b["label"] if p_b > p_a else a["label"]
-    else:
-        winner = None
-
+    winner = (b["label"] if p_b > p_a else a["label"]) if is_significant else None
     return {
-        "z_score": round(z, 4),
-        "p_value": round(p_value, 6),
-        "confidence": confidence,
-        "is_significant": is_significant,
-        "winner": winner,
+        "z_score": round(z, 4), "p_value": round(p_value, 6),
+        "confidence": confidence, "is_significant": is_significant, "winner": winner,
     }
 
 
 def _norm_cdf(x: float) -> float:
-    """Standard normal CDF via math.erf — no scipy needed."""
     return (1.0 + math.erf(x / math.sqrt(2))) / 2.0
