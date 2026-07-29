@@ -21,6 +21,7 @@ import NetworkBackground from "../components/NetworkBackground";
 import Team from "./dashboard/Team";
 import OrgSwitcher from "../components/OrgSwitcher";
 import HoldoutGroups from "./dashboard/HoldoutGroups";
+import MutualExclusionGroups from "./dashboard/MutualExclusionGroups";
 
 const NAV = [
   {
@@ -89,6 +90,14 @@ const NAV = [
     ),
   },
   {
+    id: "mutex", label: "Mutual Exclusion",
+    icon: (
+      <svg className="w-[18px] h-[18px]" fill="none" stroke="currentColor" strokeWidth={1.8} viewBox="0 0 24 24">
+        <circle cx="7" cy="12" r="4" /><circle cx="17" cy="12" r="4" />
+      </svg>
+    ),
+  },
+  {
     id: "sdk", label: "SDK & API",
     icon: (
       <svg className="w-[18px] h-[18px]" fill="none" stroke="currentColor" strokeWidth={1.8} viewBox="0 0 24 24">
@@ -123,9 +132,11 @@ const PAGES = {
   visitors: Visitors,
   team: Team, 
   holdout: HoldoutGroups,
+  mutex: MutualExclusionGroups,
   sdk: SDKIntegration,
   ai: AIInsights,
   settings: Settings,
+  
 };
 
 function Sidebar({ active, setActive, collapsed, isDark, user, onLogout }) {
