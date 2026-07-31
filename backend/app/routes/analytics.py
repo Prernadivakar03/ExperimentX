@@ -844,7 +844,7 @@ from sqlalchemy import func
 from uuid import UUID
 import math
 from datetime import datetime, timedelta
-
+from app.core.bayesian import bayesian_test
 from app.database import get_db
 from app.dependencies import get_current_user
 from app.models.user import User
@@ -1049,6 +1049,19 @@ def dashboard_overview(
         "completed_experiments": completed,
     }
 
+
+@router.post("/{experiment_id}/bayesian")
+def get_bayesian_results(
+    experiment_id: UUID,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    experiment = _get_experiment_authorized(experiment_id, current_user, db)
+    variants_data = [
+        {"label": v.label, "visitors": _visitor_count(v.id, db), "conversions": _conversion_count(v.id, db)}
+        for v in experiment.variants
+    ]
+    return bayesian_test(variants_data)
 
 @router.post("/sample-size")
 def calculate_sample_size(
