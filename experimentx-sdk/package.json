@@ -1,0 +1,10 @@
+{
+  "name": "experimentx-sdk",
+  "version": "0.1.0",
+  "description": "Client SDK for ExperimentX — A/B testing, feature flags, and experiment tracking.",
+  "main": "experimentx-sdk.js",
+  "type": "commonjs",
+  "files": ["experimentx-sdk.js"],
+  "keywords": ["ab-testing", "experimentation", "feature-flags"],
+  "license": "MIT"
+}
