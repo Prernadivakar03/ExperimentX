@@ -30,3 +30,5 @@ __pycache__/
 
 # ML model artifacts
 backend/app/ml/artifacts/
+
+backend/app/data/*.mmdb
