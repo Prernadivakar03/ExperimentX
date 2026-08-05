@@ -165,6 +165,7 @@ from app.routes.mutual_exclusion import router as mutual_exclusion_router
 from app.routes.holdout import router as holdout_router
 from app.routes.metrics import router as metrics_router
 from app.routes import ml
+from app.routes import advanced_stats
 
 
 # ── Lifespan context manager (replaces startup/shutdown events) ──────────────
@@ -222,6 +223,7 @@ app.include_router(holdout_router)
 app.include_router(metrics_router)
 app.include_router(organizations_router)
 app.include_router(ml.router)
+app.include_router(advanced_stats.router)
 
 # ── Health & root endpoints ──────────────────────────────────────────────────
 @app.get("/")

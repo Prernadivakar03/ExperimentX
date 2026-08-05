@@ -1,6 +1,6 @@
 
-
-# from sqlalchemy import Column, String, DateTime, ForeignKey
+# # backend/app/models/visitor.py
+# from sqlalchemy import Column, String, DateTime, ForeignKey, Boolean, Integer
 # from sqlalchemy.dialects.postgresql import UUID
 # from sqlalchemy.orm import relationship
 # from datetime import datetime
@@ -34,6 +34,18 @@
 #     # always gets the same variant on repeat visits
 #     fingerprint = Column(String, nullable=False, index=True)
 
+#     # NEW — ML feature columns. Nullable because historical rows won't have
+#     # these; the real SDK (Phase 3) fills device/browser from user-agent and
+#     # country from IP geolocation at assignment time. traffic_source comes
+#     # from document.referrer / UTM params. Until then, the synthetic data
+#     # generator populates these for model training.
+#     device = Column(String, nullable=True)          # "mobile" | "desktop" | "tablet"
+#     browser = Column(String, nullable=True)          # "chrome" | "safari" | "firefox" | "edge" | "other"
+#     country = Column(String, nullable=True)          # ISO country code, e.g. "IN", "US"
+#     traffic_source = Column(String, nullable=True)   # "organic" | "paid" | "direct" | "social" | "referral"
+#     is_returning = Column(Boolean, nullable=True, default=False)
+#     session_duration_seconds = Column(Integer, nullable=True)
+
 #     created_at = Column(DateTime, default=datetime.utcnow)
 
 #     # Relationships
@@ -66,8 +78,85 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # backend/app/models/visitor.py
-from sqlalchemy import Column, String, DateTime, ForeignKey, Boolean, Integer
+from sqlalchemy import Column, String, DateTime, ForeignKey, Boolean, Integer, Float
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import relationship
 from datetime import datetime
@@ -101,17 +190,22 @@ class Visitor(Base):
     # always gets the same variant on repeat visits
     fingerprint = Column(String, nullable=False, index=True)
 
-    # NEW — ML feature columns. Nullable because historical rows won't have
-    # these; the real SDK (Phase 3) fills device/browser from user-agent and
+    # ML feature columns. Nullable because historical rows won't have
+    # these; the real SDK fills device/browser from user-agent and
     # country from IP geolocation at assignment time. traffic_source comes
-    # from document.referrer / UTM params. Until then, the synthetic data
-    # generator populates these for model training.
+    # from document.referrer / UTM params.
     device = Column(String, nullable=True)          # "mobile" | "desktop" | "tablet"
     browser = Column(String, nullable=True)          # "chrome" | "safari" | "firefox" | "edge" | "other"
     country = Column(String, nullable=True)          # ISO country code, e.g. "IN", "US"
     traffic_source = Column(String, nullable=True)   # "organic" | "paid" | "direct" | "social" | "referral"
     is_returning = Column(Boolean, nullable=True, default=False)
     session_duration_seconds = Column(Integer, nullable=True)
+
+    # CUPED — pre-experiment value of the same metric being measured (e.g.
+    # this visitor's historical conversion rate before entering the
+    # experiment). Populated at assignment time; nullable for existing rows
+    # and for visitors with no prior history.
+    pre_experiment_covariate = Column(Float, nullable=True)
 
     created_at = Column(DateTime, default=datetime.utcnow)
 
@@ -120,3 +214,4 @@ class Visitor(Base):
     variant = relationship("Variant", back_populates="visitors")
     events = relationship("Event", back_populates="visitor")
     conversions = relationship("Conversion", back_populates="visitor")
+
