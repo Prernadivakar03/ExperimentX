@@ -1,5 +1,3 @@
-
-
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
@@ -8,13 +6,32 @@ from app.models.event import Event
 from app.models.conversion import Conversion
 from app.models.visitor import Visitor
 from app.models.experiment import Experiment
+from app.models.organization import Organization
 from app.schemas.event_schema import EventCreate, ConversionCreate
+from app.dependencies import get_org_from_api_key
 
 router = APIRouter(tags=["tracking"])
 
 
 @router.post("/track-event", status_code=status.HTTP_201_CREATED)
-def track_event(payload: EventCreate, db: Session = Depends(get_db)):
+def track_event(
+    payload: EventCreate,
+    db: Session = Depends(get_db),
+    organization: Organization = Depends(get_org_from_api_key),
+):
+
+    # Validate the experiment belongs to the authenticated org before
+    # touching anything else -- stops one org's key from writing events
+    # against another org's experiment_id.
+    experiment = db.query(Experiment).filter(
+        Experiment.id == payload.experiment_id,
+        Experiment.organization_id == organization.id,
+    ).first()
+    if not experiment:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Experiment not found",
+        )
 
     # Validate the visitor belongs to this experiment
     visitor = db.query(Visitor).filter(
@@ -41,7 +58,21 @@ def track_event(payload: EventCreate, db: Session = Depends(get_db)):
 
 
 @router.post("/track-conversion", status_code=status.HTTP_201_CREATED)
-def track_conversion(payload: ConversionCreate, db: Session = Depends(get_db)):
+def track_conversion(
+    payload: ConversionCreate,
+    db: Session = Depends(get_db),
+    organization: Organization = Depends(get_org_from_api_key),
+):
+
+    experiment = db.query(Experiment).filter(
+        Experiment.id == payload.experiment_id,
+        Experiment.organization_id == organization.id,
+    ).first()
+    if not experiment:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Experiment not found",
+        )
 
     visitor = db.query(Visitor).filter(
         Visitor.id == payload.visitor_id,
@@ -53,10 +84,6 @@ def track_conversion(payload: ConversionCreate, db: Session = Depends(get_db)):
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Visitor not found for this experiment",
         )
-
-    experiment = db.query(Experiment).filter(
-        Experiment.id == payload.experiment_id
-    ).first()
 
     if experiment.goal != payload.goal:
         raise HTTPException(
@@ -80,7 +107,7 @@ def track_conversion(payload: ConversionCreate, db: Session = Depends(get_db)):
         variant_id=payload.variant_id,
         visitor_id=payload.visitor_id,
         goal=payload.goal,
-        value=payload.value,  # was previously dropped entirely
+        value=payload.value,
     )
     db.add(conversion)
 
@@ -91,7 +118,7 @@ def track_conversion(payload: ConversionCreate, db: Session = Depends(get_db)):
         event_type=payload.event_type,
         value=payload.value,
     )
-    db.add(event)  # was built but never added to the session before — silently discarded
+    db.add(event)
 
     db.commit()
 

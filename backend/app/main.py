@@ -152,7 +152,7 @@ from app.models.feature_flag import FeatureFlag
 from app.models.mutual_exclusion import MutualExclusionGroup, MutualExclusionMembership
 from app.models.holdout import HoldoutGroup, HoldoutVisitor, HoldoutConversion
 from app.models.metric import Metric
-
+from app.models.api_key import ApiKey
 # Import routers
 from app.routes.auth import router as auth_router
 from app.routes.experiments import router as experiments_router
@@ -166,6 +166,7 @@ from app.routes.holdout import router as holdout_router
 from app.routes.metrics import router as metrics_router
 from app.routes import ml
 from app.routes import advanced_stats
+from app.routes.api_keys import router as api_keys_router
 
 
 # ── Lifespan context manager (replaces startup/shutdown events) ──────────────
@@ -224,6 +225,7 @@ app.include_router(metrics_router)
 app.include_router(organizations_router)
 app.include_router(ml.router)
 app.include_router(advanced_stats.router)
+app.include_router(api_keys_router)
 
 # ── Health & root endpoints ──────────────────────────────────────────────────
 @app.get("/")
