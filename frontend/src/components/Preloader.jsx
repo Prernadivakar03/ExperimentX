@@ -312,7 +312,7 @@ export default function Preloader({ onComplete }) {
             initial={{ opacity: 0 }}
             animate={{ opacity: 0.3 }}
             transition={{ delay: 1 }}
-            className="relative z-10 absolute bottom-8 text-[10px] text-white/10 font-light"
+            className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 text-[10px] text-white/100 font-light"
           >
             ExperimentX • A/B Testing Platform
           </motion.p>
