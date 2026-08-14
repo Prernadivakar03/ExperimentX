@@ -359,14 +359,25 @@
       });
     },
 
-    async isFeatureEnabled(flagKey, ownerId) {
-      const fingerprint = getFingerprint();
-      const data = await safeFetch(
-        `${config.apiUrl}/flags/${encodeURIComponent(flagKey)}/evaluate` +
-          `?fingerprint=${encodeURIComponent(fingerprint)}&owner_id=${encodeURIComponent(ownerId)}`,
-      );
-      return data ? data.enabled : false;
-    },
+  //   async isFeatureEnabled(flagKey, ownerId) {
+  //     const fingerprint = getFingerprint();
+  //     const data = await safeFetch(
+  //       `${config.apiUrl}/flags/${encodeURIComponent(flagKey)}/evaluate` +
+  //         `?fingerprint=${encodeURIComponent(fingerprint)}&owner_id=${encodeURIComponent(ownerId)}`,
+  //     );
+  //     return data ? data.enabled : false;
+  //   },
+  // };
+
+  async isFeatureEnabled(flagKey) {
+  const fingerprint = getFingerprint();
+  const data = await safeFetch(
+    `${config.apiUrl}/flags/${encodeURIComponent(flagKey)}/evaluate` +
+      `?fingerprint=${encodeURIComponent(fingerprint)}`,
+    { headers: authHeaders() },
+  );
+  return data ? data.enabled : false;
+},
   };
 
   global.ExperimentX = ExperimentX;
