@@ -205,6 +205,7 @@ from app.routes.holdout import check_holdout  # <-- added import
 from fastapi import APIRouter, Depends, HTTPException, status, Request
 from app.core.geoip import get_country_from_ip, get_client_ip
 from app.dependencies import get_org_from_api_key
+from app.core.limiter import rate_limit_by_ip
 
 router = APIRouter(tags=["tracking"])
 
@@ -214,6 +215,7 @@ def assign_variant(
     payload: AssignRequest,
     request: Request,
     db: Session = Depends(get_db),
+    _rl=Depends(rate_limit_by_ip("60/minute")),
     organization: Organization = Depends(get_org_from_api_key),
 ):
     """

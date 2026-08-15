@@ -71,10 +71,25 @@ def test_decode_token_rejects_garbage_string():
         decode_token("this-is-not-a-jwt")
 
 
+# def test_decode_token_rejects_tampered_signature():
+#     token = create_access_token("user-123")
+#     # flip the last character of the signature -- must fail verification
+#     tampered = token[:-1] + ("A" if token[-1] != "A" else "B")
+#     with pytest.raises(JWTError):
+#         decode_token(tampered)
+
+
 def test_decode_token_rejects_tampered_signature():
     token = create_access_token("user-123")
-    # flip the last character of the signature -- must fail verification
-    tampered = token[:-1] + ("A" if token[-1] != "A" else "B")
+    # Flip a character a few positions before the end, not the very last
+    # one. JWT HS256 signatures are 256 bits but base64url encodes 6 bits
+    # per character, so the final character only carries 4 meaningful bits
+    # (2 are discarded on decode) -- flipping *that specific* character can,
+    # for some byte values, decode to the identical signature and make this
+    # test flaky. A character further in doesn't have that edge case.
+    idx = len(token) - 4
+    flipped = "A" if token[idx] != "A" else "B"
+    tampered = token[:idx] + flipped + token[idx + 1:]
     with pytest.raises(JWTError):
         decode_token(tampered)
 

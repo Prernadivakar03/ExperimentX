@@ -213,6 +213,7 @@ from app.models.user import User
 from app.models.organization import MemberRole, Organization
 from app.models.feature_flag import FeatureFlag
 from app.core.rbac import check_org_access,  get_active_org_id
+from app.core.limiter import rate_limit_by_ip
 from app.schemas.flag_schema import (
     FlagCreate, FlagUpdate, FlagResponse, FlagEvaluationResponse,
 )
@@ -350,6 +351,7 @@ def evaluate_flag(
     key: str,
     fingerprint: str,
     db: Session = Depends(get_db),
+    _rl=Depends(rate_limit_by_ip("60/minute")),
     organization: Organization = Depends(get_org_from_api_key),
 ):
     flag = db.query(FeatureFlag).filter(
