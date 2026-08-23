@@ -54,8 +54,7 @@ class RoleUpdateRequest(BaseModel):
 #     webhook_events: list[str] = []
 
 
-VALID_WEBHOOK_EVENTS = {"srm_detected", "significance_reached", "anomaly_detected"}
-
+VALID_WEBHOOK_EVENTS = {"srm_detected", "significance_reached", "anomaly_detected", "guardrail_breach"}
 
 class WebhookSettingsUpdate(BaseModel):
     webhook_url: Optional[str] = None

@@ -1,4 +1,3 @@
-
 # backend/app/models/experiment.py
 from sqlalchemy import Column, String, Integer, DateTime, ForeignKey, Enum as SAEnum
 from sqlalchemy.dialects.postgresql import UUID
@@ -53,6 +52,11 @@ class Experiment(Base):
     # Variant.traffic_split via Thompson Sampling instead.
     allocation_mode = Column(String, nullable=False, default="fixed")  # "fixed" | "bandit"
 
+    # The metric that decides the winner. Distinct from guardrails below —
+    # a primary metric is what you're optimizing for; guardrails are what
+    # you must not break while doing so.
+    primary_metric_id = Column(UUID(as_uuid=True), ForeignKey("metrics.id"), nullable=True)
+
     status = Column(
         SAEnum(ExperimentStatus),
         default=ExperimentStatus.draft,
@@ -69,3 +73,7 @@ class Experiment(Base):
     visitors = relationship("Visitor", back_populates="experiment")
     events = relationship("Event", back_populates="experiment")
     conversions = relationship("Conversion", back_populates="experiment")
+
+    # New relationships for metrics and guardrails
+    primary_metric = relationship("Metric", foreign_keys=[primary_metric_id])
+    guardrails = relationship("ExperimentGuardrail", back_populates="experiment", cascade="all, delete-orphan")

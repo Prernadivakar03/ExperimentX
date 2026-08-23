@@ -23,6 +23,7 @@ def send_slack_alert(webhook_url: str, event_type: str, experiment_name: str, me
         "srm_detected": "#e01e5a",
         "significance_reached": "#2eb67d",
         "anomaly_detected": "#ecb22e",
+        "guardrail_breach": "#c0392b",
     }.get(event_type, "#666")
     payload = {
         "attachments": [{

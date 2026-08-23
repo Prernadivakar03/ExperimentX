@@ -38,12 +38,13 @@
 
 # backend/app/models/feature_flag.py
 from sqlalchemy import Column, String, DateTime, Boolean, Integer, ForeignKey
-from sqlalchemy.dialects.postgresql import UUID
+#from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import relationship
 from datetime import datetime
 import uuid
 
 from app.database import Base
+from sqlalchemy.dialects.postgresql import UUID, JSONB
 
 
 class FeatureFlag(Base):
@@ -59,6 +60,10 @@ class FeatureFlag(Base):
 
     is_enabled = Column(Boolean, default=False, nullable=False)   # master kill switch
     rollout_percentage = Column(Integer, default=0, nullable=False)  # 0-100
+
+    # Ordered list of targeting rules; see app/core/targeting.py for shape.
+    # Empty list = no targeting, falls back to is_enabled/rollout_percentage.
+    targeting_rules = Column(JSONB, nullable=False, default=list, server_default="[]")
 
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)

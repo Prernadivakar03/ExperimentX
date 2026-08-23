@@ -17,6 +17,8 @@ from app.models.conversion import Conversion
 from app.core.rbac import check_org_access, get_active_org_id
 from app.schemas.metric_schema import MetricCreate, MetricResponse, MetricValueResponse
 from app.core.formula_eval import evaluate_formula, FormulaError
+# from app.core.formula_eval import FormulaError
+from app.core.metric_eval import compute_base_values, compute_metric_value
 from sqlalchemy import func
 
 router = APIRouter(prefix="/metrics", tags=["metrics"])
@@ -109,6 +111,38 @@ def delete_metric(
     db.commit()
 
 
+# @router.get("/{metric_id}/evaluate/{experiment_id}", response_model=list[MetricValueResponse])
+# def evaluate_metric(
+#     metric_id: UUID,
+#     experiment_id: UUID,
+#     db: Session = Depends(get_db),
+#     current_user: User = Depends(get_current_user),
+# ):
+#     """Computes this metric's value for EACH variant of the given experiment."""
+#     metric = db.query(Metric).filter(Metric.id == metric_id).first()
+#     if not metric:
+#         raise HTTPException(status_code=404, detail="Metric not found")
+#     check_org_access(metric.organization_id, current_user, db, minimum_role=MemberRole.viewer)
+
+#     experiment = db.query(Experiment).filter(Experiment.id == experiment_id).first()
+#     if not experiment:
+#         raise HTTPException(status_code=404, detail="Experiment not found")
+#     check_org_access(experiment.organization_id, current_user, db, minimum_role=MemberRole.viewer)
+
+#     results = []
+#     for variant in experiment.variants:
+#         base = _compute_base_values(metric, experiment_id, variant.id, db)
+#         value = _compute_metric_value(metric, base)
+#         results.append(MetricValueResponse(
+#             metric_key=metric.key, variant_label=variant.label, value=round(value, 4),
+#         ))
+
+#     return results
+
+
+
+
+
 @router.get("/{metric_id}/evaluate/{experiment_id}", response_model=list[MetricValueResponse])
 def evaluate_metric(
     metric_id: UUID,
@@ -129,13 +163,18 @@ def evaluate_metric(
 
     results = []
     for variant in experiment.variants:
-        base = _compute_base_values(metric, experiment_id, variant.id, db)
-        value = _compute_metric_value(metric, base)
+        base = compute_base_values(metric, experiment_id, variant.id, db)
+        try:
+            value = compute_metric_value(metric, base)
+        except FormulaError as e:
+            raise HTTPException(status_code=400, detail=f"Formula error: {e}")
         results.append(MetricValueResponse(
             metric_key=metric.key, variant_label=variant.label, value=round(value, 4),
         ))
 
     return results
+
+
 
 
 def _compute_base_values(metric: Metric, experiment_id: UUID, variant_id: UUID, db: Session) -> dict:
