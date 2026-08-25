@@ -20,9 +20,11 @@ def build_funnel_breakdown(experiment_id: UUID, variants: list, db: Session) -> 
             Visitor.experiment_id == experiment_id, Visitor.variant_id == variant.id,
         ).count()
 
-        conversions = db.query(Conversion).filter(
-            Conversion.experiment_id == experiment_id, Conversion.variant_id == variant.id,
-        ).count()
+        conversions = (
+            db.query(func.count(func.distinct(Conversion.visitor_id)))
+            .filter(Conversion.experiment_id == experiment_id, Conversion.variant_id == variant.id)
+            .scalar() or 0
+        )
 
         event_counts = (
             db.query(Event.event_type, func.count(Event.id))

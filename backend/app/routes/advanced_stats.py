@@ -13,6 +13,7 @@ from app.core.sequential import msprt_multi_variant
 from app.core.cuped import cuped_compare_variants
 from app.core.rbac import check_org_access
 from app.models.organization import MemberRole
+from sqlalchemy import func
 
 router = APIRouter(prefix="/advanced-stats", tags=["advanced-stats"])
 
@@ -29,7 +30,11 @@ def _variant_counts(experiment: Experiment, db: Session) -> list[dict]:
     out = []
     for v in experiment.variants:
         visitors = db.query(Visitor).filter(Visitor.variant_id == v.id).count()
-        conversions = db.query(Conversion).filter(Conversion.variant_id == v.id).count()
+        conversions = (
+            db.query(func.count(func.distinct(Conversion.visitor_id)))
+            .filter(Conversion.variant_id == v.id)
+            .scalar() or 0
+        )
         out.append({"label": v.label, "visitors": visitors, "conversions": conversions})
     return out
 

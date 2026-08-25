@@ -42,6 +42,7 @@ from app.models.conversion import Conversion
 from app.models.activity_log import ActivityLog
 from app.models.feature_flag import FeatureFlag
 from app.models.metric import Metric
+from app.models.password_reset_token import PasswordResetToken
 
 # Holdout models
 from app.models.holdout import (

@@ -26,6 +26,7 @@ from app.models.organization import Organization
 from app.core.metric_eval import compute_base_values, compute_metric_value
 from app.core.guardrails import check_guardrail_regression
 from app.core.webhooks import send_slack_alert
+from sqlalchemy import func
 
 logger = logging.getLogger("experimentx.scheduler")
 
@@ -36,9 +37,16 @@ def _count_visitors(variant_id: int, db) -> int:
     return db.query(Visitor).filter(Visitor.variant_id == variant_id).count()
 
 
-def _count_conversions(variant_id: int, db) -> int:
-    """Return the number of conversions recorded for a variant."""
-    return db.query(Conversion).filter(Conversion.variant_id == variant_id).count()
+def _count_conversions(variant_id, db) -> int:
+    """DISTINCT converted visitors for this variant — the bandit's
+    Thompson Sampling needs a rate, not raw event volume, or a variant
+    with a few visitors making many repeat purchases would look like it's
+    winning when it isn't."""
+    return (
+        db.query(func.count(func.distinct(Conversion.visitor_id)))
+        .filter(Conversion.variant_id == variant_id)
+        .scalar() or 0
+    )
 
 
 # ----- Job functions -----
