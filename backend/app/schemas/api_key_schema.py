@@ -2,11 +2,12 @@
 from pydantic import BaseModel
 from uuid import UUID
 from datetime import datetime
-from typing import Optional
+from typing import Optional, Literal
 
 
 class ApiKeyCreate(BaseModel):
     name: str  # user-facing label, e.g. "Production SDK"
+    key_type: Literal["public", "secret"] = "public"
 
 
 class ApiKeyCreateResponse(BaseModel):
@@ -19,6 +20,7 @@ class ApiKeyCreateResponse(BaseModel):
     name: str
     full_key: str
     key_prefix: str
+    key_type: str
     created_at: datetime
 
 
@@ -27,6 +29,7 @@ class ApiKeyResponse(BaseModel):
     id: UUID
     name: str
     key_prefix: str
+    key_type: str
     created_at: datetime
     last_used_at: Optional[datetime] = None
     revoked_at: Optional[datetime] = None

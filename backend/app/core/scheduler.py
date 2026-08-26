@@ -37,16 +37,14 @@ def _count_visitors(variant_id: int, db) -> int:
     return db.query(Visitor).filter(Visitor.variant_id == variant_id).count()
 
 
-def _count_conversions(variant_id, db) -> int:
-    """DISTINCT converted visitors for this variant — the bandit's
-    Thompson Sampling needs a rate, not raw event volume, or a variant
-    with a few visitors making many repeat purchases would look like it's
-    winning when it isn't."""
-    return (
-        db.query(func.count(func.distinct(Conversion.visitor_id)))
-        .filter(Conversion.variant_id == variant_id)
-        .scalar() or 0
-    )
+def _count_conversions(variant_id: int, db) -> int:
+    """DISTINCT converted visitors for this variant — the bandit's Thompson
+    Sampling needs a conversion RATE, not raw event volume; a visitor who
+    converts 3 times must count once, or a variant with a few visitors
+    making many repeat purchases would look like it's winning when it
+    isn't."""
+    rows = db.query(Conversion).filter(Conversion.variant_id == variant_id).all()
+    return len({row.visitor_id for row in rows})
 
 
 # ----- Job functions -----
@@ -170,6 +168,9 @@ def _run_guardrail_checks():
 
                     regressed, _pct, detail = check_guardrail_regression(
                         control_value, variant_value, guardrail.direction.value, guardrail.max_regression_pct,
+                        metric_type=metric.metric_type.value,
+                        control_visitors=control_base["visitors"], variant_visitors=variant_base["visitors"],
+                        control_conversions=control_base.get("conversions"), variant_conversions=variant_base.get("conversions"),
                     )
                     if regressed:
                         breaches.append(f"{metric.name} {detail} on variant '{variant.label}'")

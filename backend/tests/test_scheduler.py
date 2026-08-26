@@ -61,6 +61,31 @@ class _CountLookupQuery:
         return self._counts.get(self._key, 0)
 
 
+class _ConversionRowsQuery:
+    """Synthesizes N distinct fake Conversion rows (one visitor_id each) for
+    whatever count is configured for a variant_id. Mirrors
+    scheduler._count_conversions, which counts DISTINCT visitor_id rather
+    than raw row count -- since every synthesized row here has a unique
+    visitor_id, the distinct count always equals the configured number,
+    keeping existing test expectations unchanged while exercising the real
+    (corrected) query shape."""
+    def __init__(self, counts_by_id):
+        self._counts = counts_by_id
+        self._key = None
+
+    def filter(self, *args, **kwargs):
+        if args:
+            self._key = args[0].right.value
+        return self
+
+    def all(self):
+        n = self._counts.get(self._key, 0)
+        return [SimpleNamespace(visitor_id=f"{self._key}-visitor-{i}") for i in range(n)]
+
+    def count(self):
+        return self._counts.get(self._key, 0)
+
+
 class _ObjectLookupQuery:
     def __init__(self, objects_by_id):
         self._objects = objects_by_id
@@ -92,7 +117,7 @@ class _FakeSession:
         if model is Visitor:
             return _CountLookupQuery(self.visitor_counts)
         if model is Conversion:
-            return _CountLookupQuery(self.conversion_counts)
+            return _ConversionRowsQuery(self.conversion_counts)
         if model is Variant:
             return _ObjectLookupQuery(self.variants_by_id)
         return _QueueQuery(self._queues.get("Experiment", []))

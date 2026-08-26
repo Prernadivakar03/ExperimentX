@@ -34,25 +34,25 @@ def create_api_key(
 ):
     check_org_access(org_id, current_user, db, MemberRole.admin)
 
-    generated = generate_api_key()
+        generated = generate_api_key(key_type=payload.key_type)
     record = ApiKey(
         organization_id=org_id,
         created_by=current_user.id,
         name=payload.name,
         key_prefix=generated["display_prefix"],
         key_hash=generated["key_hash"],
+        key_type=generated["key_type"],
     )
     db.add(record)
     db.commit()
     db.refresh(record)
 
-    # full_key is only ever available here, right after generation --
-    # it's never derivable from key_hash and is not stored in plaintext.
     return ApiKeyCreateResponse(
         id=record.id,
         name=record.name,
         full_key=generated["full_key"],
         key_prefix=record.key_prefix,
+        key_type=record.key_type,
         created_at=record.created_at,
     )
 

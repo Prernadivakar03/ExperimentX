@@ -10,7 +10,8 @@ from app.database import Base
 class ApiKey(Base):
     """
     Org-scoped API keys used by the client SDK to authenticate against the
-    public tracking endpoints (/assign, /track-event, /track-conversion).
+    public tracking endpoints (/assign, /track-event, /track-conversion,
+    /flags/evaluate).
 
     Only the SHA-256 hash of the key is ever stored — the plaintext key is
     shown to the user exactly once, at creation time, and is not
@@ -23,8 +24,9 @@ class ApiKey(Base):
     created_by = Column(UUID(as_uuid=True), ForeignKey("users.id"), nullable=True)
 
     name = Column(String, nullable=False)  # user-facing label, e.g. "Production SDK"
-    key_prefix = Column(String, nullable=False)  # e.g. "expx_live_ab12cd34" — shown in the UI so users can tell keys apart
+    key_prefix = Column(String, nullable=False)  # e.g. "expx_public_ab12cd34" — shown in the UI
     key_hash = Column(String, nullable=False, unique=True, index=True)  # sha256 hex digest of the full key
+    key_type = Column(String, nullable=False, default="public")  # "public" | "secret"
 
     created_at = Column(DateTime, default=datetime.utcnow)
     last_used_at = Column(DateTime, nullable=True)

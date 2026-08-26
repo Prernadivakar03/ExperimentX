@@ -218,6 +218,27 @@ export default function ExperimentDetail({ experimentId, onBack }) {
         </div>
       </div>
 
+
+    {experiment.allocation_mode === "bandit" && (
+        <div className={`flex items-start gap-3 p-4 rounded-2xl border ${
+          isDark ? "bg-amber-500/[0.06] border-amber-500/20" : "bg-amber-50 border-amber-200"
+        }`}>
+          <span className="text-lg leading-none">⚠️</span>
+          <div>
+            <p className={`text-sm font-semibold ${isDark ? "text-amber-300" : "text-amber-800"}`}>
+              This experiment is in Bandit mode, not fixed allocation
+            </p>
+            <p className={`text-xs mt-1 ${isDark ? "text-amber-300/70" : "text-amber-700"}`}>
+              Traffic is being reallocated automatically toward the better-performing variant (Thompson Sampling).
+              This optimizes reward, but it means traffic isn't split evenly over time — the statistical
+              significance numbers above are less reliable for causal inference than a fixed-split experiment.
+              Use bandit mode when you want to maximize outcomes; use fixed allocation when you need a clean,
+              defensible answer to "did B actually cause this."
+            </p>
+          </div>
+        </div>
+      )}
+
       {/* KPI row — from real analytics data */}
       {stats ? (
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">

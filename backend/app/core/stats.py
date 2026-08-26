@@ -267,3 +267,70 @@ def peeking_warning(
             if at_risk else "Sample/duration progress is far enough along to trust the result."
         ),
     }
+
+
+
+# ── Two-proportion z-test with lift, Wald CI, and post-hoc power ─────────
+
+def two_proportion_z_test(n_a: int, conv_a: int, n_b: int, conv_b: int, alpha: float = 0.05) -> dict:
+    """
+    The correct statistics for an A/B comparison, with honest naming.
+
+    Deliberately does NOT return a field called "confidence" — a p-value of
+    0.03 does not mean "97% confidence B wins." That conflates frequentist
+    and Bayesian interpretations, a classic experimentation-tooling mistake.
+    If you want an actual probability-B-is-best number, that's what the
+    Bayesian endpoint (app/core/bayesian.py) is for — keep the two concepts
+    separate in the UI.
+    """
+    if n_a == 0 or n_b == 0:
+        return {"error": "Not enough visitors to compute significance"}
+
+    p_a = conv_a / n_a
+    p_b = conv_b / n_b
+
+    # Pooled SE for the hypothesis test (assumes null: p_a == p_b)
+    p_pool = (conv_a + conv_b) / (n_a + n_b)
+    se_pooled = math.sqrt(p_pool * (1 - p_pool) * (1 / n_a + 1 / n_b))
+    if se_pooled == 0:
+        return {"error": "Cannot compute — no conversions yet"}
+
+    z = (p_b - p_a) / se_pooled
+    p_value = 2 * (1 - norm.cdf(abs(z)))
+    is_significant = p_value < alpha
+
+    # Unpooled SE for the CI and power (does NOT assume p_a == p_b — standard
+    # practice: pooled SE for testing the null, unpooled SE for estimating
+    # the actual effect size once you're not assuming it's zero)
+    se_unpooled = math.sqrt(p_a * (1 - p_a) / n_a + p_b * (1 - p_b) / n_b)
+    z_crit = norm.ppf(1 - alpha / 2)
+
+    diff = p_b - p_a  # absolute lift, as a proportion
+    ci_lower = diff - z_crit * se_unpooled
+    ci_upper = diff + z_crit * se_unpooled
+
+    relative_lift = (diff / p_a * 100) if p_a > 0 else None
+
+    # Post-hoc / achieved power: given the OBSERVED effect size, what's the
+    # probability this test design would detect it? Useful for interpreting
+    # a "not significant" result — low power means "inconclusive," not "no
+    # difference." Not a substitute for pre-registering a target sample
+    # size (see sample_size_calculator) — this is diagnostic, after the fact.
+    achieved_power = None
+    if se_unpooled > 0:
+        z_beta = abs(diff) / se_unpooled - z_crit
+        achieved_power = float(norm.cdf(z_beta))
+
+    return {
+        "z_score": round(z, 4),
+        "p_value": round(p_value, 6),
+        "is_significant": is_significant,
+        "alpha": alpha,
+        "absolute_lift_pct_points": round(diff * 100, 3),
+        "relative_lift_pct": round(relative_lift, 2) if relative_lift is not None else None,
+        "absolute_lift_ci_95": {
+            "lower_pct_points": round(ci_lower * 100, 3),
+            "upper_pct_points": round(ci_upper * 100, 3),
+        },
+        "achieved_power": round(achieved_power, 3) if achieved_power is not None else None,
+    }
