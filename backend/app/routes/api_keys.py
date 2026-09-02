@@ -34,7 +34,7 @@ def create_api_key(
 ):
     check_org_access(org_id, current_user, db, MemberRole.admin)
 
-        generated = generate_api_key(key_type=payload.key_type)
+    generated = generate_api_key(key_type=payload.key_type)
     record = ApiKey(
         organization_id=org_id,
         created_by=current_user.id,
