@@ -1,12 +1,28 @@
 """
 Run from backend/ with: pytest tests/test_api_keys.py -v
 """
-from app.core.api_keys import generate_api_key, hash_api_key, looks_like_api_key, KEY_PREFIX
+from app.core.api_keys import (
+    generate_api_key, hash_api_key, looks_like_api_key,
+    PUBLIC_KEY_PREFIX, SECRET_KEY_PREFIX,
+)
 
 
-def test_generated_key_starts_with_expected_prefix():
+def test_generated_public_key_starts_with_public_prefix():
+    result = generate_api_key(key_type="public")
+    assert result["full_key"].startswith(PUBLIC_KEY_PREFIX)
+    assert result["key_type"] == "public"
+
+
+def test_generated_secret_key_starts_with_secret_prefix():
+    result = generate_api_key(key_type="secret")
+    assert result["full_key"].startswith(SECRET_KEY_PREFIX)
+    assert result["key_type"] == "secret"
+
+
+def test_default_key_type_is_public():
     result = generate_api_key()
-    assert result["full_key"].startswith(KEY_PREFIX)
+    assert result["key_type"] == "public"
+    assert result["full_key"].startswith(PUBLIC_KEY_PREFIX)
 
 
 def test_display_prefix_never_leaks_the_full_secret():
@@ -28,24 +44,28 @@ def test_two_generated_keys_are_never_equal():
 
 
 def test_hash_is_deterministic_for_the_same_input():
-    key = "expx_live_some_fixed_value_for_testing"
+    key = "expx_public_some_fixed_value_for_testing"
     assert hash_api_key(key) == hash_api_key(key)
 
 
 def test_hash_is_a_sha256_hex_digest():
-    result = hash_api_key("expx_live_whatever")
+    result = hash_api_key("expx_public_whatever")
     assert len(result) == 64
     assert all(c in "0123456789abcdef" for c in result)
 
 
 def test_hash_never_contains_the_plaintext_key():
-    key = "expx_live_super_secret_value_123"
+    key = "expx_public_super_secret_value_123"
     hashed = hash_api_key(key)
     assert key not in hashed
 
 
-def test_looks_like_api_key_accepts_valid_prefix():
-    assert looks_like_api_key("expx_live_abcdef123456") is True
+def test_looks_like_api_key_accepts_public_prefix():
+    assert looks_like_api_key("expx_public_abcdef123456") is True
+
+
+def test_looks_like_api_key_accepts_secret_prefix():
+    assert looks_like_api_key("expx_secret_abcdef123456") is True
 
 
 def test_looks_like_api_key_rejects_wrong_prefix():
