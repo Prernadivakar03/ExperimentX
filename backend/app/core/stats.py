@@ -32,7 +32,7 @@ def srm_check(variants: list[dict], threshold: float = 0.01) -> dict:
     dof = len(variants) - 1
     p_value = float(chi2.sf(chi_sq, dof))
 
-    mismatched = p_value < threshold
+    mismatched = bool(p_value < threshold)
 
     return {
         "checked": True,
@@ -83,12 +83,12 @@ def multi_variant_test(variants: list[dict]) -> dict:
     corrected = _benjamini_hochberg(raw_p_values)
     for pw, adj_p in zip(pairwise, corrected):
         pw["p_value_adjusted"] = round(adj_p, 6)
-        pw["is_significant_adjusted"] = adj_p < 0.05
+        pw["is_significant_adjusted"] = bool(adj_p < 0.05)
 
     return {
         "overall_chi_square": round(float(chi_sq), 4),
         "overall_p_value": round(float(p_value), 6),
-        "overall_significant": p_value < 0.05,
+        "overall_significant": bool(p_value < 0.05),
         "control_label": control["label"],
         "pairwise_vs_control": pairwise,
         "correction_method": "benjamini_hochberg",
@@ -116,7 +116,7 @@ def _pairwise_z_test(a: dict, b: dict) -> dict:
         "z_score": round(z, 4),
         "p_value": round(p_value, 6),
         "lift_pct": round(lift, 2) if lift is not None else None,
-        "is_significant": p_value < 0.05,
+        "is_significant": bool(p_value < 0.05),
     }
 
 
@@ -297,7 +297,7 @@ def two_proportion_z_test(n_a: int, conv_a: int, n_b: int, conv_b: int, alpha: f
 
     z = (p_b - p_a) / se_pooled
     p_value = 2 * (1 - norm.cdf(abs(z)))
-    is_significant = p_value < alpha
+    is_significant = bool(p_value < alpha)
 
     # Unpooled SE for the CI and power (does NOT assume p_a == p_b — standard
     # practice: pooled SE for testing the null, unpooled SE for estimating
