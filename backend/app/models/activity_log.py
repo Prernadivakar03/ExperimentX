@@ -12,7 +12,7 @@ class ActivityLog(Base):
 
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     experiment_id = Column(UUID(as_uuid=True), ForeignKey("experiments.id"), nullable=True, index=True)
-    actor_user_id = Column(UUID(as_uuid=True), ForeignKey("users.id"), nullable=False)
+    actor_user_id = Column(UUID(as_uuid=True), ForeignKey("users.id"), nullable=True)
 
     action = Column(String, nullable=False)      # e.g. "experiment.created", "experiment.status_changed"
     details = Column(JSON, nullable=True)         # e.g. {"from": "draft", "to": "running"}
