@@ -1,9 +1,14 @@
 import os
+import logging
 from groq import Groq
 
+logger = logging.getLogger("experimentx.ai")
+
 client = Groq(api_key=os.getenv("GROQ_API_KEY"))
-# MODEL = "llama-3.1-70b-versatile"   # free, fast, very capable
-MODEL = "openai/gpt-oss-120b"
+
+# Configurable via env so swapping models doesn't require a code change/redeploy.
+MODEL = os.getenv("AI_MODEL", "openai/gpt-oss-120b")
+
 
 def chat(system: str, user: str, max_tokens: int = 1000) -> str:
     """Simple single-turn chat. Returns the response text."""

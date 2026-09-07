@@ -1,10 +1,12 @@
-
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from slowapi import _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
 import os
+import logging
+import time
+from sqlalchemy import text
 from contextlib import asynccontextmanager
 from app.models.organization import Organization, Membership
 from app.routes.organizations import router as organizations_router
@@ -90,6 +92,40 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# ── Logging ───────────────────────────────────────────────────────────────────
+logging.basicConfig(
+    level=os.getenv("LOG_LEVEL", "INFO"),
+    format="%(asctime)s level=%(levelname)s logger=%(name)s msg=%(message)s",
+)
+logger = logging.getLogger("experimentx.api")
+
+
+# ── Request logging ───────────────────────────────────────────────────────────
+@app.middleware("http")
+async def log_requests(request: Request, call_next):
+    start = time.perf_counter()
+    try:
+        response = await call_next(request)
+    except Exception:
+        duration_ms = round((time.perf_counter() - start) * 1000, 1)
+        logger.exception(
+            f"method={request.method} path={request.url.path} "
+            f"status=500 duration_ms={duration_ms} unhandled_exception=true"
+        )
+        raise
+    duration_ms = round((time.perf_counter() - start) * 1000, 1)
+    log_line = (
+        f"method={request.method} path={request.url.path} "
+        f"status={response.status_code} duration_ms={duration_ms}"
+    )
+    if response.status_code >= 500:
+        logger.error(log_line)
+    elif response.status_code >= 400:
+        logger.warning(log_line)
+    else:
+        logger.info(log_line)
+    return response
+
 # ── Create database tables (if not using Alembic in production) ────────────
 # Base.metadata.create_all(bind=engine)
 
@@ -118,6 +154,28 @@ def root():
     return {"message": "ExperimentX API running", "version": "1.0"}
 
 
+@app.get("/health/live")
+def health_live():
+    """Liveness — process is up. No dependency checks; must stay cheap."""
+    return {"status": "ok"}
+
+
 @app.get("/health")
 def health():
-    return {"status": "ok"}
+    """Readiness — safe to receive traffic. Checks the DB."""
+    checks = {}
+    healthy = True
+    try:
+        with engine.connect() as conn:
+            conn.execute(text("SELECT 1"))
+        checks["database"] = "ok"
+    except Exception as e:
+        logger.error(f"health check: database unreachable: {e}")
+        checks["database"] = "unreachable"
+        healthy = False
+
+    status_code = 200 if healthy else 503
+    return JSONResponse(
+        status_code=status_code,
+        content={"status": "ok" if healthy else "degraded", "checks": checks},
+    )

@@ -41,19 +41,6 @@ class RoleUpdateRequest(BaseModel):
     role: MemberRole
 
 
-# class WebhookSettingsResponse(BaseModel):
-#     webhook_url: Optional[str]
-#     webhook_events: list[str]
-
-#     class Config:
-#         from_attributes = True
-
-
-# class WebhookSettingsUpdate(BaseModel):
-#     webhook_url: Optional[str] = None
-#     webhook_events: list[str] = []
-
-
 VALID_WEBHOOK_EVENTS = {"srm_detected", "significance_reached", "anomaly_detected", "guardrail_breach"}
 
 class WebhookSettingsUpdate(BaseModel):
@@ -75,3 +62,35 @@ class WebhookSettingsResponse(BaseModel):
 class WebhookTestResponse(BaseModel):
     success: bool
     message: str
+
+
+# ── Experiment / statistical defaults ────────────────────────────────────────
+# Org-wide defaults shown on the Settings > Experiments tab. Kept permissive
+# (no strict validation beyond ranges) since these are just pre-filled
+# defaults for the "create experiment" form, not enforced constraints.
+
+class ExperimentSettings(BaseModel):
+    default_traffic_pct: int = 50
+    default_confidence_level: int = 95
+    default_experiment_type: str = "ab"
+    default_duration_days: int = 14
+    auto_stop: bool = False
+    require_min_sample: bool = True
+    stat_method: str = "frequentist"
+    significance_level: float = 0.05
+    multiple_testing_correction: str = "none"
+
+    class Config:
+        from_attributes = True
+
+
+class ExperimentSettingsUpdate(BaseModel):
+    default_traffic_pct: Optional[int] = None
+    default_confidence_level: Optional[int] = None
+    default_experiment_type: Optional[str] = None
+    default_duration_days: Optional[int] = None
+    auto_stop: Optional[bool] = None
+    require_min_sample: Optional[bool] = None
+    stat_method: Optional[str] = None
+    significance_level: Optional[float] = None
+    multiple_testing_correction: Optional[str] = None
