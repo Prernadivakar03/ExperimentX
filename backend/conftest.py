@@ -16,6 +16,6 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 # create_engine() is lazy -- it doesn't open a connection until something
 # actually queries -- so a syntactically valid but unreachable Postgres URL
 # is enough to satisfy import-time construction without Postgres running.
-os.environ.setdefault("DATABASE_URL", "postgresql://test:test@localhost:5432/experimentx_test")
+os.environ.setdefault("DATABASE_URL", "postgresql://test:Student7@localhost:5432/experimentx_test")
 os.environ.setdefault("SECRET_KEY", "test-secret-key-not-for-production")
 os.environ.setdefault("GROQ_API_KEY", "test-groq-key-not-for-production")

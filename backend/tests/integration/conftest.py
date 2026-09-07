@@ -32,7 +32,7 @@ from fastapi.testclient import TestClient
 
 TEST_DATABASE_URL = os.getenv(
     "TEST_DATABASE_URL",
-    "postgresql://postgres:postgres@localhost:5432/experimentx_test",
+    "postgresql://postgres:Student7@localhost:5432/experimentx_test",
 )
 
 # Deliberately os.environ[...] = , NOT setdefault: the root backend/conftest.py

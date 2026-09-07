@@ -12,7 +12,10 @@ import VariantB from "./pages/VariantB";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Product from "./pages/Product";
 import Pricing from "./pages/Pricing";
+import Solutions from "./pages/Solutions";
 import MarketingLayout from "./layouts/MarketingLayout";
+
+
 
 function App() {
   // Show preloader only on first visit (per session)
@@ -37,6 +40,7 @@ function App() {
         <Route path="/" element={<SplashScreen />} />
         <Route path="/product" element={<Product />} />
         <Route path="/pricing" element={<Pricing />} />
+        <Route path="/solutions" element={<Solutions />} />
         {/* Add /solutions, /docs, /about, /contact here later */}
       </Route>
 

@@ -27,44 +27,68 @@ import {
 } from "lucide-react";
 
 // ── Data ──────────────────────────────────────────────────────────────────────
-const features = [
+// Each capability carries its own "proof" data so the feature list can render
+// six genuinely different widgets instead of six copies of the same card —
+// see CapabilityRow / the proof-* components below.
+const capabilities = [
   {
+    key: "ai",
     icon: Brain,
     title: "AI Copilot",
     desc: "Generate experiments instantly from a business goal.",
-    color: "text-brand-violet",
+    accent: "text-brand-violet",
+    proof: {
+      type: "chat",
+      prompt: "Improve checkout conversion for mobile users",
+      reply: "Hypothesis: a single-page checkout reduces drop-off. Suggested split: 50/50, 14 days, primary metric: purchase rate.",
+    },
   },
   {
+    key: "management",
     icon: Zap,
     title: "Experiment Management",
     desc: "Launch and manage A/B tests with a powerful dashboard.",
-    color: "text-brand-blue",
+    accent: "text-brand-blue",
+    proof: { type: "split", a: 50, b: 50, status: "Running · Day 6 of 14" },
   },
   {
+    key: "analytics",
     icon: BarChart3,
-    title: "Real‑Time Analytics",
+    title: "Real-Time Analytics",
     desc: "Track visitors, conversions, and revenue lift live.",
-    color: "text-emerald-500",
+    accent: "text-emerald-500",
+    proof: { type: "sparkline", values: [12, 18, 15, 24, 30, 27, 34, 41], lift: "+15.3%" },
   },
   {
+    key: "flags",
     icon: Flag,
     title: "Feature Flags",
     desc: "Control releases safely with gradual rollouts.",
-    color: "text-amber-500",
+    accent: "text-amber-500",
+    proof: { type: "toggle", rollout: 35, name: "new-nav-v2" },
   },
   {
+    key: "sdk",
     icon: Code,
     title: "SDK Integration",
     desc: "Works with React, Next.js, Vue, Node, and Python.",
-    color: "text-rose-500",
+    accent: "text-rose-500",
+    proof: {
+      type: "diff",
+      removed: "showCheckout()",
+      added: "sdk.getVariant('checkout')",
+    },
   },
   {
+    key: "stats",
     icon: Sparkles,
     title: "Statistical Engine",
     desc: "Bayesian + Frequentist testing for reliable results.",
-    color: "text-indigo-500",
+    accent: "text-indigo-500",
+    proof: { type: "stat", pValue: "0.031", confidence: 97 },
   },
 ];
+
 
 const steps = [
   { label: "Create Experiment", icon: Plus },
@@ -76,12 +100,12 @@ const steps = [
 ];
 
 const agents = [
-  { name: "Planner", icon: Brain, desc: "Turns goals into full experiment plans." },
-  { name: "Reviewer", icon: CheckCircle, desc: "Checks your experiment before launch." },
-  { name: "Variant Generator", icon: Sparkles, desc: "Generates copy and design variants." },
-  { name: "Analytics", icon: BarChart3, desc: "Explains results in plain English." },
-  { name: "Guardian", icon: Shield, desc: "Monitors anomalies and alerts." },
-  { name: "Copilot Chat", icon: Zap, desc: "Ask anything about experimentation." },
+  { name: "Planner", icon: Brain, desc: "Turns goals into full experiment plans.", accent: "bg-brand-violet", status: "idle" },
+  { name: "Reviewer", icon: CheckCircle, desc: "Checks your experiment before launch.", accent: "bg-brand-blue", status: "idle" },
+  { name: "Variant Generator", icon: Sparkles, desc: "Generates copy and design variants.", accent: "bg-emerald-500", status: "idle" },
+  { name: "Analytics", icon: BarChart3, desc: "Explains results in plain English.", accent: "bg-amber-500", status: "idle" },
+  { name: "Guardian", icon: Shield, desc: "Monitors anomalies and alerts.", accent: "bg-rose-500", status: "watching" },
+  { name: "Copilot Chat", icon: Zap, desc: "Ask anything about experimentation.", accent: "bg-indigo-500", status: "idle" },
 ];
 
 const securityItems = [
@@ -156,41 +180,148 @@ function Reveal({ children, delay = 0, className = "" }) {
   );
 }
 
-// ── Feature Card with interactive hover animation ──
-function FeatureCard({ icon: Icon, title, desc, color, isDark, index }) {
+// ── Proof widgets — one per capability, each shaped like the real UI it represents ──
+
+function ProofChat({ prompt, reply, isDark }) {
   return (
-    <Reveal delay={index * 0.05}>
-      <motion.div
-        whileHover={{ y: -4 }}
-        className={`p-6 rounded-2xl border transition-all duration-300 ${
-          isDark
-            ? "bg-[#0D0E1A] border-white/[0.07] hover:border-white/[0.15]"
-            : "bg-white border-gray-200 shadow-sm hover:border-gray-300 hover:shadow-lg"
+    <div className="space-y-1.5 text-xs w-full max-w-xs">
+      <div className={`self-end ml-auto px-3 py-1.5 rounded-lg rounded-br-sm w-fit max-w-full ${isDark ? "bg-white/[0.06] text-white/70" : "bg-gray-100 text-gray-700"}`}>
+        {prompt}
+      </div>
+      <div className="flex items-start gap-1.5">
+        <span className="w-4 h-4 rounded-full bg-brand-violet/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+          <Sparkles size={10} className="text-brand-violet" />
+        </span>
+        <div className={`px-3 py-1.5 rounded-lg rounded-bl-sm ${isDark ? "bg-brand-violet/10 text-white/80" : "bg-brand-violet/5 text-gray-800"}`}>
+          {reply}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function ProofSplit({ a, b, status, isDark }) {
+  return (
+    <div className="w-full max-w-xs">
+      <div className="flex h-3 rounded-full overflow-hidden">
+        <div className="bg-brand-violet" style={{ width: `${a}%` }} />
+        <div className="bg-brand-blue" style={{ width: `${b}%` }} />
+      </div>
+      <div className="flex justify-between mt-2 text-xs">
+        <span className={isDark ? "text-white/50" : "text-gray-500"}>Variant A · {a}%</span>
+        <span className={isDark ? "text-white/50" : "text-gray-500"}>Variant B · {b}%</span>
+      </div>
+      <p className={`text-[11px] mt-1 ${isDark ? "text-white/30" : "text-gray-400"}`}>{status}</p>
+    </div>
+  );
+}
+
+function ProofSparkline({ values, lift, isDark }) {
+  const max = Math.max(...values);
+  const points = values
+    .map((v, i) => `${(i / (values.length - 1)) * 100},${100 - (v / max) * 100}`)
+    .join(" ");
+  return (
+    <div className="w-full max-w-xs flex items-center gap-3">
+      <svg viewBox="0 0 100 40" preserveAspectRatio="none" className="w-24 h-10 flex-shrink-0">
+        <polyline
+          points={points.split(" ").map((p) => {
+            const [x, y] = p.split(",");
+            return `${x},${(parseFloat(y) * 0.4).toFixed(1)}`;
+          }).join(" ")}
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          className="text-emerald-500"
+        />
+      </svg>
+      <div>
+        <p className="text-emerald-500 font-semibold text-sm">{lift}</p>
+        <p className={`text-[11px] ${isDark ? "text-white/30" : "text-gray-400"}`}>revenue lift, 7d</p>
+      </div>
+    </div>
+  );
+}
+
+function ProofToggle({ rollout, name, isDark }) {
+  return (
+    <div className="w-full max-w-xs">
+      <div className="flex items-center gap-2">
+        <span className="relative inline-flex h-5 w-9 items-center rounded-full bg-amber-500">
+          <span className="inline-block h-3.5 w-3.5 translate-x-4 rounded-full bg-white" />
+        </span>
+        <code className={`text-xs ${isDark ? "text-white/60" : "text-gray-600"}`}>{name}</code>
+      </div>
+      <p className={`text-[11px] mt-2 ${isDark ? "text-white/30" : "text-gray-400"}`}>Gradual rollout · {rollout}% of traffic</p>
+    </div>
+  );
+}
+
+function ProofDiff({ removed, added, isDark }) {
+  return (
+    <div className="w-full max-w-xs font-mono text-[11px] leading-relaxed">
+      <div className="px-2 py-1 rounded bg-rose-500/10 text-rose-500">- {removed}</div>
+      <div className="px-2 py-1 rounded bg-emerald-500/10 text-emerald-500 mt-0.5">+ {added}</div>
+    </div>
+  );
+}
+
+function ProofStat({ pValue, confidence, isDark }) {
+  return (
+    <div className="flex gap-3">
+      <div className={`px-3 py-2 rounded-lg border ${isDark ? "border-white/[0.08]" : "border-gray-200"}`}>
+        <p className={`text-[10px] uppercase tracking-wide ${isDark ? "text-white/30" : "text-gray-400"}`}>p-value</p>
+        <p className={`text-sm font-semibold ${isDark ? "text-white" : "text-gray-900"}`}>{pValue}</p>
+      </div>
+      <div className={`px-3 py-2 rounded-lg border ${isDark ? "border-white/[0.08]" : "border-gray-200"}`}>
+        <p className={`text-[10px] uppercase tracking-wide ${isDark ? "text-white/30" : "text-gray-400"}`}>confidence</p>
+        <p className="text-sm font-semibold text-indigo-500">{confidence}%</p>
+      </div>
+    </div>
+  );
+}
+
+function CapabilityProof({ proof, isDark }) {
+  switch (proof.type) {
+    case "chat":
+      return <ProofChat {...proof} isDark={isDark} />;
+    case "split":
+      return <ProofSplit {...proof} isDark={isDark} />;
+    case "sparkline":
+      return <ProofSparkline {...proof} isDark={isDark} />;
+    case "toggle":
+      return <ProofToggle {...proof} isDark={isDark} />;
+    case "diff":
+      return <ProofDiff {...proof} isDark={isDark} />;
+    case "stat":
+      return <ProofStat {...proof} isDark={isDark} />;
+    default:
+      return null;
+  }
+}
+
+// ── Capability row — one shared panel, divided rows, not stacked identical cards ──
+function CapabilityRow({ item, isDark, index }) {
+  const Icon = item.icon;
+  const reversed = index % 2 === 1;
+  return (
+    <Reveal delay={index * 0.04}>
+      <div
+        className={`grid md:grid-cols-2 gap-6 md:gap-10 items-center px-6 py-7 ${
+          index > 0 ? (isDark ? "border-t border-white/[0.06]" : "border-t border-gray-100") : ""
         }`}
       >
-        <div className="flex items-start gap-3 mb-3">
-          <motion.div
-            whileHover={{ rotate: [0, -5, 5, -5, 0], scale: 1.1 }}
-            transition={{ duration: 0.3 }}
-            className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 ${
-              isDark ? "bg-white/5" : "bg-gray-50"
-            } border ${isDark ? "border-white/10" : "border-gray-200"}`}
-          >
-            <Icon size={20} className={color} strokeWidth={1.5} />
-          </motion.div>
-          <h3 className={`text-base font-semibold ${isDark ? "text-white" : "text-gray-900"}`}>
-            {title}
-          </h3>
+        <div className={reversed ? "md:order-2" : ""}>
+          <div className="flex items-center gap-2 mb-1.5">
+            <Icon size={16} className={item.accent} strokeWidth={2} />
+            <h3 className={`text-base font-semibold ${isDark ? "text-white" : "text-gray-900"}`}>{item.title}</h3>
+          </div>
+          <p className={`text-sm max-w-sm ${isDark ? "text-white/40" : "text-gray-500"}`}>{item.desc}</p>
         </div>
-        <p className={`text-sm ${isDark ? "text-white/40" : "text-gray-500"}`}>{desc}</p>
-        <motion.a
-          href="#"
-          whileHover={{ x: 4 }}
-          className="inline-flex items-center gap-1 text-xs font-medium text-brand-violet mt-3 transition-all hover:underline"
-        >
-          Learn More →
-        </motion.a>
-      </motion.div>
+        <div className={`flex ${reversed ? "md:order-1 md:justify-end" : ""}`}>
+          <CapabilityProof proof={item.proof} isDark={isDark} />
+        </div>
+      </div>
     </Reveal>
   );
 }
@@ -219,26 +350,24 @@ function TimelineStep({ label, icon: Icon, isDark, index, total }) {
   );
 }
 
-// ── Agent Card ──
-function AgentCard({ agent, isDark }) {
+// ── Agent log entry — console/activity-log styling, not an icon card ──
+function AgentLogEntry({ agent, isDark, index, total }) {
   const Icon = agent.icon;
   return (
-    <Reveal>
+    <Reveal delay={index * 0.03}>
       <motion.div
-        whileHover={{ y: -2 }}
-        className={`p-4 rounded-xl border ${
-          isDark ? "bg-[#0D0E1A] border-white/[0.07]" : "bg-white border-gray-200 shadow-sm"
+        whileHover={{ x: 2 }}
+        className={`flex items-center gap-3 px-4 py-3 ${
+          index < total - 1 ? (isDark ? "border-b border-white/[0.05]" : "border-b border-gray-100") : ""
         }`}
       >
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-lg bg-brand-violet/10 flex items-center justify-center text-brand-violet">
-            <Icon size={18} />
-          </div>
-          <div>
-            <p className={`text-sm font-medium ${isDark ? "text-white" : "text-gray-900"}`}>{agent.name}</p>
-            <p className={`text-xs ${isDark ? "text-white/40" : "text-gray-500"}`}>{agent.desc}</p>
-          </div>
-        </div>
+        <span className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${agent.accent} ${agent.status === "watching" ? "animate-pulse" : ""}`} />
+        <Icon size={15} className={isDark ? "text-white/40" : "text-gray-400"} strokeWidth={1.75} />
+        <span className={`text-sm font-mono ${isDark ? "text-white/90" : "text-gray-900"}`}>{agent.name}</span>
+        <span className={`text-xs flex-1 ${isDark ? "text-white/35" : "text-gray-500"}`}>{agent.desc}</span>
+        <span className={`text-[10px] uppercase tracking-wide flex-shrink-0 ${isDark ? "text-white/20" : "text-gray-300"}`}>
+          {agent.status}
+        </span>
       </motion.div>
     </Reveal>
   );
@@ -397,19 +526,19 @@ export default function ProductPage() {
         </Reveal>
       </section>
 
-      {/* ── Core Features (reduced padding) ── */}
-      <section className="py-16 px-4 max-w-7xl mx-auto" id="features">
-        <div className="text-center mb-10">
+      {/* ── Core Capabilities — one panel, divided rows, each with its own proof widget ── */}
+      <section className="py-16 px-4 max-w-5xl mx-auto" id="features">
+        <div className="mb-10">
           <h2 className={`text-3xl font-display font-bold ${isDark ? "text-white" : "text-gray-900"}`}>
             Everything you need to experiment with confidence
           </h2>
           <p className={`text-sm mt-2 ${isDark ? "text-white/40" : "text-gray-500"}`}>
-            Six powerful tools, one seamless platform.
+            Six tools, one platform — each shown running, not just described.
           </p>
         </div>
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {features.map((f, i) => (
-            <FeatureCard key={f.title} {...f} isDark={isDark} index={i} />
+        <div className={`rounded-3xl border overflow-hidden ${isDark ? "border-white/[0.07] bg-[#0D0E1A]" : "border-gray-200 bg-white shadow-sm"}`}>
+          {capabilities.map((item, i) => (
+            <CapabilityRow key={item.key} item={item} isDark={isDark} index={i} />
           ))}
         </div>
       </section>
@@ -442,21 +571,21 @@ export default function ProductPage() {
         </div>
       </section>
 
-      {/* ── AI Copilot Showcase ── */}
-      <section className="py-16 px-4 max-w-7xl mx-auto">
+      {/* ── AI Copilot Showcase — console log, not a card grid ── */}
+      <section className="py-16 px-4 max-w-3xl mx-auto">
         <Reveal>
-          <div className="text-center mb-10">
+          <div className="mb-8">
             <h2 className={`text-3xl font-display font-bold ${isDark ? "text-white" : "text-gray-900"}`}>
-              AI Copilot — Your Experimentation Partner
+              AI Copilot, your experimentation partner
             </h2>
             <p className={`text-sm mt-2 ${isDark ? "text-white/40" : "text-gray-500"}`}>
-              Six specialized agents to guide you from planning to deployment.
+              Six agents working alongside you, from planning to deployment.
             </p>
           </div>
         </Reveal>
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {agents.map((agent) => (
-            <AgentCard key={agent.name} agent={agent} isDark={isDark} />
+        <div className={`rounded-2xl border overflow-hidden ${isDark ? "border-white/[0.07] bg-[#0B0C15]" : "border-gray-200 bg-gray-50"}`}>
+          {agents.map((agent, i) => (
+            <AgentLogEntry key={agent.name} agent={agent} isDark={isDark} index={i} total={agents.length} />
           ))}
         </div>
       </section>
@@ -567,28 +696,27 @@ export default function ProductPage() {
         </div>
       </section>
 
-      {/* ── Security ── */}
+      {/* ── Security — a checklist, not a wrap of identical pills ── */}
       <section className={`py-16 px-4 ${isDark ? "bg-[#0D0E1A]" : "bg-white"} border-y ${isDark ? "border-white/[0.06]" : "border-gray-100"}`}>
-        <div className="max-w-7xl mx-auto text-center">
+        <div className="max-w-2xl mx-auto">
           <Reveal>
             <h2 className={`text-3xl font-display font-bold ${isDark ? "text-white" : "text-gray-900"}`}>
-              Enterprise‑Grade Security
+              Enterprise-grade security
             </h2>
-            <p className={`text-sm mt-2 mb-10 ${isDark ? "text-white/40" : "text-gray-500"}`}>
-              Your data is safe with us.
+            <p className={`text-sm mt-2 mb-8 ${isDark ? "text-white/40" : "text-gray-500"}`}>
+              Your data is protected the same way ours is.
             </p>
           </Reveal>
-          <div className="flex flex-wrap justify-center gap-4">
-            {securityItems.map((item) => {
+          <div className={`rounded-2xl border divide-y ${isDark ? "border-white/[0.07] divide-white/[0.06]" : "border-gray-200 divide-gray-100 bg-white"}`}>
+            {securityItems.map((item, i) => {
               const Icon = item.icon;
               return (
-                <Reveal key={item.label}>
-                  <div className={`p-4 rounded-xl border w-40 text-center ${isDark ? "border-white/[0.06] bg-white/[0.02]" : "border-gray-200 bg-white"}`}>
-                    <div className="w-10 h-10 rounded-full bg-brand-violet/10 flex items-center justify-center mx-auto mb-2 text-brand-violet">
-                      <Icon size={20} />
-                    </div>
-                    <p className={`text-sm font-medium ${isDark ? "text-white" : "text-gray-800"}`}>{item.label}</p>
-                    <p className={`text-xs ${isDark ? "text-white/30" : "text-gray-400"}`}>{item.sub}</p>
+                <Reveal key={item.label} delay={i * 0.03}>
+                  <div className="flex items-center gap-3 px-5 py-3.5">
+                    <CheckCircle size={16} className="text-emerald-500 flex-shrink-0" />
+                    <span className={`text-sm font-medium flex-1 ${isDark ? "text-white/85" : "text-gray-800"}`}>{item.label}</span>
+                    <span className={`text-xs ${isDark ? "text-white/30" : "text-gray-400"}`}>{item.sub}</span>
+                    <Icon size={14} className={isDark ? "text-white/20" : "text-gray-300"} />
                   </div>
                 </Reveal>
               );
