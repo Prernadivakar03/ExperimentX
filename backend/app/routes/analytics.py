@@ -686,6 +686,84 @@ def dashboard_overview(
         "completed_experiments": completed,
     }
 
+@router.get("/overview/timeseries")
+def dashboard_overview_timeseries(
+    days: int = 7,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    """Org-wide visitors/conversions per day, plus period-over-period trend
+    percentages, for the Overview dashboard chart and KPI cards."""
+    from app.models.organization import Membership
+
+    org_ids = [
+        m.organization_id for m in
+        db.query(Membership).filter(
+            Membership.user_id == current_user.id, Membership.accepted_at.isnot(None),
+        ).all()
+    ]
+    experiment_ids = [
+        e.id for e in
+        db.query(Experiment).filter(Experiment.organization_id.in_(org_ids)).all()
+    ]
+
+    def _window_totals(start: datetime, end: datetime) -> dict:
+        if not experiment_ids:
+            return {"visitors": 0, "conversions": 0}
+        visitors = (
+            db.query(func.count(func.distinct(Visitor.id)))
+            .filter(
+                Visitor.experiment_id.in_(experiment_ids),
+                Visitor.created_at >= start, Visitor.created_at < end,
+            ).scalar() or 0
+        )
+        conversions = (
+            db.query(func.count(func.distinct(Conversion.visitor_id)))
+            .filter(
+                Conversion.experiment_id.in_(experiment_ids),
+                Conversion.timestamp >= start, Conversion.timestamp < end,
+            ).scalar() or 0
+        )
+        return {"visitors": visitors, "conversions": conversions}
+
+    today = datetime.utcnow().date()
+    series = []
+    for i in range(days - 1, -1, -1):
+        day = today - timedelta(days=i)
+        day_start = datetime(day.year, day.month, day.day)
+        day_end = day_start + timedelta(days=1)
+        totals = _window_totals(day_start, day_end)
+        series.append({
+            "day": day.strftime("%b %d"),
+            "date": day.isoformat(),
+            "visitors": totals["visitors"],
+            "conversions": totals["conversions"],
+        })
+
+    current_start = datetime(today.year, today.month, today.day) - timedelta(days=days - 1)
+    current_end = datetime(today.year, today.month, today.day) + timedelta(days=1)
+    previous_start = current_start - timedelta(days=days)
+    previous_end = current_start
+
+    current = _window_totals(current_start, current_end)
+    previous = _window_totals(previous_start, previous_end)
+
+    def _pct_change(curr: float, prev: float) -> float:
+        if prev == 0:
+            return 0.0 if curr == 0 else 100.0
+        return round(((curr - prev) / prev) * 100, 1)
+
+    current_rate = (current["conversions"] / current["visitors"]) if current["visitors"] else 0
+    previous_rate = (previous["conversions"] / previous["visitors"]) if previous["visitors"] else 0
+
+    return {
+        "series": series,
+        "trends": {
+            "visitors": _pct_change(current["visitors"], previous["visitors"]),
+            "conversions": _pct_change(current["conversions"], previous["conversions"]),
+            "conversion_rate": _pct_change(current_rate, previous_rate),
+        },
+    }
 
 @router.post("/{experiment_id}/bayesian")
 def get_bayesian_results(

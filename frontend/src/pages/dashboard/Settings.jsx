@@ -108,7 +108,7 @@ function WorkspaceTab({ user, isDark }) {
         </Row>
         <Row label="Team" description="Manage members and permissions" isDark={isDark}>
           <button
-            onClick={() => navigate("/team")}
+            onClick={() => onNavigate?.("team")}
             className="text-xs px-3 py-2 rounded-lg bg-brand-violet text-white hover:bg-brand-violet/90 transition-colors"
           >
             Manage team →
@@ -556,7 +556,7 @@ function DeveloperTab({
 }
 
 // ---------- Main Settings Component ----------
-export default function Settings() {
+export default function Settings({ onNavigate }) {
   const { theme } = useTheme();
   const isDark = theme === "dark";
   const { user, clearAuth } = useAuth();
