@@ -41,7 +41,7 @@ export default function Navbar() {
               className={({ isActive }) =>
                 `relative text-sm font-medium transition-colors duration-300 ${
                   isActive
-                    ? "text-brand-violet"
+                    ? "text-brand-ember"
                     : isDark
                     ? "text-gray-300 hover:text-white"
                     : "text-gray-600 hover:text-gray-900"
@@ -53,7 +53,7 @@ export default function Navbar() {
                   {label}
 
                   {isActive && (
-                    <span className="absolute -bottom-2 left-0 w-full h-0.5 rounded-full bg-gradient-to-r from-brand-violet to-brand-blue"></span>
+                    <span className="absolute -bottom-2 left-0 w-full h-0.5 rounded-full bg-gradient-to-r from-brand-ember to-brand-gold"></span>
                   )}
                 </>
               )}
@@ -79,7 +79,7 @@ export default function Navbar() {
 
           <Link
             to="/register"
-            className="px-5 py-2 rounded-xl font-medium text-white bg-gradient-to-r from-brand-violet to-brand-blue shadow-lg hover:scale-105 transition-transform"
+            className="px-5 py-2 rounded-xl font-medium text-white bg-gradient-to-r from-brand-ember to-brand-gold shadow-lg hover:scale-105 transition-transform"
           >
             Get Started Free
           </Link>
@@ -90,6 +90,10 @@ export default function Navbar() {
     </nav>
   );
 }
+
+
+
+
 
 
 

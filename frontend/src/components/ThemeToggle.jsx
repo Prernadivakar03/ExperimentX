@@ -84,7 +84,7 @@ export default function ThemeToggle() {
         />
         <MoonIcon
           className={`absolute right-2 w-3.5 h-3.5 transition-colors duration-300 ${
-            isDark ? "text-brand-violet" : "text-gray-400 dark:text-white/30"
+            isDark ? "text-brand-ember" : "text-gray-400 dark:text-white/30"
           }`}
         />
 
@@ -154,7 +154,7 @@ export default function ThemeToggle() {
             transition={{ duration: 0.6, ease: [0.65, 0, 0.35, 1] }}
             className={`fixed inset-0 z-[9998] pointer-events-none ${
               ripple.nextTheme === "dark"
-                ? "bg-gradient-to-br from-brand-violet/25 via-brand-black to-brand-black"
+                ? "bg-gradient-to-br from-brand-ember/25 via-brand-black to-brand-black"
                 : "bg-gradient-to-br from-amber-100/40 via-white to-white"
             }`}
           />

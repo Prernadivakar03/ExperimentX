@@ -29,7 +29,7 @@ const AGENTS = [
     id: "planner",
     name: "Experiment Planner",
     icon: Brain,
-    color: "from-purple-500 to-brand-violet",
+    color: "from-purple-500 to-brand-ember",
     desc: "Turns a business goal into a complete experiment plan",
     placeholder: "e.g. I want to increase checkout conversions on my pricing page",
     endpoint: "/ai/plan-experiment",
@@ -39,7 +39,7 @@ const AGENTS = [
     id: "variant",
     name: "Variant Generator",
     icon: Pen,
-    color: "from-brand-blue to-cyan-500",
+    color: "from-brand-gold to-cyan-500",
     desc: "Generates optimized copy variants for any element",
     placeholder: "e.g. Generate 5 CTA button variants for a SaaS pricing page",
     endpoint: "/ai/generate-variants",
@@ -79,7 +79,7 @@ const AGENTS = [
     id: "chat",
     name: "AI Copilot Chat",
     icon: MessageSquare,
-    color: "from-fuchsia-500 to-brand-violet",
+    color: "from-fuchsia-500 to-brand-ember",
     desc: "Ask anything about A/B testing or optimization",
     placeholder: "Ask me anything about your experiments...",
     endpoint: "/ai/chat",
@@ -130,7 +130,7 @@ function MetricCard({ label, value, icon: Icon, color, subtext, progress }) {
         {subtext && <p className="text-[10px] text-white/30 mt-0.5">{subtext}</p>}
         {progress !== undefined && (
           <div className="h-1 w-full bg-white/10 rounded-full mt-1">
-            <div className="h-full rounded-full bg-gradient-to-r from-brand-violet to-brand-blue" style={{ width: `${progress}%` }} />
+            <div className="h-full rounded-full bg-gradient-to-r from-brand-ember to-brand-gold" style={{ width: `${progress}%` }} />
           </div>
         )}
       </div>
@@ -185,7 +185,7 @@ function StructuredResult({ data, agentId, isDark }) {
             >
               {steps.map((step, idx) => (
                 <div key={idx} className="flex items-center gap-4">
-                  <div className="w-6 h-6 rounded-full bg-gradient-to-br from-brand-violet to-brand-blue flex items-center justify-center text-white text-[10px] font-bold flex-shrink-0">
+                  <div className="w-6 h-6 rounded-full bg-gradient-to-br from-brand-ember to-brand-gold flex items-center justify-center text-white text-[10px] font-bold flex-shrink-0">
                     {idx + 1}
                   </div>
                   <div className="flex-1">
@@ -197,16 +197,16 @@ function StructuredResult({ data, agentId, isDark }) {
               <div className="mt-2 p-3 rounded-xl border border-white/10 bg-white/5">
                 <div className="flex justify-between mb-1">
                   <p className="text-[10px] font-bold uppercase tracking-wider text-white/30">Confidence</p>
-                  <span className="text-sm font-bold text-brand-violet">{data.confidence_score}%</span>
+                  <span className="text-sm font-bold text-brand-ember">{data.confidence_score}%</span>
                 </div>
                 <div className="h-1.5 rounded-full bg-white/10">
-                  <div className="h-full rounded-full bg-gradient-to-r from-brand-violet to-brand-blue" style={{ width: `${data.confidence_score}%` }} />
+                  <div className="h-full rounded-full bg-gradient-to-r from-brand-ember to-brand-gold" style={{ width: `${data.confidence_score}%` }} />
                 </div>
               </div>
               <motion.button
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                className="w-full py-2.5 rounded-xl text-sm font-medium bg-gradient-to-r from-brand-violet to-brand-blue text-white shadow-lg hover:shadow-xl transition-shadow"
+                className="w-full py-2.5 rounded-xl text-sm font-medium bg-gradient-to-r from-brand-ember to-brand-gold text-white shadow-lg hover:shadow-xl transition-shadow"
               >
                 Create Experiment →
               </motion.button>
@@ -237,9 +237,9 @@ function StructuredResult({ data, agentId, isDark }) {
                 <span
                   className={`text-xs font-bold ${
                     v.label === "A"
-                      ? "text-brand-violet"
+                      ? "text-brand-ember"
                       : v.label === "B"
-                      ? "text-brand-blue"
+                      ? "text-brand-gold"
                       : "text-emerald-500"
                   }`}
                 >
@@ -295,7 +295,7 @@ function StructuredResult({ data, agentId, isDark }) {
               <><AlertCircle size={16} className="inline mr-1" /> Not ready</>
             )}
           </span>
-          <span className="text-sm font-bold text-brand-violet">
+          <span className="text-sm font-bold text-brand-ember">
             {data.confidence_score}% confidence
           </span>
         </div>
@@ -350,7 +350,7 @@ function StructuredResult({ data, agentId, isDark }) {
     const metrics = [
       { label: "Winner", value: data.winner !== "None" ? `Variant ${data.winner}` : "None", icon: Trophy, color: "from-emerald-500 to-teal-500" },
       { label: "Lift", value: data.lift, icon: Zap, color: "from-amber-500 to-orange-500" },
-      { label: "Confidence", value: "96%", icon: Activity, color: "from-brand-violet to-brand-blue", progress: 96 },
+      { label: "Confidence", value: "96%", icon: Activity, color: "from-brand-ember to-brand-gold", progress: 96 },
       { label: "Recommendation", value: data.recommendation, icon: Target, color: data.recommendation === "Deploy" ? "from-emerald-500 to-teal-500" : "from-rose-500 to-pink-500" },
     ];
 
@@ -521,7 +521,7 @@ export default function AIInsights() {
       ? "bg-[#0D0E1A]/80 border-white/10 backdrop-blur-xl shadow-2xl"
       : "bg-white/80 border-gray-200/80 backdrop-blur-xl shadow-2xl"
   }`;
-  const inputCls = `flex-1 px-4 py-2.5 rounded-xl text-sm border focus:outline-none focus:ring-2 focus:ring-brand-violet/25 transition-shadow ${
+  const inputCls = `flex-1 px-4 py-2.5 rounded-xl text-sm border focus:outline-none focus:ring-2 focus:ring-brand-ember/25 transition-shadow ${
     isDark
       ? "bg-white/5 border-white/10 text-white placeholder:text-white/25"
       : "bg-gray-50/80 border-gray-200/80 text-gray-900 placeholder:text-gray-400"
@@ -537,7 +537,7 @@ export default function AIInsights() {
               isDark ? "text-white" : "text-gray-900"
             }`}
           >
-            <Sparkles size={28} className="text-brand-violet" />
+            <Sparkles size={28} className="text-brand-ember" />
             ExperimentX AI Copilot
           </h1>
           <p className={`text-sm mt-0.5 ${isDark ? "text-white/35" : "text-gray-500"}`}>
@@ -579,8 +579,8 @@ export default function AIInsights() {
               className={`relative flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300 ${
                 isActive
                   ? isDark
-                    ? "bg-brand-violet/20 text-white shadow-lg shadow-brand-violet/20"
-                    : "bg-brand-violet/10 text-brand-violet shadow-lg shadow-brand-violet/10"
+                    ? "bg-brand-ember/20 text-white shadow-lg shadow-brand-ember/20"
+                    : "bg-brand-ember/10 text-brand-ember shadow-lg shadow-brand-ember/10"
                   : isDark
                   ? "text-white/50 hover:text-white/80 hover:bg-white/5"
                   : "text-gray-500 hover:text-gray-800 hover:bg-gray-100/50"
@@ -591,14 +591,14 @@ export default function AIInsights() {
               {isActive && (
                 <motion.div
                   layoutId="activePill"
-                  className="absolute inset-0 rounded-xl border-2 border-brand-violet/60 pointer-events-none"
+                  className="absolute inset-0 rounded-xl border-2 border-brand-ember/60 pointer-events-none"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ type: "spring", stiffness: 300, damping: 30 }}
                 />
               )}
               {isActive && (
-                <span className="ml-1 text-[10px] font-bold text-brand-violet bg-brand-violet/10 px-1.5 py-0.5 rounded-full">
+                <span className="ml-1 text-[10px] font-bold text-brand-ember bg-brand-ember/10 px-1.5 py-0.5 rounded-full">
                   Active
                 </span>
               )}
@@ -638,7 +638,7 @@ export default function AIInsights() {
         {/* Chat mode */}
         {activeAgent.id === "chat" ? (
           <>
-            <div className="p-5 h-72 overflow-y-auto space-y-3 scrollbar-thin scrollbar-thumb-brand-violet/20">
+            <div className="p-5 h-72 overflow-y-auto space-y-3 scrollbar-thin scrollbar-thumb-brand-ember/20">
               {chatMessages.map((msg, i) => (
                 <motion.div
                   key={i}
@@ -647,14 +647,14 @@ export default function AIInsights() {
                   className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
                 >
                   {msg.role === "assistant" && (
-                    <div className="w-7 h-7 rounded-full bg-gradient-to-br from-fuchsia-500 to-brand-violet flex items-center justify-center text-white text-[10px] font-bold mr-2 flex-shrink-0 mt-0.5">
+                    <div className="w-7 h-7 rounded-full bg-gradient-to-br from-fuchsia-500 to-brand-ember flex items-center justify-center text-white text-[10px] font-bold mr-2 flex-shrink-0 mt-0.5">
                       AI
                     </div>
                   )}
                   <div
                     className={`max-w-[82%] px-4 py-3 rounded-2xl text-sm leading-relaxed ${
                       msg.role === "user"
-                        ? "bg-gradient-to-r from-brand-violet to-brand-blue text-white rounded-br-sm"
+                        ? "bg-gradient-to-r from-brand-ember to-brand-gold text-white rounded-br-sm"
                         : isDark
                         ? "bg-white/10 text-white/85 rounded-bl-sm backdrop-blur-sm"
                         : "bg-gray-100/80 text-gray-800 rounded-bl-sm backdrop-blur-sm"
@@ -674,7 +674,7 @@ export default function AIInsights() {
                     exit={{ opacity: 0 }}
                     className="flex"
                   >
-                    <div className="w-7 h-7 rounded-full bg-gradient-to-br from-fuchsia-500 to-brand-violet flex items-center justify-center text-white text-[10px] font-bold mr-2 flex-shrink-0">
+                    <div className="w-7 h-7 rounded-full bg-gradient-to-br from-fuchsia-500 to-brand-ember flex items-center justify-center text-white text-[10px] font-bold mr-2 flex-shrink-0">
                       AI
                     </div>
                     <div
@@ -685,7 +685,7 @@ export default function AIInsights() {
                       {[0, 0.2, 0.4].map((d) => (
                         <motion.div
                           key={d}
-                          className="w-1.5 h-1.5 rounded-full bg-brand-violet"
+                          className="w-1.5 h-1.5 rounded-full bg-brand-ember"
                           animate={{ y: [0, -5, 0] }}
                           transition={{
                             duration: 0.6,
@@ -718,7 +718,7 @@ export default function AIInsights() {
                   disabled={!input.trim() || loading}
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  className="px-4 py-2.5 rounded-xl text-sm text-white font-medium bg-gradient-to-r from-brand-violet to-brand-blue disabled:opacity-40 hover:shadow-lg transition-shadow flex items-center gap-2"
+                  className="px-4 py-2.5 rounded-xl text-sm text-white font-medium bg-gradient-to-r from-brand-ember to-brand-gold disabled:opacity-40 hover:shadow-lg transition-shadow flex items-center gap-2"
                 >
                   <Send size={16} />
                   Send
@@ -740,7 +740,7 @@ export default function AIInsights() {
                 <select
                   value={selectedExpId}
                   onChange={(e) => setSelectedExpId(e.target.value)}
-                  className={`w-full px-3.5 py-2.5 rounded-xl text-sm border focus:outline-none focus:ring-2 focus:ring-brand-violet/25 ${
+                  className={`w-full px-3.5 py-2.5 rounded-xl text-sm border focus:outline-none focus:ring-2 focus:ring-brand-ember/25 ${
                     isDark
                       ? "bg-white/5 border-white/10 text-white"
                       : "bg-white/80 border-gray-200/80 text-gray-900"

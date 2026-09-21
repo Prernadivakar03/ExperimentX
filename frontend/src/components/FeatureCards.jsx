@@ -138,7 +138,7 @@ function FeatureCard({ data, index, isDark }) {
               isDark ? "bg-white/5" : "bg-gray-50"
             }`}
           >
-            <Icon size={20} className="text-brand-violet" strokeWidth={1.5} />
+            <Icon size={20} className="text-brand-ember" strokeWidth={1.5} />
           </div>
           <div>
             <h3 className="font-display font-semibold text-gray-900 dark:text-white">
@@ -215,7 +215,7 @@ function FeatureCard({ data, index, isDark }) {
       </div>
 
       <motion.div
-        className="absolute -bottom-10 -right-10 w-40 h-40 rounded-full bg-brand-violet/10 blur-2xl pointer-events-none"
+        className="absolute -bottom-10 -right-10 w-40 h-40 rounded-full bg-brand-ember/10 blur-2xl pointer-events-none"
         animate={{
           scale: isHovering ? 1.8 : 0.8,
           opacity: isHovering ? 0.6 : 0,

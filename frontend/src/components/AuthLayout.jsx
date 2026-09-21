@@ -131,26 +131,26 @@ function RightPanelOrb({ isDark }) {
       >
         <motion.div
           className={`absolute inset-0 rounded-full border ${
-            isDark ? "border-brand-violet/30" : "border-brand-violet/40"
+            isDark ? "border-brand-ember/30" : "border-brand-ember/40"
           }`}
           style={{ borderStyle: "dashed" }}
         />
         <motion.div
           className={`absolute inset-6 rounded-full border ${
-            isDark ? "border-brand-blue/25" : "border-brand-blue/35"
+            isDark ? "border-brand-gold/25" : "border-brand-gold/35"
           }`}
           animate={{ rotate: -360 }}
           transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
         />
         <motion.div
-          className="absolute w-3 h-3 rounded-full bg-brand-violet shadow-[0_0_10px_rgba(108,92,231,0.8)]"
+          className="absolute w-3 h-3 rounded-full bg-brand-ember shadow-[0_0_10px_rgba(108,92,231,0.8)]"
           style={{ top: "0%", left: "50%", transformOrigin: "0 96px" }}
         />
         <motion.div
-          className="absolute w-2 h-2 rounded-full bg-brand-blue shadow-[0_0_8px_rgba(79,140,255,0.8)]"
+          className="absolute w-2 h-2 rounded-full bg-brand-gold shadow-[0_0_8px_rgba(79,140,255,0.8)]"
           style={{ top: "50%", right: "0%", transformOrigin: "-96px 0" }}
         />
-        <div className="absolute inset-10 rounded-full bg-gradient-to-br from-brand-violet via-fuchsia-500/60 to-brand-blue
+        <div className="absolute inset-10 rounded-full bg-gradient-to-br from-brand-ember via-fuchsia-500/60 to-brand-gold
                         flex items-center justify-center
                         shadow-[0_0_60px_rgba(108,92,231,0.7)]">
           <div className="absolute top-2 left-3 w-8 h-6 rounded-full bg-white/25 blur-md" />
@@ -198,7 +198,7 @@ function RightPanelOrb({ isDark }) {
           <span className={`text-xs ${isDark ? "text-white/50" : "text-gray-500"}`}>
             {s.label}
           </span>
-          <span className="text-sm font-display font-bold text-brand-violet">
+          <span className="text-sm font-display font-bold text-brand-ember">
             {s.value}
           </span>
         </motion.div>
@@ -221,7 +221,7 @@ export default function AuthLayout({ title, subtitle, children, footer }) {
       <motion.div
         className={`absolute top-[-10%] left-[-5%] w-[500px] h-[500px] rounded-full
                    blur-[140px] pointer-events-none transition-opacity duration-500 ${
-                     isDark ? "bg-brand-violet/20" : "bg-brand-violet/12"
+                     isDark ? "bg-brand-ember/20" : "bg-brand-ember/12"
                    }`}
         animate={{ x: [0, 30, 0], y: [0, -20, 0] }}
         transition={{ duration: 14, repeat: Infinity, ease: "easeInOut" }}
@@ -229,7 +229,7 @@ export default function AuthLayout({ title, subtitle, children, footer }) {
       <motion.div
         className={`absolute bottom-[-10%] right-[-5%] w-[450px] h-[450px] rounded-full
                    blur-[140px] pointer-events-none transition-opacity duration-500 ${
-                     isDark ? "bg-brand-blue/20" : "bg-brand-blue/12"
+                     isDark ? "bg-brand-gold/20" : "bg-brand-gold/12"
                    }`}
         animate={{ x: [0, -25, 0], y: [0, 15, 0] }}
         transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 2 }}

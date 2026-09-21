@@ -153,7 +153,7 @@ function Sidebar({ active, setActive, collapsed, isDark, user, onLogout }) {
         {!collapsed && (
           <div className="overflow-hidden">
             <p className={`font-display font-bold text-sm leading-tight ${isDark ? "text-white" : "text-gray-900"}`}>
-              Experiment<span className="text-brand-violet">X</span>
+              Experiment<span className="text-brand-ember">X</span>
             </p>
             <p className={`text-[9px] ${isDark ? "text-white/25" : "text-gray-400"}`}>AI Testing Platform</p>
           </div>
@@ -172,8 +172,8 @@ function Sidebar({ active, setActive, collapsed, isDark, user, onLogout }) {
               className={`${base} ${collapsed ? "justify-center px-2" : ""} ${
                 isActive
                   ? isDark
-                    ? "bg-brand-violet/12 text-brand-violet"
-                    : "bg-brand-violet/8 text-brand-violet"
+                    ? "bg-brand-ember/12 text-brand-ember"
+                    : "bg-brand-ember/8 text-brand-ember"
                   : isDark
                     ? "text-white/45 hover:text-white hover:bg-white/[0.04]"
                     : "text-gray-500 hover:text-gray-900 hover:bg-gray-100"
@@ -184,7 +184,7 @@ function Sidebar({ active, setActive, collapsed, isDark, user, onLogout }) {
                 <>
                   <span className="flex-1">{item.label}</span>
                   {item.badge && (
-                    <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-brand-violet/15 text-brand-violet">
+                    <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-brand-ember/15 text-brand-ember">
                       {item.badge}
                     </span>
                   )}
@@ -193,7 +193,7 @@ function Sidebar({ active, setActive, collapsed, isDark, user, onLogout }) {
               {isActive && (
                 <motion.div
                   layoutId="activeIndicator"
-                  className="absolute left-0 w-0.5 h-5 bg-brand-violet rounded-r"
+                  className="absolute left-0 w-0.5 h-5 bg-brand-ember rounded-r"
                   style={{ position: "absolute", left: 0 }}
                 />
               )}
@@ -208,7 +208,7 @@ function Sidebar({ active, setActive, collapsed, isDark, user, onLogout }) {
           <div className={`flex items-center gap-2.5 px-2 py-2 rounded-xl ${
             isDark ? "hover:bg-white/[0.04]" : "hover:bg-gray-50"
           } transition-colors`}>
-            <div className="w-7 h-7 rounded-full bg-gradient-to-br from-brand-violet to-brand-blue flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
+            <div className="w-7 h-7 rounded-full bg-gradient-to-br from-brand-ember to-brand-gold flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
               {user?.name?.[0]?.toUpperCase() || "U"}
             </div>
             <div className="flex-1 min-w-0">
@@ -218,7 +218,7 @@ function Sidebar({ active, setActive, collapsed, isDark, user, onLogout }) {
           </div>
         ) : (
           <div className="flex justify-center">
-            <div className="w-7 h-7 rounded-full bg-gradient-to-br from-brand-violet to-brand-blue flex items-center justify-center text-white text-xs font-bold">
+            <div className="w-7 h-7 rounded-full bg-gradient-to-br from-brand-ember to-brand-gold flex items-center justify-center text-white text-xs font-bold">
               {user?.name?.[0]?.toUpperCase() || "U"}
             </div>
           </div>
@@ -348,7 +348,7 @@ export default function Dashboard() {
             <button
               onClick={() => setActive("experiments")}
               className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium text-white
-                         bg-gradient-to-r from-brand-violet to-brand-blue hover:opacity-90 transition-opacity"
+                         bg-gradient-to-r from-brand-ember to-brand-gold hover:opacity-90 transition-opacity"
             >
               <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24">
                 <path strokeLinecap="round" d="M12 4v16m8-8H4" />
@@ -360,7 +360,7 @@ export default function Dashboard() {
 
             {/* Avatar dropdown */}
             <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-brand-violet to-brand-blue flex items-center justify-center text-white text-xs font-bold">
+              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-brand-ember to-brand-gold flex items-center justify-center text-white text-xs font-bold">
                 {user?.name?.[0]?.toUpperCase() || "U"}
               </div>
               <div className="hidden md:block">
