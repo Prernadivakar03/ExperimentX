@@ -1,27 +1,20 @@
 import api from "./api";
 
 const ACCESS_KEY = "experimentx_access_token";
-const REFRESH_KEY = "experimentx_refresh_token";
 const USER_KEY = "experimentx_user";
 
-export function saveSession({ access_token, refresh_token, user }) {
+export function saveSession({ access_token, user }) {
   localStorage.setItem(ACCESS_KEY, access_token);
-  localStorage.setItem(REFRESH_KEY, refresh_token);
   localStorage.setItem(USER_KEY, JSON.stringify(user));
 }
 
 export function clearSession() {
   localStorage.removeItem(ACCESS_KEY);
-  localStorage.removeItem(REFRESH_KEY);
   localStorage.removeItem(USER_KEY);
 }
 
 export function getAccessToken() {
   return localStorage.getItem(ACCESS_KEY);
-}
-
-export function getRefreshToken() {
-  return localStorage.getItem(REFRESH_KEY);
 }
 
 export function getStoredUser() {
@@ -46,11 +39,10 @@ export async function register({ name, email, password, company }) {
 }
 
 export async function logout() {
-  const refresh_token = getRefreshToken();
   try {
-    if (refresh_token) {
-      await api.post("/auth/logout", { refresh_token });
-    }
+    // No body needed — the backend reads the refresh token from its
+    // httpOnly cookie and clears that cookie in the response.
+    await api.post("/auth/logout");
   } finally {
     clearSession();
   }

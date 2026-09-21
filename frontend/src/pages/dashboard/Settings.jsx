@@ -109,7 +109,7 @@ function WorkspaceTab({ user, isDark }) {
         <Row label="Team" description="Manage members and permissions" isDark={isDark}>
           <button
             onClick={() => onNavigate?.("team")}
-            className="text-xs px-3 py-2 rounded-lg bg-brand-violet text-white hover:bg-brand-violet/90 transition-colors"
+            className="text-xs px-3 py-2 rounded-lg bg-brand-ember text-white hover:bg-brand-ember/90 transition-colors"
           >
             Manage team →
           </button>
@@ -271,7 +271,7 @@ function ExperimentsTab({ isDark, orgId }) {
           <button
             onClick={() => setAutoStop(!autoStop)}
             className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-              autoStop ? "bg-brand-violet" : isDark ? "bg-white/20" : "bg-gray-300"
+              autoStop ? "bg-brand-ember" : isDark ? "bg-white/20" : "bg-gray-300"
             }`}
           >
             <span
@@ -285,7 +285,7 @@ function ExperimentsTab({ isDark, orgId }) {
           <button
             onClick={() => setRequireMinSample(!requireMinSample)}
             className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-              requireMinSample ? "bg-brand-violet" : isDark ? "bg-white/20" : "bg-gray-300"
+              requireMinSample ? "bg-brand-ember" : isDark ? "bg-white/20" : "bg-gray-300"
             }`}
           >
             <span
@@ -299,7 +299,7 @@ function ExperimentsTab({ isDark, orgId }) {
           <button
             onClick={handleSaveDefaults}
             disabled={loadingSettings || savingDefaults}
-            className="w-full text-sm px-4 py-2 rounded-lg bg-brand-violet text-white hover:bg-brand-violet/90 transition-colors disabled:opacity-50"
+            className="w-full text-sm px-4 py-2 rounded-lg bg-brand-ember text-white hover:bg-brand-ember/90 transition-colors disabled:opacity-50"
           >
             {savingDefaults ? "Saving…" : "Save defaults"}
           </button>
@@ -371,7 +371,7 @@ function ExperimentsTab({ isDark, orgId }) {
           <button
             onClick={handleSaveStats}
             disabled={loadingSettings || savingStats}
-            className="w-full text-sm px-4 py-2 rounded-lg bg-brand-violet text-white hover:bg-brand-violet/90 transition-colors disabled:opacity-50"
+            className="w-full text-sm px-4 py-2 rounded-lg bg-brand-ember text-white hover:bg-brand-ember/90 transition-colors disabled:opacity-50"
           >
             {savingStats ? "Saving…" : "Save statistics"}
           </button>
@@ -419,7 +419,7 @@ function DeveloperTab({
           {canManageKeys && (
             <button
               onClick={onNewKey}
-              className="text-xs px-3 py-2 rounded-lg bg-brand-violet text-white hover:bg-brand-violet/90 transition-colors"
+              className="text-xs px-3 py-2 rounded-lg bg-brand-ember text-white hover:bg-brand-ember/90 transition-colors"
             >
               + New key
             </button>
@@ -498,10 +498,10 @@ function DeveloperTab({
               value={webhookUrl}
               onChange={(e) => setWebhookUrl(e.target.value)}
               disabled={!canManageKeys}
-              className={`w-full px-3.5 py-2.5 rounded-xl text-sm border focus:outline-none focus:ring-2 focus:ring-brand-violet/25 transition-all disabled:opacity-50 ${
+              className={`w-full px-3.5 py-2.5 rounded-xl text-sm border focus:outline-none focus:ring-2 focus:ring-brand-ember/25 transition-all disabled:opacity-50 ${
                 isDark
-                  ? "bg-white/[0.04] border-white/[0.08] text-white placeholder:text-white/25 focus:border-brand-violet/50"
-                  : "bg-white border-gray-200 text-gray-900 placeholder:text-gray-400 focus:border-brand-violet"
+                  ? "bg-white/[0.04] border-white/[0.08] text-white placeholder:text-white/25 focus:border-brand-ember/50"
+                  : "bg-white border-gray-200 text-gray-900 placeholder:text-gray-400 focus:border-brand-ember"
               }`}
             />
 
@@ -516,7 +516,7 @@ function DeveloperTab({
                     onClick={() => toggleWebhookEvent(opt.value)}
                     className={`text-xs px-3 py-1.5 rounded-full border transition-colors disabled:opacity-50 ${
                       active
-                        ? "bg-brand-violet/15 border-brand-violet/40 text-brand-violet"
+                        ? "bg-brand-ember/15 border-brand-ember/40 text-brand-ember"
                         : isDark
                         ? "border-white/[0.08] text-white/40 hover:text-white/70"
                         : "border-gray-200 text-gray-400 hover:text-gray-700"
@@ -533,7 +533,7 @@ function DeveloperTab({
                 <button
                   onClick={onSaveWebhook}
                   disabled={savingWebhook}
-                  className="text-xs px-3.5 py-2 rounded-lg bg-brand-violet text-white hover:bg-brand-violet/90 transition-colors disabled:opacity-50"
+                  className="text-xs px-3.5 py-2 rounded-lg bg-brand-ember text-white hover:bg-brand-ember/90 transition-colors disabled:opacity-50"
                 >
                   {savingWebhook ? "Saving…" : "Save"}
                 </button>
