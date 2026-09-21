@@ -122,7 +122,7 @@ const handleSubmit = async (e) => {
       footer={
         <span className={isDark ? "text-white/40" : "text-gray-500"}>
           Don't have an account?{" "}
-          <Link to="/register" className="text-brand-violet font-medium hover:underline">
+          <Link to="/register" className="text-brand-ember font-medium hover:underline">
             Create one free
           </Link>
         </span>
@@ -151,7 +151,7 @@ const handleSubmit = async (e) => {
         />
 
         <div className="flex justify-end mb-5">
-          <Link to="/forgot-password" className="text-xs text-brand-violet hover:underline">
+          <Link to="/forgot-password" className="text-xs text-brand-ember hover:underline">
             Forgot password?
           </Link>
         </div>
@@ -176,7 +176,7 @@ const handleSubmit = async (e) => {
           whileHover={{ scale: loading ? 1 : 1.02 }}
           whileTap={{ scale: 0.97 }}
           className="relative w-full py-3 rounded-lg text-white font-medium text-sm overflow-hidden
-                     bg-gradient-to-r from-brand-violet to-brand-blue
+                     bg-gradient-to-r from-brand-ember to-brand-gold
                      disabled:opacity-70 transition-opacity"
           style={{ boxShadow: "0 0 30px rgba(108,92,231,0.45)" }}
         >

@@ -17,7 +17,7 @@ function Bar({ label, value, max, isDark }) {
           animate={{ width: `${pct}%` }}
           transition={{ duration: 0.6, ease: "easeOut" }}
           className={`h-full rounded-full ${
-            positive ? "bg-gradient-to-r from-brand-violet to-brand-blue" : "bg-red-400"
+            positive ? "bg-gradient-to-r from-brand-ember to-brand-gold" : "bg-red-400"
           }`}
         />
       </div>
@@ -93,7 +93,7 @@ export default function MLInsightsPanel({ experimentId, isDark }) {
         <h3 className={`font-display font-semibold ${isDark ? "text-white" : "text-gray-900"}`}>
           ML Predictions
         </h3>
-        <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-brand-violet/15 text-brand-violet">
+        <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-brand-ember/15 text-brand-ember">
           ML
         </span>
       </div>

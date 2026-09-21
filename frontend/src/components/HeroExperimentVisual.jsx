@@ -223,7 +223,7 @@ export default function HeroExperimentVisual() {
         </div>
         <div className="w-24 h-0.5 mt-1.5 rounded-full bg-gray-200 dark:bg-white/10 overflow-hidden">
           <motion.div
-            className="h-full bg-gradient-to-r from-brand-violet to-brand-blue"
+            className="h-full bg-gradient-to-r from-brand-ember to-brand-gold"
             animate={{ x: ["-100%", "100%"] }}
             transition={{ duration: 1.4, repeat: Infinity, ease: "linear" }}
           />
@@ -244,14 +244,14 @@ export default function HeroExperimentVisual() {
         >
           {/* Outer rotating ring */}
           <motion.div
-            className="absolute w-44 h-44 rounded-full border border-brand-violet/30 dark:border-brand-violet/40"
+            className="absolute w-44 h-44 rounded-full border border-brand-ember/30 dark:border-brand-ember/40"
             style={{ borderStyle: "dashed" }}
             animate={{ rotate: 360 }}
             transition={{ duration: deciding ? 3 : 14, repeat: Infinity, ease: "linear" }}
           />
           {/* Mid ring, counter-rotating */}
           <motion.div
-            className="absolute w-32 h-32 rounded-full border border-brand-blue/30"
+            className="absolute w-32 h-32 rounded-full border border-brand-gold/30"
             animate={{ rotate: -360 }}
             transition={{ duration: deciding ? 4 : 18, repeat: Infinity, ease: "linear" }}
           />
@@ -291,7 +291,7 @@ export default function HeroExperimentVisual() {
           {/* AI Core */}
           <motion.div
             className="relative w-24 h-24 rounded-full flex items-center justify-center
-                       bg-gradient-to-br from-brand-violet via-fuchsia-500/70 to-brand-blue
+                       bg-gradient-to-br from-brand-ember via-fuchsia-500/70 to-brand-gold
                        shadow-[0_0_70px_rgba(108,92,231,0.7)]"
             animate={{
               scale: deciding ? [1, 1.18, 1] : revealing ? [1, 1.3, 1] : [1, 1.06, 1],
@@ -377,18 +377,18 @@ export default function HeroExperimentVisual() {
 
 const colorMap = {
   violet: {
-    text: "text-brand-violet",
+    text: "text-brand-ember",
     glow: "rgba(168,130,255,0.55)",
     ring: "rgba(108,92,231,0.6)",
-    bar: "bg-brand-violet",
-    border: "border-brand-violet/40",
+    bar: "bg-brand-ember",
+    border: "border-brand-ember/40",
   },
   blue: {
-    text: "text-brand-blue",
+    text: "text-brand-gold",
     glow: "rgba(79,200,255,0.55)",
     ring: "rgba(79,140,255,0.6)",
-    bar: "bg-brand-blue",
-    border: "border-brand-blue/40",
+    bar: "bg-brand-gold",
+    border: "border-brand-gold/40",
   },
 };
 
@@ -453,7 +453,7 @@ function HoloCard({ position, badge, percent, visitors, color, barHeights, isWin
 
         <div className="flex items-center justify-between" style={{ transform: "translateZ(20px)" }}>
           <div className="flex items-center gap-2">
-            <span className={`w-6 h-6 rounded-full ${color === "violet" ? "bg-brand-violet" : "bg-brand-blue"} flex items-center justify-center text-white text-xs font-bold`}>
+            <span className={`w-6 h-6 rounded-full ${color === "violet" ? "bg-brand-ember" : "bg-brand-gold"} flex items-center justify-center text-white text-xs font-bold`}>
               {badge}
             </span>
             <span className="text-xs text-gray-600 dark:text-white/70">Variant {badge}</span>

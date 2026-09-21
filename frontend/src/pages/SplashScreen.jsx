@@ -87,7 +87,7 @@
 //   if (!assignment) {
 //     return (
 //       <div className="min-h-screen flex items-center justify-center bg-white dark:bg-brand-black">
-//         <div className="w-8 h-8 rounded-full border-2 border-brand-violet border-t-transparent animate-spin" />
+//         <div className="w-8 h-8 rounded-full border-2 border-brand-ember border-t-transparent animate-spin" />
 //       </div>
 //     );
 //   }
@@ -108,9 +108,9 @@
 //       </div>
 
 //       <div className="absolute top-0 left-1/4 w-[500px] h-[500px] rounded-full
-//                       bg-brand-violet/10 dark:bg-brand-violet/25 blur-[120px] pointer-events-none" />
+//                       bg-brand-ember/10 dark:bg-brand-ember/25 blur-[120px] pointer-events-none" />
 //       <div className="absolute top-40 right-0 w-[400px] h-[400px] rounded-full
-//                       bg-brand-blue/10 dark:bg-brand-blue/25 blur-[120px] pointer-events-none" />
+//                       bg-brand-gold/10 dark:bg-brand-gold/25 blur-[120px] pointer-events-none" />
 
 //       <div className="relative z-10">
 //         <Navbar />
@@ -123,12 +123,12 @@
 //             transition={{ duration: 0.6 }}
 //           >
 //             <span className="inline-block text-xs font-medium px-3 py-1 rounded-full
-//                               bg-brand-violet/10 text-brand-violet mb-5">
+//                               bg-brand-ember/10 text-brand-ember mb-5">
 //               AI-Powered A/B Testing Platform
 //             </span>
 //             <h1 className="text-4xl md:text-5xl font-display font-extrabold leading-tight text-gray-900 dark:text-white">
 //               Measure. Experiment.{" "}
-//               <span className="bg-gradient-to-r from-brand-violet to-brand-blue bg-clip-text text-transparent">
+//               <span className="bg-gradient-to-r from-brand-ember to-brand-gold bg-clip-text text-transparent">
 //                 Optimize.
 //               </span>
 //             </h1>
@@ -140,14 +140,14 @@
 //               <Link
 //                 to="/register"
 //                 className="px-6 py-3 rounded-lg text-white font-medium
-//                            bg-gradient-to-r from-brand-violet to-brand-blue hover:opacity-90
+//                            bg-gradient-to-r from-brand-ember to-brand-gold hover:opacity-90
 //                            shadow-[0_0_30px_rgba(108,92,231,0.4)] hover:shadow-[0_0_45px_rgba(108,92,231,0.6)]
 //                            transition-all duration-300"
 //               >
 //                 Start Free Trial
 //               </Link>
 //               <button className="px-6 py-3 rounded-lg font-medium text-gray-700 dark:text-gray-200
-//                                  border border-gray-300 dark:border-white/15 hover:border-brand-violet transition-colors">
+//                                  border border-gray-300 dark:border-white/15 hover:border-brand-ember transition-colors">
 //                 ▶ Watch Demo
 //               </button>
 //             </div>
@@ -194,15 +194,15 @@
 
 //         {/* ─── Divider ───────────────────────────────────────── */}
 //         <div className="max-w-6xl mx-auto px-6">
-//           <div className="h-px w-full bg-gradient-to-r from-transparent via-brand-violet/30 to-transparent" />
+//           <div className="h-px w-full bg-gradient-to-r from-transparent via-brand-ember/30 to-transparent" />
 //         </div>
 
 //         {/* ─── EXPERIMENT REPORT ────────────────────────────── */}
 //         <section className="relative py-16 md:py-24 px-6 overflow-hidden">
 //           <div className="absolute inset-0 pointer-events-none">
-//             <div className="absolute left-1/2 top-1/2 h-[600px] w-[600px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-brand-violet/5 dark:bg-brand-violet/20 blur-[140px]" />
-//             <div className="absolute right-10 top-20 h-72 w-72 rounded-full bg-brand-blue/5 dark:bg-brand-blue/20 blur-[120px]" />
-//             <div className="absolute left-10 bottom-0 h-64 w-64 rounded-full bg-brand-violet/5 dark:bg-brand-violet/10 blur-[120px]" />
+//             <div className="absolute left-1/2 top-1/2 h-[600px] w-[600px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-brand-ember/5 dark:bg-brand-ember/20 blur-[140px]" />
+//             <div className="absolute right-10 top-20 h-72 w-72 rounded-full bg-brand-gold/5 dark:bg-brand-gold/20 blur-[120px]" />
+//             <div className="absolute left-10 bottom-0 h-64 w-64 rounded-full bg-brand-ember/5 dark:bg-brand-ember/10 blur-[120px]" />
 //           </div>
 
 //           <div className="relative max-w-6xl mx-auto">
@@ -213,7 +213,7 @@
 //               transition={{ duration: 0.6 }}
 //               className="text-center mb-12"
 //             >
-//               <div className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-brand-violet/10 dark:bg-brand-violet/20 border border-brand-violet/20 text-xs font-medium text-brand-violet mb-4">
+//               <div className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-brand-ember/10 dark:bg-brand-ember/20 border border-brand-ember/20 text-xs font-medium text-brand-ember mb-4">
 //                 <span>Experiment ID</span>
 //                 <span className="font-mono font-bold">{assignment.experimentId}</span>
 //               </div>
@@ -235,13 +235,13 @@
 //                 className="rounded-2xl border p-6 bg-white dark:bg-[#111319] border-gray-200 dark:border-white/10 shadow-sm"
 //               >
 //                 <h3 className="text-sm font-bold uppercase tracking-wider text-gray-700 dark:text-gray-300 flex items-center gap-2">
-//                   <Target size={16} className="text-brand-violet" />
+//                   <Target size={16} className="text-brand-ember" />
 //                   Your Assignment
 //                 </h3>
 //                 <div className="mt-4 space-y-3">
 //                   <div>
 //                     <p className="text-xs font-medium text-gray-600 dark:text-gray-400">Hero Variant</p>
-//                     <p className="text-2xl font-bold text-brand-violet">Variant {heroVariant}</p>
+//                     <p className="text-2xl font-bold text-brand-ember">Variant {heroVariant}</p>
 //                   </div>
 //                   <div>
 //                     <p className="text-xs font-medium text-gray-600 dark:text-gray-400">Theme Journey</p>
@@ -281,13 +281,13 @@
 //                     <div className="flex items-center gap-2">
 //                       <div className="flex-1 h-1.5 rounded-full bg-gray-200 dark:bg-white/10 overflow-hidden relative">
 //                         <motion.div
-//                           className="h-full bg-gradient-to-r from-brand-violet to-brand-blue absolute inset-0"
+//                           className="h-full bg-gradient-to-r from-brand-ember to-brand-gold absolute inset-0"
 //                           initial={{ width: 0 }}
 //                           whileInView={{ width: `${assignment.confidence}%` }}
 //                           transition={{ duration: 1 }}
 //                         />
 //                         <motion.div
-//                           className="h-full bg-gradient-to-r from-brand-violet to-brand-blue absolute inset-0"
+//                           className="h-full bg-gradient-to-r from-brand-ember to-brand-gold absolute inset-0"
 //                           animate={{
 //                             opacity: [0.6, 1, 0.6],
 //                             scaleX: [0.98, 1.02, 0.98],
@@ -316,7 +316,7 @@
 //                 className="rounded-2xl border p-6 bg-white dark:bg-[#111319] border-gray-200 dark:border-white/10 shadow-sm"
 //               >
 //                 <h3 className="text-sm font-bold uppercase tracking-wider text-gray-700 dark:text-gray-300 flex items-center gap-2">
-//                   <BarChart3 size={16} className="text-brand-blue" />
+//                   <BarChart3 size={16} className="text-brand-gold" />
 //                   Your Session
 //                 </h3>
 //                 <div className="mt-4 space-y-4">
@@ -327,7 +327,7 @@
 //                     </div>
 //                     <div className="h-1.5 w-full rounded-full bg-gray-200 dark:bg-white/10 overflow-hidden mt-1">
 //                       <motion.div
-//                         className="h-full bg-brand-violet"
+//                         className="h-full bg-brand-ember"
 //                         initial={{ width: 0 }}
 //                         whileInView={{ width: "100%" }}
 //                         transition={{ duration: 1 }}
@@ -341,7 +341,7 @@
 //                     </div>
 //                     <div className="h-1.5 w-full rounded-full bg-gray-200 dark:bg-white/10 overflow-hidden mt-1">
 //                       <motion.div
-//                         className="h-full bg-brand-blue"
+//                         className="h-full bg-brand-gold"
 //                         initial={{ width: 0 }}
 //                         whileInView={{ width: `${stats.scrollDepth}%` }}
 //                         transition={{ duration: 1 }}
@@ -384,31 +384,31 @@
 //                 initial={{ opacity: 0, y: 20 }}
 //                 whileInView={{ opacity: 1, y: 0 }}
 //                 transition={{ duration: 0.5, delay: 0.3 }}
-//                 className="rounded-2xl border p-6 bg-gradient-to-br from-brand-violet/5 to-brand-blue/5 border-brand-violet/20 dark:border-brand-violet/30 shadow-sm"
+//                 className="rounded-2xl border p-6 bg-gradient-to-br from-brand-ember/5 to-brand-gold/5 border-brand-ember/20 dark:border-brand-ember/30 shadow-sm"
 //               >
-//                 <h3 className="text-sm font-bold uppercase tracking-wider text-brand-violet flex items-center gap-2">
-//                   <Brain size={16} className="text-brand-violet" />
+//                 <h3 className="text-sm font-bold uppercase tracking-wider text-brand-ember flex items-center gap-2">
+//                   <Brain size={16} className="text-brand-ember" />
 //                   AI Observations
 //                 </h3>
 //                 <ul className="mt-4 space-y-2 text-sm text-gray-700 dark:text-gray-300">
 //                   <li className="flex items-start gap-2">
-//                     <CheckCircle2 size={14} className="text-brand-violet shrink-0 mt-0.5" />
+//                     <CheckCircle2 size={14} className="text-brand-ember shrink-0 mt-0.5" />
 //                     <span>Engaged with {heroVariant === "B" ? "Variant B" : "Variant A"} hero</span>
 //                   </li>
 //                   <li className="flex items-start gap-2">
-//                     <CheckCircle2 size={14} className="text-brand-violet shrink-0 mt-0.5" />
+//                     <CheckCircle2 size={14} className="text-brand-ember shrink-0 mt-0.5" />
 //                     <span>{themeSwitched ? "Switched to dark theme" : "Maintained light theme preference"}</span>
 //                   </li>
 //                   <li className="flex items-start gap-2">
-//                     <CheckCircle2 size={14} className="text-brand-violet shrink-0 mt-0.5" />
+//                     <CheckCircle2 size={14} className="text-brand-ember shrink-0 mt-0.5" />
 //                     <span>Read Comparison Section</span>
 //                   </li>
 //                   <li className="flex items-start gap-2">
-//                     <CheckCircle2 size={14} className="text-brand-violet shrink-0 mt-0.5" />
+//                     <CheckCircle2 size={14} className="text-brand-ember shrink-0 mt-0.5" />
 //                     <span>Viewed Feature Cards</span>
 //                   </li>
 //                   <li className="flex items-start gap-2">
-//                     <CheckCircle2 size={14} className="text-brand-violet shrink-0 mt-0.5" />
+//                     <CheckCircle2 size={14} className="text-brand-ember shrink-0 mt-0.5" />
 //                     <span>High engagement</span>
 //                   </li>
 //                 </ul>
@@ -422,17 +422,17 @@
 //               transition={{ duration: 0.6, delay: 0.4 }}
 //               className="mt-16 text-center"
 //             >
-//               <div className="inline-flex items-center gap-3 px-6 py-3 rounded-full bg-brand-violet/10 dark:bg-brand-violet/20 border border-brand-violet/20 mb-8">
-//                 <Sparkles size={16} className="text-brand-violet" />
+//               <div className="inline-flex items-center gap-3 px-6 py-3 rounded-full bg-brand-ember/10 dark:bg-brand-ember/20 border border-brand-ember/20 mb-8">
+//                 <Sparkles size={16} className="text-brand-ember" />
 //                 <span className="font-medium text-gray-800 dark:text-white">
-//                   You were assigned <span className="font-bold text-brand-violet">Variant {heroVariant}</span>
+//                   You were assigned <span className="font-bold text-brand-ember">Variant {heroVariant}</span>
 //                 </span>
 //               </div>
 
 //               <p className="text-lg text-gray-700 dark:text-gray-300 max-w-2xl mx-auto leading-relaxed">
 //                 Every visitor teaches your product something.
 //                 <br />
-//                 <span className="bg-gradient-to-r from-brand-violet to-brand-blue bg-clip-text text-transparent font-semibold text-xl">
+//                 <span className="bg-gradient-to-r from-brand-ember to-brand-gold bg-clip-text text-transparent font-semibold text-xl">
 //                   Today, you taught ours.
 //                 </span>
 //               </p>
@@ -441,7 +441,7 @@
 //                 <Link
 //                   to="/register"
 //                   className="inline-block px-10 py-4 rounded-xl text-white font-semibold
-//                              bg-gradient-to-r from-brand-violet to-brand-blue
+//                              bg-gradient-to-r from-brand-ember to-brand-gold
 //                              shadow-[0_0_40px_rgba(108,92,231,0.4)] hover:shadow-[0_0_60px_rgba(108,92,231,0.6)]
 //                              hover:scale-105 transition-all duration-300"
 //                 >
@@ -450,7 +450,7 @@
 
 //                 <button
 //                   onClick={handleShare}
-//                   className="inline-flex items-center gap-2 px-5 py-4 rounded-xl border border-gray-300 dark:border-white/10 text-gray-700 dark:text-gray-300 hover:border-brand-violet hover:text-brand-violet transition-colors"
+//                   className="inline-flex items-center gap-2 px-5 py-4 rounded-xl border border-gray-300 dark:border-white/10 text-gray-700 dark:text-gray-300 hover:border-brand-ember hover:text-brand-ember transition-colors"
 //                 >
 //                   {copied ? (
 //                     <>
@@ -609,7 +609,7 @@ export default function SplashScreen() {
   if (!assignment) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-white dark:bg-brand-black">
-        <div className="w-8 h-8 rounded-full border-2 border-brand-violet border-t-transparent animate-spin" />
+        <div className="w-8 h-8 rounded-full border-2 border-brand-ember border-t-transparent animate-spin" />
       </div>
     );
   }
@@ -630,9 +630,9 @@ export default function SplashScreen() {
       </div>
 
       <div className="absolute top-0 left-1/4 w-[500px] h-[500px] rounded-full
-                      bg-brand-violet/10 dark:bg-brand-violet/25 blur-[120px] pointer-events-none" />
+                      bg-brand-ember/10 dark:bg-brand-ember/25 blur-[120px] pointer-events-none" />
       <div className="absolute top-40 right-0 w-[400px] h-[400px] rounded-full
-                      bg-brand-blue/10 dark:bg-brand-blue/25 blur-[120px] pointer-events-none" />
+                      bg-brand-gold/10 dark:bg-brand-gold/25 blur-[120px] pointer-events-none" />
 
       <div className="relative z-10">
         <Navbar />
@@ -646,12 +646,12 @@ export default function SplashScreen() {
           >
             {/* --- REPLACED HERO COPY --- */}
             <span className="inline-block text-xs font-medium px-3 py-1 rounded-full
-                              bg-brand-violet/10 text-brand-violet mb-5">
+                              bg-brand-ember/10 text-brand-ember mb-5">
               You're already part of an experiment on this page
             </span>
             <h1 className="text-4xl md:text-5xl font-display font-extrabold leading-tight text-gray-900 dark:text-white">
               Stop guessing what works.{" "}
-              <span className="bg-gradient-to-r from-brand-violet to-brand-blue bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-brand-ember to-brand-gold bg-clip-text text-transparent">
                 Start proving it.
               </span>
             </h1>
@@ -665,7 +665,7 @@ export default function SplashScreen() {
               <Link
                 to="/register"
                 className="px-6 py-3 rounded-lg text-white font-medium
-                           bg-gradient-to-r from-brand-violet to-brand-blue hover:opacity-90
+                           bg-gradient-to-r from-brand-ember to-brand-gold hover:opacity-90
                            shadow-[0_0_30px_rgba(108,92,231,0.4)] hover:shadow-[0_0_45px_rgba(108,92,231,0.6)]
                            transition-all duration-300"
               >
@@ -674,7 +674,7 @@ export default function SplashScreen() {
               <button
                 onClick={() => document.getElementById("experiment-report")?.scrollIntoView({ behavior: "smooth" })}
                 className="px-6 py-3 rounded-lg font-medium text-gray-700 dark:text-gray-200
-                           border border-gray-300 dark:border-white/15 hover:border-brand-violet transition-colors"
+                           border border-gray-300 dark:border-white/15 hover:border-brand-ember transition-colors"
               >
                 See your experiment report ↓
               </button>
@@ -710,7 +710,7 @@ export default function SplashScreen() {
 
         {/* ─── Divider ───────────────────────────────────────── */}
         <div className="max-w-6xl mx-auto px-6">
-          <div className="h-px w-full bg-gradient-to-r from-transparent via-brand-violet/30 to-transparent" />
+          <div className="h-px w-full bg-gradient-to-r from-transparent via-brand-ember/30 to-transparent" />
         </div>
 
         {/* ─── EXPERIMENT REPORT ────────────────────────────── */}
@@ -719,9 +719,9 @@ export default function SplashScreen() {
           className="relative py-16 md:py-24 px-6 overflow-hidden"
         >
           <div className="absolute inset-0 pointer-events-none">
-            <div className="absolute left-1/2 top-1/2 h-[600px] w-[600px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-brand-violet/5 dark:bg-brand-violet/20 blur-[140px]" />
-            <div className="absolute right-10 top-20 h-72 w-72 rounded-full bg-brand-blue/5 dark:bg-brand-blue/20 blur-[120px]" />
-            <div className="absolute left-10 bottom-0 h-64 w-64 rounded-full bg-brand-violet/5 dark:bg-brand-violet/10 blur-[120px]" />
+            <div className="absolute left-1/2 top-1/2 h-[600px] w-[600px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-brand-ember/5 dark:bg-brand-ember/20 blur-[140px]" />
+            <div className="absolute right-10 top-20 h-72 w-72 rounded-full bg-brand-gold/5 dark:bg-brand-gold/20 blur-[120px]" />
+            <div className="absolute left-10 bottom-0 h-64 w-64 rounded-full bg-brand-ember/5 dark:bg-brand-ember/10 blur-[120px]" />
           </div>
 
           <div className="relative max-w-6xl mx-auto">
@@ -732,7 +732,7 @@ export default function SplashScreen() {
               transition={{ duration: 0.6 }}
               className="text-center mb-12"
             >
-              <div className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-brand-violet/10 dark:bg-brand-violet/20 border border-brand-violet/20 text-xs font-medium text-brand-violet mb-4">
+              <div className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-brand-ember/10 dark:bg-brand-ember/20 border border-brand-ember/20 text-xs font-medium text-brand-ember mb-4">
                 <span>Experiment ID</span>
                 <span className="font-mono font-bold">{assignment.experimentId}</span>
               </div>
@@ -754,13 +754,13 @@ export default function SplashScreen() {
                 className="rounded-2xl border p-6 bg-white dark:bg-[#111319] border-gray-200 dark:border-white/10 shadow-sm"
               >
                 <h3 className="text-sm font-bold uppercase tracking-wider text-gray-700 dark:text-gray-300 flex items-center gap-2">
-                  <Target size={16} className="text-brand-violet" />
+                  <Target size={16} className="text-brand-ember" />
                   Your Assignment
                 </h3>
                 <div className="mt-4 space-y-3">
                   <div>
                     <p className="text-xs font-medium text-gray-600 dark:text-gray-400">Hero Variant</p>
-                    <p className="text-2xl font-bold text-brand-violet">Variant {heroVariant}</p>
+                    <p className="text-2xl font-bold text-brand-ember">Variant {heroVariant}</p>
                   </div>
                   <div>
                     <p className="text-xs font-medium text-gray-600 dark:text-gray-400">Theme Journey</p>
@@ -800,13 +800,13 @@ export default function SplashScreen() {
                     <div className="flex items-center gap-2">
                       <div className="flex-1 h-1.5 rounded-full bg-gray-200 dark:bg-white/10 overflow-hidden relative">
                         <motion.div
-                          className="h-full bg-gradient-to-r from-brand-violet to-brand-blue absolute inset-0"
+                          className="h-full bg-gradient-to-r from-brand-ember to-brand-gold absolute inset-0"
                           initial={{ width: 0 }}
                           whileInView={{ width: `${assignment.confidence}%` }}
                           transition={{ duration: 1 }}
                         />
                         <motion.div
-                          className="h-full bg-gradient-to-r from-brand-violet to-brand-blue absolute inset-0"
+                          className="h-full bg-gradient-to-r from-brand-ember to-brand-gold absolute inset-0"
                           animate={{
                             opacity: [0.6, 1, 0.6],
                             scaleX: [0.98, 1.02, 0.98],
@@ -835,7 +835,7 @@ export default function SplashScreen() {
                 className="rounded-2xl border p-6 bg-white dark:bg-[#111319] border-gray-200 dark:border-white/10 shadow-sm"
               >
                 <h3 className="text-sm font-bold uppercase tracking-wider text-gray-700 dark:text-gray-300 flex items-center gap-2">
-                  <BarChart3 size={16} className="text-brand-blue" />
+                  <BarChart3 size={16} className="text-brand-gold" />
                   Your Session
                 </h3>
                 <div className="mt-4 space-y-4">
@@ -846,7 +846,7 @@ export default function SplashScreen() {
                     </div>
                     <div className="h-1.5 w-full rounded-full bg-gray-200 dark:bg-white/10 overflow-hidden mt-1">
                       <motion.div
-                        className="h-full bg-brand-violet"
+                        className="h-full bg-brand-ember"
                         initial={{ width: 0 }}
                         whileInView={{ width: "100%" }}
                         transition={{ duration: 1 }}
@@ -860,7 +860,7 @@ export default function SplashScreen() {
                     </div>
                     <div className="h-1.5 w-full rounded-full bg-gray-200 dark:bg-white/10 overflow-hidden mt-1">
                       <motion.div
-                        className="h-full bg-brand-blue"
+                        className="h-full bg-brand-gold"
                         initial={{ width: 0 }}
                         whileInView={{ width: `${stats.scrollDepth}%` }}
                         transition={{ duration: 1 }}
@@ -903,31 +903,31 @@ export default function SplashScreen() {
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.3 }}
-                className="rounded-2xl border p-6 bg-gradient-to-br from-brand-violet/5 to-brand-blue/5 border-brand-violet/20 dark:border-brand-violet/30 shadow-sm"
+                className="rounded-2xl border p-6 bg-gradient-to-br from-brand-ember/5 to-brand-gold/5 border-brand-ember/20 dark:border-brand-ember/30 shadow-sm"
               >
-                <h3 className="text-sm font-bold uppercase tracking-wider text-brand-violet flex items-center gap-2">
-                  <Brain size={16} className="text-brand-violet" />
+                <h3 className="text-sm font-bold uppercase tracking-wider text-brand-ember flex items-center gap-2">
+                  <Brain size={16} className="text-brand-ember" />
                   AI Observations
                 </h3>
                 <ul className="mt-4 space-y-2 text-sm text-gray-700 dark:text-gray-300">
                   <li className="flex items-start gap-2">
-                    <CheckCircle2 size={14} className="text-brand-violet shrink-0 mt-0.5" />
+                    <CheckCircle2 size={14} className="text-brand-ember shrink-0 mt-0.5" />
                     <span>Engaged with {heroVariant === "B" ? "Variant B" : "Variant A"} hero</span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <CheckCircle2 size={14} className="text-brand-violet shrink-0 mt-0.5" />
+                    <CheckCircle2 size={14} className="text-brand-ember shrink-0 mt-0.5" />
                     <span>{themeSwitched ? "Switched to dark theme" : "Maintained light theme preference"}</span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <CheckCircle2 size={14} className="text-brand-violet shrink-0 mt-0.5" />
+                    <CheckCircle2 size={14} className="text-brand-ember shrink-0 mt-0.5" />
                     <span>Read Comparison Section</span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <CheckCircle2 size={14} className="text-brand-violet shrink-0 mt-0.5" />
+                    <CheckCircle2 size={14} className="text-brand-ember shrink-0 mt-0.5" />
                     <span>Viewed Feature Cards</span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <CheckCircle2 size={14} className="text-brand-violet shrink-0 mt-0.5" />
+                    <CheckCircle2 size={14} className="text-brand-ember shrink-0 mt-0.5" />
                     <span>High engagement</span>
                   </li>
                 </ul>
@@ -941,17 +941,17 @@ export default function SplashScreen() {
               transition={{ duration: 0.6, delay: 0.4 }}
               className="mt-16 text-center"
             >
-              <div className="inline-flex items-center gap-3 px-6 py-3 rounded-full bg-brand-violet/10 dark:bg-brand-violet/20 border border-brand-violet/20 mb-8">
-                <Sparkles size={16} className="text-brand-violet" />
+              <div className="inline-flex items-center gap-3 px-6 py-3 rounded-full bg-brand-ember/10 dark:bg-brand-ember/20 border border-brand-ember/20 mb-8">
+                <Sparkles size={16} className="text-brand-ember" />
                 <span className="font-medium text-gray-800 dark:text-white">
-                  You were assigned <span className="font-bold text-brand-violet">Variant {heroVariant}</span>
+                  You were assigned <span className="font-bold text-brand-ember">Variant {heroVariant}</span>
                 </span>
               </div>
 
               <p className="text-lg text-gray-700 dark:text-gray-300 max-w-2xl mx-auto leading-relaxed">
                 Every visitor teaches your product something.
                 <br />
-                <span className="bg-gradient-to-r from-brand-violet to-brand-blue bg-clip-text text-transparent font-semibold text-xl">
+                <span className="bg-gradient-to-r from-brand-ember to-brand-gold bg-clip-text text-transparent font-semibold text-xl">
                   Today, you taught ours.
                 </span>
               </p>
@@ -960,7 +960,7 @@ export default function SplashScreen() {
                 <Link
                   to="/register"
                   className="inline-block px-10 py-4 rounded-xl text-white font-semibold
-                             bg-gradient-to-r from-brand-violet to-brand-blue
+                             bg-gradient-to-r from-brand-ember to-brand-gold
                              shadow-[0_0_40px_rgba(108,92,231,0.4)] hover:shadow-[0_0_60px_rgba(108,92,231,0.6)]
                              hover:scale-105 transition-all duration-300"
                 >
@@ -969,7 +969,7 @@ export default function SplashScreen() {
 
                 <button
                   onClick={handleShare}
-                  className="inline-flex items-center gap-2 px-5 py-4 rounded-xl border border-gray-300 dark:border-white/10 text-gray-700 dark:text-gray-300 hover:border-brand-violet hover:text-brand-violet transition-colors"
+                  className="inline-flex items-center gap-2 px-5 py-4 rounded-xl border border-gray-300 dark:border-white/10 text-gray-700 dark:text-gray-300 hover:border-brand-ember hover:text-brand-ember transition-colors"
                 >
                   {copied ? (
                     <>

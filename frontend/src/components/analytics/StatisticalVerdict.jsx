@@ -66,7 +66,7 @@
 //           </div>
 //           <div className={`h-2.5 rounded-full overflow-hidden ${isDark ? "bg-white/[0.06]" : "bg-gray-100"}`}>
 //             <motion.div
-//               className={`h-full rounded-full ${statistics.confidence >= 95 ? "bg-emerald-500" : "bg-brand-violet"}`}
+//               className={`h-full rounded-full ${statistics.confidence >= 95 ? "bg-emerald-500" : "bg-brand-ember"}`}
 //               initial={{ width: 0 }}
 //               whileInView={{ width: `${Math.min(statistics.confidence, 100)}%` }}
 //               viewport={{ once: true }}

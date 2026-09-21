@@ -129,7 +129,7 @@ export default function Visitors() {
                       <td className={tdCls}>
                         <div className="flex items-center gap-2">
                           <div className={`w-5 h-5 rounded-full flex items-center justify-center text-white text-[9px] font-bold ${
-                            v.variant === "A" ? "bg-brand-violet" : "bg-brand-blue"
+                            v.variant === "A" ? "bg-brand-ember" : "bg-brand-gold"
                           }`}>
                             {v.variant}
                           </div>

@@ -412,7 +412,7 @@
 //               <select
 //                 value={selectedExp?.id || ""}
 //                 onChange={(e) => setSelectedExp(experiments.find((x) => x.id === e.target.value))}
-//                 className={`w-full px-3 py-2 rounded-xl text-sm border focus:outline-none focus:ring-2 focus:ring-brand-violet/25 ${
+//                 className={`w-full px-3 py-2 rounded-xl text-sm border focus:outline-none focus:ring-2 focus:ring-brand-ember/25 ${
 //                   isDark ? "bg-white/[0.04] border-white/[0.08] text-white" : "bg-white border-gray-200 text-gray-900"
 //                 }`}
 //               >
@@ -442,7 +442,7 @@
 //               onClick={() => setFramework(f.id)}
 //               className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-all ${
 //                 framework === f.id
-//                   ? isDark ? "bg-brand-violet/15 text-brand-violet" : "bg-brand-violet/8 text-brand-violet"
+//                   ? isDark ? "bg-brand-ember/15 text-brand-ember" : "bg-brand-ember/8 text-brand-ember"
 //                   : isDark ? "text-white/35 hover:text-white" : "text-gray-400 hover:text-gray-700"
 //               }`}
 //             >
@@ -1134,8 +1134,8 @@ export default function SDKIntegration() {
                   disabled={creatingKey}
                   className={`flex items-center gap-2 text-xs font-medium px-3 py-2.5 rounded-xl border transition-colors disabled:opacity-50 ${
                     isDark
-                      ? "bg-brand-violet/10 border-brand-violet/25 text-brand-violet hover:bg-brand-violet/15"
-                      : "bg-brand-violet/5 border-brand-violet/20 text-brand-violet hover:bg-brand-violet/10"
+                      ? "bg-brand-ember/10 border-brand-ember/25 text-brand-ember hover:bg-brand-ember/15"
+                      : "bg-brand-ember/5 border-brand-ember/20 text-brand-ember hover:bg-brand-ember/10"
                   }`}
                 >
                   <KeyRound size={14} />
@@ -1172,7 +1172,7 @@ export default function SDKIntegration() {
               <select
                 value={selectedExp?.id || ""}
                 onChange={(e) => setSelectedExp(experiments.find((x) => x.id === e.target.value))}
-                className={`w-full px-3 py-2 rounded-xl text-sm border focus:outline-none focus:ring-2 focus:ring-brand-violet/25 ${
+                className={`w-full px-3 py-2 rounded-xl text-sm border focus:outline-none focus:ring-2 focus:ring-brand-ember/25 ${
                   isDark ? "bg-white/[0.04] border-white/[0.08] text-white" : "bg-white border-gray-200 text-gray-900"
                 }`}
               >
@@ -1202,7 +1202,7 @@ export default function SDKIntegration() {
               onClick={() => setFramework(f.id)}
               className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-all ${
                 framework === f.id
-                  ? isDark ? "bg-brand-violet/15 text-brand-violet" : "bg-brand-violet/8 text-brand-violet"
+                  ? isDark ? "bg-brand-ember/15 text-brand-ember" : "bg-brand-ember/8 text-brand-ember"
                   : isDark ? "text-white/35 hover:text-white" : "text-gray-400 hover:text-gray-700"
               }`}
             >

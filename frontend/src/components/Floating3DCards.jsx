@@ -83,7 +83,7 @@ export default function Floating3DCards() {
       <div className="relative flex items-center justify-center gap-10 md:gap-16" style={{ perspective: 1200 }}>
         <motion.div
           className="hidden md:block absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 rounded-full
-                     bg-gradient-to-br from-brand-violet to-brand-blue blur-3xl"
+                     bg-gradient-to-br from-brand-ember to-brand-gold blur-3xl"
           animate={{ opacity: [0.3, 0.6, 0.3] }}
           transition={{ duration: 3, repeat: Infinity }}
         />
@@ -96,9 +96,9 @@ export default function Floating3DCards() {
           delay={0}
           tiltDirection={-1}
           accent={{
-            badge: "bg-brand-violet/10 text-brand-violet",
-            bg: "bg-gradient-to-br from-brand-violet/30 to-brand-violet/10",
-            bar: "bg-brand-violet",
+            badge: "bg-brand-ember/10 text-brand-ember",
+            bg: "bg-gradient-to-br from-brand-ember/30 to-brand-ember/10",
+            bar: "bg-brand-ember",
           }}
         />
 
@@ -119,7 +119,7 @@ export default function Floating3DCards() {
                        shadow-[0_15px_40px_-10px_rgba(108,92,231,0.4)]"
           >
             <span className="text-[10px] font-medium text-gray-400">AI VERDICT</span>
-            <span className="text-sm font-display font-bold text-brand-blue">B wins +14.2%</span>
+            <span className="text-sm font-display font-bold text-brand-gold">B wins +14.2%</span>
           </motion.div>
         </motion.div>
 
@@ -131,9 +131,9 @@ export default function Floating3DCards() {
           delay={0.15}
           tiltDirection={1}
           accent={{
-            badge: "bg-brand-blue/10 text-brand-blue",
-            bg: "bg-gradient-to-br from-brand-blue/30 to-brand-blue/10",
-            bar: "bg-brand-blue",
+            badge: "bg-brand-gold/10 text-brand-gold",
+            bg: "bg-gradient-to-br from-brand-gold/30 to-brand-gold/10",
+            bar: "bg-brand-gold",
           }}
 
 

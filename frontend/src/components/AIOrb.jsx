@@ -28,7 +28,7 @@ export default function AIOrb() {
         onMouseLeave={handleMouseLeave}
         style={{ rotateX, rotateY, transformPerspective: 600 }}
         className="relative w-24 h-24 rounded-full flex items-center justify-center cursor-pointer
-                   bg-gradient-to-br from-brand-violet via-fuchsia-500/70 to-brand-blue
+                   bg-gradient-to-br from-brand-ember via-fuchsia-500/70 to-brand-gold
                    shadow-[0_0_70px_rgba(108,92,231,0.7)]"
         whileHover={{ scale: 1.08 }}
         animate={{ scale: [1, 1.06, 1] }}
@@ -42,12 +42,12 @@ export default function AIOrb() {
         </span>
 
         <motion.div
-          className="absolute inset-0 rounded-full border border-brand-violet/40 pointer-events-none"
+          className="absolute inset-0 rounded-full border border-brand-ember/40 pointer-events-none"
           animate={{ scale: [1, 1.9], opacity: [0.6, 0] }}
           transition={{ duration: 2, repeat: Infinity, ease: "easeOut" }}
         />
         <motion.div
-          className="absolute inset-0 rounded-full border border-brand-blue/30 pointer-events-none"
+          className="absolute inset-0 rounded-full border border-brand-gold/30 pointer-events-none"
           animate={{ scale: [1, 2.4], opacity: [0.5, 0] }}
           transition={{ duration: 2, repeat: Infinity, ease: "easeOut", delay: 0.6 }}
         />
@@ -56,7 +56,7 @@ export default function AIOrb() {
       {/* Platform rings beneath the orb, like the reference */}
       <div className="relative mt-3 w-28 h-6">
         <motion.div
-          className="absolute inset-0 rounded-[50%] border border-brand-violet/30"
+          className="absolute inset-0 rounded-[50%] border border-brand-ember/30"
           animate={{ scale: [1, 1.15, 1], opacity: [0.5, 0.2, 0.5] }}
           transition={{ duration: 3, repeat: Infinity }}
         />

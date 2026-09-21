@@ -3,20 +3,20 @@ import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 
 const colorMap = {
   violet: {
-    text: "text-brand-violet",
+    text: "text-brand-ember",
     glow: "rgba(168,130,255,0.5)",
     ring: "rgba(108,92,231,0.6)",
-    bar: "bg-brand-violet",
-    badgeBg: "bg-brand-violet",
-    border: "border-brand-violet/40",
+    bar: "bg-brand-ember",
+    badgeBg: "bg-brand-ember",
+    border: "border-brand-ember/40",
   },
   blue: {
-    text: "text-brand-blue",
+    text: "text-brand-gold",
     glow: "rgba(79,200,255,0.5)",
     ring: "rgba(79,140,255,0.6)",
-    bar: "bg-brand-blue",
-    badgeBg: "bg-brand-blue",
-    border: "border-brand-blue/40",
+    bar: "bg-brand-gold",
+    badgeBg: "bg-brand-gold",
+    border: "border-brand-gold/40",
   },
 };
 

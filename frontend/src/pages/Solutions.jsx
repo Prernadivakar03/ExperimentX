@@ -97,9 +97,9 @@ function ProofFlagToTest({ flag, rollout, isDark }) {
         <span className={`text-[10px] ${isDark ? "text-white/30" : "text-gray-400"}`}>{rollout}% rollout</span>
       </div>
       <ArrowRight size={16} className={isDark ? "text-white/20" : "text-gray-300"} />
-      <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-brand-violet/10 border border-brand-violet/20">
-        <Percent size={14} className="text-brand-violet" />
-        <span className="text-xs font-medium text-brand-violet">A/B test, 50/50</span>
+      <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-brand-ember/10 border border-brand-ember/20">
+        <Percent size={14} className="text-brand-ember" />
+        <span className="text-xs font-medium text-brand-ember">A/B test, 50/50</span>
       </div>
     </div>
   );
@@ -146,7 +146,7 @@ function ProofSequential({ day, of, isDark }) {
         <span className={`text-xs ${isDark ? "text-white/50" : "text-gray-500"}`}>Day {day} of {of}</span>
       </div>
       <div className={`h-1.5 rounded-full overflow-hidden ${isDark ? "bg-white/[0.06]" : "bg-gray-100"}`}>
-        <div className="h-full rounded-full bg-brand-blue" style={{ width: `${pct}%` }} />
+        <div className="h-full rounded-full bg-brand-gold" style={{ width: `${pct}%` }} />
       </div>
       <p className={`text-[11px] mt-2 ${isDark ? "text-white/30" : "text-gray-400"}`}>
         Not significant yet — safe to keep watching, checking daily won't inflate false positives.
@@ -190,7 +190,7 @@ export default function SolutionsPage() {
           <h1 className="text-4xl md:text-6xl font-display font-bold leading-tight">
             <span className={isDark ? "text-white" : "text-gray-900"}>Built for how</span>
             <br />
-            <span className="bg-gradient-to-r from-brand-violet via-purple-500 to-brand-blue bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-brand-ember via-purple-500 to-brand-gold bg-clip-text text-transparent">
               each team actually decides
             </span>
           </h1>
@@ -217,14 +217,14 @@ export default function SolutionsPage() {
                     className={`flex items-center gap-2.5 px-4 py-3.5 text-left text-sm whitespace-nowrap md:whitespace-normal transition-colors flex-shrink-0 md:flex-shrink w-full ${
                       isActive
                         ? isDark
-                          ? "bg-white/[0.05] text-white border-b-2 md:border-b-0 md:border-l-2 border-brand-violet"
-                          : "bg-gray-50 text-gray-900 border-b-2 md:border-b-0 md:border-l-2 border-brand-violet"
+                          ? "bg-white/[0.05] text-white border-b-2 md:border-b-0 md:border-l-2 border-brand-ember"
+                          : "bg-gray-50 text-gray-900 border-b-2 md:border-b-0 md:border-l-2 border-brand-ember"
                         : isDark
                         ? "text-white/40 hover:text-white/70"
                         : "text-gray-400 hover:text-gray-700"
                     }`}
                   >
-                    <Icon size={16} className={isActive ? "text-brand-violet" : ""} />
+                    <Icon size={16} className={isActive ? "text-brand-ember" : ""} />
                     {p.label}
                   </button>
                 );
@@ -287,7 +287,7 @@ export default function SolutionsPage() {
                       i > 0 ? (isDark ? "border-t md:border-t-0 md:border-l border-white/[0.06]" : "border-t md:border-t-0 md:border-l border-gray-100") : ""
                     } ${isDark ? "text-white/60" : "text-gray-600"}`}
                   >
-                    <Icon size={15} className="text-brand-violet flex-shrink-0" />
+                    <Icon size={15} className="text-brand-ember flex-shrink-0" />
                     {p.label}
                   </div>
                 );
@@ -299,7 +299,7 @@ export default function SolutionsPage() {
 
       {/* ── Final CTA ── */}
       <section className="py-16 px-4 text-center relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-brand-violet/5 via-transparent to-transparent pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-b from-brand-ember/5 via-transparent to-transparent pointer-events-none" />
         <Reveal>
           <div className="relative max-w-2xl mx-auto">
             <h2 className={`text-3xl md:text-4xl font-display font-bold ${isDark ? "text-white" : "text-gray-900"}`}>
@@ -312,7 +312,7 @@ export default function SolutionsPage() {
               <motion.button
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                className="px-6 py-3 rounded-xl text-sm font-medium text-white bg-gradient-to-r from-brand-violet to-brand-blue shadow-lg hover:shadow-xl transition-shadow"
+                className="px-6 py-3 rounded-xl text-sm font-medium text-white bg-gradient-to-r from-brand-ember to-brand-gold shadow-lg hover:shadow-xl transition-shadow"
               >
                 Start Free Trial
               </motion.button>

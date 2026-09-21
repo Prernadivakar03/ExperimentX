@@ -20,8 +20,8 @@ export default function VariantBattleCard({ variant, isControl, isWinner, lift, 
     y.set(0);
   };
 
-  const accentBg = variant.label === "A" ? "bg-brand-violet" : "bg-brand-blue";
-  const accentText = variant.label === "A" ? "text-brand-violet" : "text-brand-blue";
+  const accentBg = variant.label === "A" ? "bg-brand-ember" : "bg-brand-gold";
+  const accentText = variant.label === "A" ? "text-brand-ember" : "text-brand-gold";
 
   return (
     <motion.div

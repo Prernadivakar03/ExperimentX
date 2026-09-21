@@ -11,10 +11,10 @@ export default function NewApiKeyModal({ orgId, onClose, onCreated, isDark }) {
   const [createdKey, setCreatedKey] = useState(null); // { full_key, name } once issued
   const [copied, setCopied] = useState(false);
 
-  const inputCls = `w-full px-3.5 py-2.5 rounded-xl text-sm border focus:outline-none focus:ring-2 focus:ring-brand-violet/25 transition-all ${
+  const inputCls = `w-full px-3.5 py-2.5 rounded-xl text-sm border focus:outline-none focus:ring-2 focus:ring-brand-ember/25 transition-all ${
     isDark
-      ? "bg-white/[0.04] border-white/[0.08] text-white placeholder:text-white/25 focus:border-brand-violet/50"
-      : "bg-white border-gray-200 text-gray-900 placeholder:text-gray-400 focus:border-brand-violet"
+      ? "bg-white/[0.04] border-white/[0.08] text-white placeholder:text-white/25 focus:border-brand-ember/50"
+      : "bg-white border-gray-200 text-gray-900 placeholder:text-gray-400 focus:border-brand-ember"
   }`;
   const labelCls = `block text-xs font-medium mb-1.5 ${isDark ? "text-white/45" : "text-gray-600"}`;
 
@@ -78,7 +78,7 @@ export default function NewApiKeyModal({ orgId, onClose, onCreated, isDark }) {
               <button
                 onClick={handleCreate}
                 disabled={loading}
-                className="flex-1 px-4 py-2.5 rounded-xl text-sm font-medium bg-brand-violet text-white hover:bg-brand-violet/90 transition-colors disabled:opacity-50"
+                className="flex-1 px-4 py-2.5 rounded-xl text-sm font-medium bg-brand-ember text-white hover:bg-brand-ember/90 transition-colors disabled:opacity-50"
               >
                 {loading ? "Creating…" : "Create key"}
               </button>
@@ -109,7 +109,7 @@ export default function NewApiKeyModal({ orgId, onClose, onCreated, isDark }) {
             </button>
             <button
               onClick={onClose}
-              className="mt-2 w-full px-4 py-2.5 rounded-xl text-sm font-medium bg-brand-violet text-white hover:bg-brand-violet/90 transition-colors"
+              className="mt-2 w-full px-4 py-2.5 rounded-xl text-sm font-medium bg-brand-ember text-white hover:bg-brand-ember/90 transition-colors"
             >
               Done
             </button>

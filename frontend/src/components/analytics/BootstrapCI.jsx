@@ -27,7 +27,7 @@ export default function BootstrapCI({ ci, isDark }) {
       <div className="relative h-10">
         <div className={`absolute left-0 right-0 top-1/2 -translate-y-1/2 h-1.5 rounded-full ${isDark ? "bg-white/[0.06]" : "bg-gray-100"}`} />
         <motion.div
-          className="absolute top-1/2 -translate-y-1/2 h-1.5 rounded-full bg-brand-violet/40"
+          className="absolute top-1/2 -translate-y-1/2 h-1.5 rounded-full bg-brand-ember/40"
           initial={{ left: "50%", right: "50%" }}
           whileInView={{ left: `${left}%`, right: `${right}%` }}
           viewport={{ once: true }}
@@ -35,7 +35,7 @@ export default function BootstrapCI({ ci, isDark }) {
         />
         <div className={`absolute left-1/2 top-0 bottom-0 w-px ${isDark ? "bg-white/15" : "bg-gray-300"}`} />
         <motion.div
-          className={`absolute top-1/2 w-4 h-4 rounded-full bg-brand-violet border-2 -translate-x-1/2 -translate-y-1/2 shadow-lg ${
+          className={`absolute top-1/2 w-4 h-4 rounded-full bg-brand-ember border-2 -translate-x-1/2 -translate-y-1/2 shadow-lg ${
             isDark ? "border-[#0D0E1A]" : "border-white"
           }`}
           initial={{ left: "50%" }}

@@ -130,11 +130,11 @@
 //     draft: [{ label: "▶ Start experiment", status: "running", color: "text-emerald-500 bg-emerald-500/10 hover:bg-emerald-500/20" }],
 //     running: [
 //       { label: "⏸ Pause", status: "paused", color: "text-amber-500 bg-amber-500/10 hover:bg-amber-500/20" },
-//       { label: "✓ Mark complete", status: "completed", color: "text-brand-violet bg-brand-violet/10 hover:bg-brand-violet/20" },
+//       { label: "✓ Mark complete", status: "completed", color: "text-brand-ember bg-brand-ember/10 hover:bg-brand-ember/20" },
 //     ],
 //     paused: [
 //       { label: "▶ Resume", status: "running", color: "text-emerald-500 bg-emerald-500/10 hover:bg-emerald-500/20" },
-//       { label: "✓ Mark complete", status: "completed", color: "text-brand-violet bg-brand-violet/10 hover:bg-brand-violet/20" },
+//       { label: "✓ Mark complete", status: "completed", color: "text-brand-ember bg-brand-ember/10 hover:bg-brand-ember/20" },
 //     ],
 //     completed: [],
 //   };
@@ -143,7 +143,7 @@
 //     return (
 //       <div className="flex items-center justify-center h-64">
 //         <motion.div
-//           className="w-8 h-8 rounded-full border-2 border-brand-violet border-t-transparent"
+//           className="w-8 h-8 rounded-full border-2 border-brand-ember border-t-transparent"
 //           animate={{ rotate: 360 }}
 //           transition={{ duration: 0.8, repeat: Infinity, ease: "linear" }}
 //         />
@@ -155,7 +155,7 @@
 //     return (
 //       <div className="flex flex-col items-center justify-center h-64">
 //         <p className={isDark ? "text-white/40" : "text-gray-400"}>Experiment not found</p>
-//         <button onClick={onBack} className="mt-3 text-sm text-brand-violet hover:underline">
+//         <button onClick={onBack} className="mt-3 text-sm text-brand-ember hover:underline">
 //           ← Back to experiments
 //         </button>
 //       </div>
@@ -166,7 +166,7 @@
 //     draft:     { color: "bg-gray-400/10 text-gray-400",     dot: "bg-gray-400" },
 //     running:   { color: "bg-emerald-500/10 text-emerald-500", dot: "bg-emerald-400" },
 //     paused:    { color: "bg-amber-500/10 text-amber-500",     dot: "bg-amber-400" },
-//     completed: { color: "bg-brand-violet/10 text-brand-violet", dot: "bg-brand-violet" },
+//     completed: { color: "bg-brand-ember/10 text-brand-ember", dot: "bg-brand-ember" },
 //   };
 //   const sc = statusConfig[experiment.status] || statusConfig.draft;
 //   const actions = STATUS_ACTIONS[experiment.status] || [];
@@ -242,8 +242,8 @@
 //       {/* KPI row — from real analytics data */}
 //       {stats ? (
 //         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-//           <StatCard label="Total visitors" value={stats.summary?.total_visitors?.toLocaleString() || 0} isDark={isDark} color="text-brand-violet" />
-//           <StatCard label="Conversions" value={stats.summary?.total_conversions?.toLocaleString() || 0} isDark={isDark} color="text-brand-blue" />
+//           <StatCard label="Total visitors" value={stats.summary?.total_visitors?.toLocaleString() || 0} isDark={isDark} color="text-brand-ember" />
+//           <StatCard label="Conversions" value={stats.summary?.total_conversions?.toLocaleString() || 0} isDark={isDark} color="text-brand-gold" />
 //           <StatCard label="Page views" value={stats.summary?.total_page_views?.toLocaleString() || 0} isDark={isDark} color="text-emerald-500" />
 //           <StatCard
 //             label="Confidence"
@@ -274,7 +274,7 @@
 //             >
 //               <div className="flex items-center gap-3 mb-4">
 //                 <div className={`w-9 h-9 rounded-xl flex items-center justify-center text-white font-bold text-sm ${
-//                   v.label === "A" ? "bg-brand-violet" : "bg-brand-blue"
+//                   v.label === "A" ? "bg-brand-ember" : "bg-brand-gold"
 //                 }`}>
 //                   {v.label}
 //                 </div>
@@ -300,7 +300,7 @@
 //                 </div>
 //                 <div className={`h-1.5 rounded-full ${isDark ? "bg-white/[0.06]" : "bg-gray-100"}`}>
 //                   <div
-//                     className={`h-full rounded-full ${v.label === "A" ? "bg-brand-violet" : "bg-brand-blue"}`}
+//                     className={`h-full rounded-full ${v.label === "A" ? "bg-brand-ember" : "bg-brand-gold"}`}
 //                     style={{ width: `${v.traffic_split * 100}%` }}
 //                   />
 //                 </div>
@@ -351,7 +351,7 @@
 //               <div className="flex items-center gap-4 text-xs">
 //                 {experiment.variants.map((v) => (
 //                   <div key={v.label} className="flex items-center gap-1.5">
-//                     <div className={`w-2 h-2 rounded-full ${v.label === "A" ? "bg-brand-violet" : "bg-brand-blue"}`} />
+//                     <div className={`w-2 h-2 rounded-full ${v.label === "A" ? "bg-brand-ember" : "bg-brand-gold"}`} />
 //                     <span className={isDark ? "text-white/35" : "text-gray-400"}>Variant {v.label}</span>
 //                   </div>
 //                 ))}
@@ -441,7 +441,7 @@
 //                 <div className={`h-2.5 rounded-full ${isDark ? "bg-white/[0.06]" : "bg-gray-100"}`}>
 //                   <motion.div
 //                     className={`h-full rounded-full ${
-//                       stats.statistics.confidence >= 95 ? "bg-emerald-500" : "bg-brand-violet"
+//                       stats.statistics.confidence >= 95 ? "bg-emerald-500" : "bg-brand-ember"
 //                     }`}
 //                     initial={{ width: 0 }}
 //                     animate={{ width: `${Math.min(stats.statistics.confidence, 100)}%` }}
@@ -668,11 +668,11 @@ export default function ExperimentDetail({ experimentId, onBack }) {
     draft: [{ label: "▶ Start experiment", status: "running", color: "text-emerald-500 bg-emerald-500/10 hover:bg-emerald-500/20" }],
     running: [
       { label: "⏸ Pause", status: "paused", color: "text-amber-500 bg-amber-500/10 hover:bg-amber-500/20" },
-      { label: "✓ Mark complete", status: "completed", color: "text-brand-violet bg-brand-violet/10 hover:bg-brand-violet/20" },
+      { label: "✓ Mark complete", status: "completed", color: "text-brand-ember bg-brand-ember/10 hover:bg-brand-ember/20" },
     ],
     paused: [
       { label: "▶ Resume", status: "running", color: "text-emerald-500 bg-emerald-500/10 hover:bg-emerald-500/20" },
-      { label: "✓ Mark complete", status: "completed", color: "text-brand-violet bg-brand-violet/10 hover:bg-brand-violet/20" },
+      { label: "✓ Mark complete", status: "completed", color: "text-brand-ember bg-brand-ember/10 hover:bg-brand-ember/20" },
     ],
     completed: [],
   };
@@ -681,7 +681,7 @@ export default function ExperimentDetail({ experimentId, onBack }) {
     return (
       <div className="flex items-center justify-center h-64">
         <motion.div
-          className="w-8 h-8 rounded-full border-2 border-brand-violet border-t-transparent"
+          className="w-8 h-8 rounded-full border-2 border-brand-ember border-t-transparent"
           animate={{ rotate: 360 }}
           transition={{ duration: 0.8, repeat: Infinity, ease: "linear" }}
         />
@@ -693,7 +693,7 @@ export default function ExperimentDetail({ experimentId, onBack }) {
     return (
       <div className="flex flex-col items-center justify-center h-64">
         <p className={isDark ? "text-white/40" : "text-gray-400"}>Experiment not found</p>
-        <button onClick={onBack} className="mt-3 text-sm text-brand-violet hover:underline">
+        <button onClick={onBack} className="mt-3 text-sm text-brand-ember hover:underline">
           ← Back to experiments
         </button>
       </div>
@@ -704,7 +704,7 @@ export default function ExperimentDetail({ experimentId, onBack }) {
     draft:     { color: "bg-gray-400/10 text-gray-400",     dot: "bg-gray-400" },
     running:   { color: "bg-emerald-500/10 text-emerald-500", dot: "bg-emerald-400" },
     paused:    { color: "bg-amber-500/10 text-amber-500",     dot: "bg-amber-400" },
-    completed: { color: "bg-brand-violet/10 text-brand-violet", dot: "bg-brand-violet" },
+    completed: { color: "bg-brand-ember/10 text-brand-ember", dot: "bg-brand-ember" },
   };
   const sc = statusConfig[experiment.status] || statusConfig.draft;
   const actions = STATUS_ACTIONS[experiment.status] || [];
@@ -780,8 +780,8 @@ export default function ExperimentDetail({ experimentId, onBack }) {
       {/* KPI row — from real analytics data */}
       {stats ? (
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-          <StatCard label="Total visitors" value={stats.summary?.total_visitors?.toLocaleString() || 0} isDark={isDark} color="text-brand-violet" />
-          <StatCard label="Conversions" value={stats.summary?.total_conversions?.toLocaleString() || 0} isDark={isDark} color="text-brand-blue" />
+          <StatCard label="Total visitors" value={stats.summary?.total_visitors?.toLocaleString() || 0} isDark={isDark} color="text-brand-ember" />
+          <StatCard label="Conversions" value={stats.summary?.total_conversions?.toLocaleString() || 0} isDark={isDark} color="text-brand-gold" />
           <StatCard label="Page views" value={stats.summary?.total_page_views?.toLocaleString() || 0} isDark={isDark} color="text-emerald-500" />
           <StatCard
             label="P-value"
@@ -812,7 +812,7 @@ export default function ExperimentDetail({ experimentId, onBack }) {
             >
               <div className="flex items-center gap-3 mb-4">
                 <div className={`w-9 h-9 rounded-xl flex items-center justify-center text-white font-bold text-sm ${
-                  v.label === "A" ? "bg-brand-violet" : "bg-brand-blue"
+                  v.label === "A" ? "bg-brand-ember" : "bg-brand-gold"
                 }`}>
                   {v.label}
                 </div>
@@ -838,7 +838,7 @@ export default function ExperimentDetail({ experimentId, onBack }) {
                 </div>
                 <div className={`h-1.5 rounded-full ${isDark ? "bg-white/[0.06]" : "bg-gray-100"}`}>
                   <div
-                    className={`h-full rounded-full ${v.label === "A" ? "bg-brand-violet" : "bg-brand-blue"}`}
+                    className={`h-full rounded-full ${v.label === "A" ? "bg-brand-ember" : "bg-brand-gold"}`}
                     style={{ width: `${v.traffic_split * 100}%` }}
                   />
                 </div>
@@ -889,7 +889,7 @@ export default function ExperimentDetail({ experimentId, onBack }) {
               <div className="flex items-center gap-4 text-xs">
                 {experiment.variants.map((v) => (
                   <div key={v.label} className="flex items-center gap-1.5">
-                    <div className={`w-2 h-2 rounded-full ${v.label === "A" ? "bg-brand-violet" : "bg-brand-blue"}`} />
+                    <div className={`w-2 h-2 rounded-full ${v.label === "A" ? "bg-brand-ember" : "bg-brand-gold"}`} />
                     <span className={isDark ? "text-white/35" : "text-gray-400"}>Variant {v.label}</span>
                   </div>
                 ))}
@@ -992,7 +992,7 @@ export default function ExperimentDetail({ experimentId, onBack }) {
                 <div className={`h-2.5 rounded-full ${isDark ? "bg-white/[0.06]" : "bg-gray-100"}`}>
                   <motion.div
                     className={`h-full rounded-full ${
-                      stats.statistics.achieved_power >= 0.8 ? "bg-emerald-500" : "bg-brand-violet"
+                      stats.statistics.achieved_power >= 0.8 ? "bg-emerald-500" : "bg-brand-ember"
                     }`}
                     initial={{ width: 0 }}
                     animate={{ width: `${Math.min((stats.statistics.achieved_power || 0) * 100, 100)}%` }}

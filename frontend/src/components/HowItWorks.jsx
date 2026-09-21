@@ -27,7 +27,7 @@
 //       <div className="relative mt-16">
 //         {/* Connecting glow line behind the steps, desktop only */}
 //         <div className="hidden md:block absolute top-10 left-[12%] right-[12%] h-px
-//                         bg-gradient-to-r from-brand-violet/0 via-brand-violet/50 to-brand-blue/0" />
+//                         bg-gradient-to-r from-brand-ember/0 via-brand-ember/50 to-brand-gold/0" />
 
 //         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 relative">
 //           {steps.map((s, i) => (
@@ -43,12 +43,12 @@
 //               {/* Glowing badge */}
 //               <div className="relative mb-5">
 //                 <motion.div
-//                   className="absolute inset-0 rounded-full bg-gradient-to-br from-brand-violet to-brand-blue blur-md"
+//                   className="absolute inset-0 rounded-full bg-gradient-to-br from-brand-ember to-brand-gold blur-md"
 //                   animate={{ opacity: [0.4, 0.8, 0.4], scale: [1, 1.15, 1] }}
 //                   transition={{ duration: 2.5, repeat: Infinity, delay: i * 0.3 }}
 //                 />
 //                 <div className="relative w-20 h-20 rounded-full flex items-center justify-center
-//                                 bg-gradient-to-br from-brand-violet to-brand-blue
+//                                 bg-gradient-to-br from-brand-ember to-brand-gold
 //                                 text-white text-2xl font-display font-semibold
 //                                 shadow-[0_0_30px_rgba(108,92,231,0.5)]
 //                                 group-hover:shadow-[0_0_50px_rgba(108,92,231,0.8)] transition-shadow duration-300">
@@ -56,7 +56,7 @@
 //                 </div>
 //                 <span className="absolute -top-1 -right-1 w-6 h-6 rounded-full
 //                                  bg-white dark:bg-brand-card border border-gray-200 dark:border-white/10
-//                                  flex items-center justify-center text-[10px] font-mono text-brand-violet">
+//                                  flex items-center justify-center text-[10px] font-mono text-brand-ember">
 //                   {s.n}
 //                 </span>
 //               </div>
@@ -174,7 +174,7 @@ export default function HowItWorks() {
 
       <div className="relative mt-16">
         <div className="hidden md:block absolute top-10 left-[12%] right-[12%] h-px
-                        bg-gradient-to-r from-brand-violet/0 via-brand-violet/50 to-brand-blue/0" />
+                        bg-gradient-to-r from-brand-ember/0 via-brand-ember/50 to-brand-gold/0" />
 
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 relative">
           {steps.map((s, i) => {
@@ -191,12 +191,12 @@ export default function HowItWorks() {
               >
                 <div className="relative mb-5">
                   <motion.div
-                    className="absolute inset-0 rounded-full bg-gradient-to-br from-brand-violet to-brand-blue blur-md"
+                    className="absolute inset-0 rounded-full bg-gradient-to-br from-brand-ember to-brand-gold blur-md"
                     animate={{ opacity: [0.4, 0.8, 0.4], scale: [1, 1.15, 1] }}
                     transition={{ duration: 2.5, repeat: Infinity, delay: i * 0.3 }}
                   />
                   <div className="relative w-20 h-20 rounded-full flex items-center justify-center
-                                  bg-gradient-to-br from-brand-violet to-brand-blue
+                                  bg-gradient-to-br from-brand-ember to-brand-gold
                                   text-white
                                   shadow-[0_0_30px_rgba(108,92,231,0.5)]
                                   group-hover:shadow-[0_0_50px_rgba(108,92,231,0.8)] transition-shadow duration-300">
@@ -204,7 +204,7 @@ export default function HowItWorks() {
                   </div>
                   <span className="absolute -top-1 -right-1 w-6 h-6 rounded-full
                                    bg-white dark:bg-brand-card border border-gray-200 dark:border-white/10
-                                   flex items-center justify-center text-[10px] font-mono text-brand-violet">
+                                   flex items-center justify-center text-[10px] font-mono text-brand-ember">
                     {s.n}
                   </span>
                 </div>

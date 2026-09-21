@@ -35,7 +35,7 @@ export default function ForgotPassword() {
       title="Reset your password"
       subtitle="We'll send you a link to reset it"
       footer={
-        <Link to="/login" className="text-brand-violet font-medium hover:underline">
+        <Link to="/login" className="text-brand-ember font-medium hover:underline">
           Back to sign in
         </Link>
       }
@@ -69,7 +69,7 @@ export default function ForgotPassword() {
             type="submit"
             disabled={loading}
             className="w-full py-2.5 rounded-lg text-white font-medium text-sm
-                       bg-gradient-to-r from-brand-violet to-brand-blue
+                       bg-gradient-to-r from-brand-ember to-brand-gold
                        hover:opacity-90 disabled:opacity-60 transition-opacity
                        shadow-[0_0_25px_rgba(108,92,231,0.35)]"
           >

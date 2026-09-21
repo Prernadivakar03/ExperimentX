@@ -74,7 +74,7 @@
 //         </div>
 //         {experiments.length > 0 && (
 //           <select value={selected || ""} onChange={(e) => setSelected(e.target.value)}
-//             className={`px-3.5 py-2 rounded-xl text-sm border focus:outline-none focus:ring-2 focus:ring-brand-violet/25 ${
+//             className={`px-3.5 py-2 rounded-xl text-sm border focus:outline-none focus:ring-2 focus:ring-brand-ember/25 ${
 //               isDark
 //                 ? "bg-white/[0.04] border-white/[0.08] text-white"
 //                 : "bg-white border-gray-200 text-gray-900"
@@ -86,7 +86,7 @@
 
 //       {loading ? (
 //         <div className="flex items-center justify-center h-48">
-//           <motion.div className="w-8 h-8 rounded-full border-2 border-brand-violet border-t-transparent"
+//           <motion.div className="w-8 h-8 rounded-full border-2 border-brand-ember border-t-transparent"
 //             animate={{ rotate: 360 }} transition={{ duration: 0.8, repeat: Infinity, ease: "linear" }} />
 //         </div>
 //       ) : !stats ? (
@@ -101,8 +101,8 @@
 //         <div className="space-y-5">
 //           <div className="grid grid-cols-2 xl:grid-cols-4 gap-4">
 //             {[
-//               { label: "Total visitors", value: stats.summary.total_visitors, color: "text-brand-violet" },
-//               { label: "Conversions", value: stats.summary.total_conversions, color: "text-brand-blue" },
+//               { label: "Total visitors", value: stats.summary.total_visitors, color: "text-brand-ember" },
+//               { label: "Conversions", value: stats.summary.total_conversions, color: "text-brand-gold" },
 //               { label: "Total clicks", value: stats.summary.total_clicks, color: "text-emerald-500" },
 //               { label: "Page views", value: stats.summary.total_page_views, color: "text-amber-500" },
 //             ].map((s, i) => (
@@ -125,7 +125,7 @@
 //                   className={`${cardCls} ${isWinner ? "ring-1 ring-emerald-500/40" : ""}`}>
 //                   <div className="flex items-center gap-2.5 mb-4">
 //                     <div className={`w-8 h-8 rounded-full flex items-center justify-center text-white font-bold ${
-//                       v.label === "A" ? "bg-brand-violet" : "bg-brand-blue"
+//                       v.label === "A" ? "bg-brand-ember" : "bg-brand-gold"
 //                     }`}>{v.label}</div>
 //                     <div>
 //                       <p className={`font-medium text-sm ${isDark ? "text-white" : "text-gray-900"}`}>{v.name}</p>
@@ -153,7 +153,7 @@
 //                   </div>
 //                   <div className={`h-1.5 rounded-full ${isDark ? "bg-white/[0.06]" : "bg-gray-100"}`}>
 //                     <motion.div
-//                       className={`h-full rounded-full ${isWinner ? "bg-emerald-500" : v.label === "A" ? "bg-brand-violet" : "bg-brand-blue"}`}
+//                       className={`h-full rounded-full ${isWinner ? "bg-emerald-500" : v.label === "A" ? "bg-brand-ember" : "bg-brand-gold"}`}
 //                       initial={{ width: 0 }}
 //                       animate={{ width: `${Math.min((v.conversion_rate / 20) * 100, 100)}%` }}
 //                       transition={{ duration: 1, delay: 0.4 }}
@@ -300,7 +300,7 @@
 //                 <div className={`h-2 rounded-full ${isDark ? "bg-white/[0.06]" : "bg-gray-100"}`}>
 //                   <motion.div
 //                     className={`h-full rounded-full ${
-//                       stats.statistics.confidence >= 95 ? "bg-emerald-500" : "bg-brand-violet"
+//                       stats.statistics.confidence >= 95 ? "bg-emerald-500" : "bg-brand-ember"
 //                     }`}
 //                     initial={{ width: 0 }}
 //                     animate={{ width: `${Math.min(stats.statistics.confidence, 100)}%` }}
@@ -365,12 +365,12 @@
 //               </p>
 //               <div className="relative h-16 flex items-center">
 //                 <div className={`absolute left-0 right-0 h-1 rounded-full ${isDark ? "bg-white/[0.06]" : "bg-gray-100"}`} />
-//                 <div className="absolute h-1 rounded-full bg-brand-violet/40"
+//                 <div className="absolute h-1 rounded-full bg-brand-ember/40"
 //                   style={{
 //                     left: `${Math.max(0, Math.min(100, 50 + stats.bootstrap_ci.ci_lower_pct))}%`,
 //                     right: `${Math.max(0, Math.min(100, 50 - stats.bootstrap_ci.ci_upper_pct))}%`,
 //                   }} />
-//                 <div className="absolute w-3 h-3 rounded-full bg-brand-violet -translate-x-1/2"
+//                 <div className="absolute w-3 h-3 rounded-full bg-brand-ember -translate-x-1/2"
 //                   style={{ left: `${Math.max(0, Math.min(100, 50 + stats.bootstrap_ci.mean_lift_pct))}%` }} />
 //                 <div className={`absolute left-1/2 top-0 bottom-0 w-px ${isDark ? "bg-white/15" : "bg-gray-300"}`} />
 //               </div>
@@ -552,15 +552,15 @@
 //     <div className="relative space-y-5">
 //       {/* Ambient glow layer */}
 //       <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
-//         <div className="absolute -top-40 -left-20 w-[32rem] h-[32rem] rounded-full bg-brand-violet/10 blur-[120px]" />
-//         <div className="absolute top-1/3 -right-20 w-[28rem] h-[28rem] rounded-full bg-brand-blue/10 blur-[120px]" />
+//         <div className="absolute -top-40 -left-20 w-[32rem] h-[32rem] rounded-full bg-brand-ember/10 blur-[120px]" />
+//         <div className="absolute top-1/3 -right-20 w-[28rem] h-[28rem] rounded-full bg-brand-gold/10 blur-[120px]" />
 //       </div>
 
 //       {/* Header */}
 //       <div className="flex items-center justify-between flex-wrap gap-3">
 //         <div>
 //           <div className="flex items-center gap-2.5 flex-wrap">
-//             <h1 className="text-xl font-display font-bold bg-clip-text text-transparent bg-gradient-to-r from-brand-violet via-brand-violet to-brand-blue">
+//             <h1 className="text-xl font-display font-bold bg-clip-text text-transparent bg-gradient-to-r from-brand-ember via-brand-ember to-brand-gold">
 //               Analytics
 //             </h1>
 //             {selectedExperiment && <LiveStatusBadge status={selectedExperiment.status} isDark={isDark} />}
@@ -574,7 +574,7 @@
 //             <select
 //               value={selected || ""}
 //               onChange={(e) => setSelected(e.target.value)}
-//               className={`appearance-none pl-3.5 pr-9 py-2 rounded-xl text-sm border focus:outline-none focus:ring-2 focus:ring-brand-violet/25 ${
+//               className={`appearance-none pl-3.5 pr-9 py-2 rounded-xl text-sm border focus:outline-none focus:ring-2 focus:ring-brand-ember/25 ${
 //                 isDark ? "bg-white/[0.04] border-white/[0.08] text-white" : "bg-white border-gray-200 text-gray-900"
 //               }`}
 //             >
@@ -595,7 +595,7 @@
 //       {loading ? (
 //         <div className="flex items-center justify-center h-48">
 //           <motion.div
-//             className="w-8 h-8 rounded-full border-2 border-brand-violet border-t-transparent"
+//             className="w-8 h-8 rounded-full border-2 border-brand-ember border-t-transparent"
 //             animate={{ rotate: 360 }}
 //             transition={{ duration: 0.8, repeat: Infinity, ease: "linear" }}
 //           />
@@ -859,14 +859,14 @@ export default function Analytics() {
   return (
     <div className="relative space-y-5">
       <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
-        <div className="absolute -top-40 -left-20 w-[32rem] h-[32rem] rounded-full bg-brand-violet/10 blur-[120px]" />
-        <div className="absolute top-1/3 -right-20 w-[28rem] h-[28rem] rounded-full bg-brand-blue/10 blur-[120px]" />
+        <div className="absolute -top-40 -left-20 w-[32rem] h-[32rem] rounded-full bg-brand-ember/10 blur-[120px]" />
+        <div className="absolute top-1/3 -right-20 w-[28rem] h-[28rem] rounded-full bg-brand-gold/10 blur-[120px]" />
       </div>
 
       <div className="flex items-center justify-between flex-wrap gap-3">
         <div>
           <div className="flex items-center gap-2.5 flex-wrap">
-            <h1 className="text-xl font-display font-bold bg-clip-text text-transparent bg-gradient-to-r from-brand-violet via-brand-violet to-brand-blue">
+            <h1 className="text-xl font-display font-bold bg-clip-text text-transparent bg-gradient-to-r from-brand-ember via-brand-ember to-brand-gold">
               Analytics
             </h1>
             {selectedExperiment && <LiveStatusBadge status={selectedExperiment.status} isDark={isDark} />}
@@ -878,7 +878,7 @@ export default function Analytics() {
             <select
               value={selected || ""}
               onChange={(e) => setSelected(e.target.value)}
-              className={`appearance-none pl-3.5 pr-9 py-2 rounded-xl text-sm border focus:outline-none focus:ring-2 focus:ring-brand-violet/25 ${
+              className={`appearance-none pl-3.5 pr-9 py-2 rounded-xl text-sm border focus:outline-none focus:ring-2 focus:ring-brand-ember/25 ${
                 isDark ? "bg-white/[0.04] border-white/[0.08] text-white" : "bg-white border-gray-200 text-gray-900"
               }`}
             >
@@ -893,7 +893,7 @@ export default function Analytics() {
 
       {loading ? (
         <div className="flex items-center justify-center h-48">
-          <motion.div className="w-8 h-8 rounded-full border-2 border-brand-violet border-t-transparent" animate={{ rotate: 360 }} transition={{ duration: 0.8, repeat: Infinity, ease: "linear" }} />
+          <motion.div className="w-8 h-8 rounded-full border-2 border-brand-ember border-t-transparent" animate={{ rotate: 360 }} transition={{ duration: 0.8, repeat: Infinity, ease: "linear" }} />
         </div>
       ) : !stats ? (
         <div className={`flex flex-col items-center justify-center py-16 rounded-2xl border border-dashed ${isDark ? "border-white/[0.07]" : "border-gray-200"}`}>

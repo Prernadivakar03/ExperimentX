@@ -16,10 +16,10 @@ function CreateGroupModal({ experiments, onClose, onCreated, isDark }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const inputCls = `w-full px-3.5 py-2.5 rounded-xl text-sm border focus:outline-none focus:ring-2 focus:ring-brand-violet/25 transition-all ${
+  const inputCls = `w-full px-3.5 py-2.5 rounded-xl text-sm border focus:outline-none focus:ring-2 focus:ring-brand-ember/25 transition-all ${
     isDark
-      ? "bg-white/[0.04] border-white/[0.08] text-white placeholder:text-white/25 focus:border-brand-violet/50"
-      : "bg-white border-gray-200 text-gray-900 placeholder:text-gray-400 focus:border-brand-violet"
+      ? "bg-white/[0.04] border-white/[0.08] text-white placeholder:text-white/25 focus:border-brand-ember/50"
+      : "bg-white border-gray-200 text-gray-900 placeholder:text-gray-400 focus:border-brand-ember"
   }`;
   const labelCls = `block text-xs font-medium mb-1.5 ${isDark ? "text-white/45" : "text-gray-600"}`;
 
@@ -89,7 +89,7 @@ function CreateGroupModal({ experiments, onClose, onCreated, isDark }) {
         <div className="flex items-center justify-between mt-5 mb-2">
           <label className={labelCls}>Experiments in this group</label>
           <button type="button" onClick={addRow}
-            className="text-xs text-brand-violet hover:underline">+ Add experiment</button>
+            className="text-xs text-brand-ember hover:underline">+ Add experiment</button>
         </div>
 
         <div className="space-y-2">
@@ -146,7 +146,7 @@ function CreateGroupModal({ experiments, onClose, onCreated, isDark }) {
           </button>
           <button onClick={handleSubmit} disabled={loading}
             className="flex-1 py-2.5 rounded-xl text-sm text-white font-medium
-                       bg-gradient-to-r from-brand-violet to-brand-blue disabled:opacity-60
+                       bg-gradient-to-r from-brand-ember to-brand-gold disabled:opacity-60
                        hover:opacity-90 transition-opacity">
             {loading ? "Creating…" : "Create group"}
           </button>
@@ -217,7 +217,7 @@ export default function MutualExclusionGroups() {
           <button onClick={() => setShowCreate(true)}
             disabled={experiments.length < 2}
             className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm text-white font-medium
-                       bg-gradient-to-r from-brand-violet to-brand-blue hover:opacity-90 transition-opacity
+                       bg-gradient-to-r from-brand-ember to-brand-gold hover:opacity-90 transition-opacity
                        shadow-[0_0_20px_rgba(108,92,231,0.3)] disabled:opacity-40 disabled:cursor-not-allowed">
             <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24">
               <path strokeLinecap="round" d="M12 4v16m8-8H4" />
@@ -245,7 +245,7 @@ export default function MutualExclusionGroups() {
         }`}>
           <p className={`text-sm ${isDark ? "text-white/30" : "text-gray-400"}`}>No mutual exclusion groups yet</p>
           {canEdit && (
-            <button onClick={() => setShowCreate(true)} className="mt-3 text-sm text-brand-violet hover:underline">
+            <button onClick={() => setShowCreate(true)} className="mt-3 text-sm text-brand-ember hover:underline">
               Create your first group →
             </button>
           )}
@@ -280,7 +280,7 @@ export default function MutualExclusionGroups() {
                         {experimentName(m.experiment_id)}
                       </span>
                       <div className={`flex-1 max-w-[140px] h-2 rounded-full overflow-hidden ${isDark ? "bg-white/[0.06]" : "bg-gray-100"}`}>
-                        <div className="h-full rounded-full bg-gradient-to-r from-brand-violet to-brand-blue"
+                        <div className="h-full rounded-full bg-gradient-to-r from-brand-ember to-brand-gold"
                           style={{ width: `${m.allocation_pct}%` }} />
                       </div>
                       <span className={`text-xs font-mono w-10 text-right ${isDark ? "text-white/50" : "text-gray-500"}`}>

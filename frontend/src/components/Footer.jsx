@@ -115,8 +115,8 @@ export default function Footer() {
     >
       {/* Subtle glow – very faint so it doesn't wash out text */}
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-0 left-1/4 w-80 h-80 rounded-full blur-3xl bg-brand-violet/5 dark:bg-brand-violet/10" />
-        <div className="absolute bottom-0 right-1/4 w-80 h-80 rounded-full blur-3xl bg-brand-blue/5 dark:bg-brand-blue/10" />
+        <div className="absolute top-0 left-1/4 w-80 h-80 rounded-full blur-3xl bg-brand-ember/5 dark:bg-brand-ember/10" />
+        <div className="absolute bottom-0 right-1/4 w-80 h-80 rounded-full blur-3xl bg-brand-gold/5 dark:bg-brand-gold/10" />
       </div>
 
       <div className="relative max-w-7xl mx-auto px-6 py-8 md:py-10">

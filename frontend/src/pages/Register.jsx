@@ -114,7 +114,7 @@ export default function Register() {
       footer={
         <span className={isDark ? "text-white/40" : "text-gray-500"}>
           Already have an account?{" "}
-          <Link to="/login" className="text-brand-violet font-medium hover:underline">
+          <Link to="/login" className="text-brand-ember font-medium hover:underline">
             Sign in
           </Link>
         </span>
@@ -178,7 +178,7 @@ export default function Register() {
           whileHover={{ scale: loading ? 1 : 1.02 }}
           whileTap={{ scale: 0.97 }}
           className="relative w-full py-3 rounded-lg text-white font-medium text-sm overflow-hidden
-                     bg-gradient-to-r from-brand-violet to-brand-blue disabled:opacity-70"
+                     bg-gradient-to-r from-brand-ember to-brand-gold disabled:opacity-70"
           style={{ boxShadow: "0 0 30px rgba(108,92,231,0.45)" }}
         >
           <AnimatePresence mode="wait">

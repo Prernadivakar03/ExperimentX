@@ -10,7 +10,7 @@ const STATUS_CONFIG = {
   draft:     { color: "bg-gray-400/10 text-gray-400", dot: "bg-gray-400", label: "Draft" },
   running:   { color: "bg-emerald-500/10 text-emerald-500", dot: "bg-emerald-400", label: "Running" },
   paused:    { color: "bg-amber-500/10 text-amber-500", dot: "bg-amber-400", label: "Paused" },
-  completed: { color: "bg-brand-violet/10 text-brand-violet", dot: "bg-brand-violet", label: "Completed" },
+  completed: { color: "bg-brand-ember/10 text-brand-ember", dot: "bg-brand-ember", label: "Completed" },
 };
 
 function CreateModal({ onClose, onCreated, isDark }) {
@@ -31,10 +31,10 @@ function CreateModal({ onClose, onCreated, isDark }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const inputCls = `w-full px-3.5 py-2.5 rounded-xl text-sm border focus:outline-none focus:ring-2 focus:ring-brand-violet/25 transition-all ${
+  const inputCls = `w-full px-3.5 py-2.5 rounded-xl text-sm border focus:outline-none focus:ring-2 focus:ring-brand-ember/25 transition-all ${
     isDark
-      ? "bg-white/[0.04] border-white/[0.08] text-white placeholder:text-white/25 focus:border-brand-violet/50"
-      : "bg-white border-gray-200 text-gray-900 placeholder:text-gray-400 focus:border-brand-violet"
+      ? "bg-white/[0.04] border-white/[0.08] text-white placeholder:text-white/25 focus:border-brand-ember/50"
+      : "bg-white border-gray-200 text-gray-900 placeholder:text-gray-400 focus:border-brand-ember"
   }`;
 
   const labelCls = `block text-xs font-medium mb-1.5 ${isDark ? "text-white/45" : "text-gray-600"}`;
@@ -97,7 +97,7 @@ function CreateModal({ onClose, onCreated, isDark }) {
 
         {/* Progress */}
         <div className={`h-0.5 ${isDark ? "bg-white/[0.05]" : "bg-gray-100"}`}>
-          <motion.div className="h-full bg-gradient-to-r from-brand-violet to-brand-blue"
+          <motion.div className="h-full bg-gradient-to-r from-brand-ember to-brand-gold"
             animate={{ width: step === 1 ? "50%" : "100%" }} transition={{ duration: 0.3 }} />
         </div>
 
@@ -193,7 +193,7 @@ function CreateModal({ onClose, onCreated, isDark }) {
                   }`}>
                     <div className="flex items-center gap-2 mb-3">
                       <div className={`w-6 h-6 rounded-full flex items-center justify-center text-white text-xs font-bold ${
-                        i === 0 ? "bg-brand-violet" : "bg-brand-blue"
+                        i === 0 ? "bg-brand-ember" : "bg-brand-gold"
                       }`}>{v.label}</div>
                       <span className={`text-sm font-medium ${isDark ? "text-white/70" : "text-gray-700"}`}>
                         Variant {v.label}
@@ -248,7 +248,7 @@ function CreateModal({ onClose, onCreated, isDark }) {
               onClick={step === 1 ? () => { if (form.name) setStep(2); else setError("Name is required"); } : handleSubmit}
               disabled={loading}
               className="flex-1 py-2.5 rounded-xl text-sm text-white font-medium
-                         bg-gradient-to-r from-brand-violet to-brand-blue disabled:opacity-60
+                         bg-gradient-to-r from-brand-ember to-brand-gold disabled:opacity-60
                          hover:opacity-90 transition-opacity">
               {loading ? "Creating…" : step === 1 ? "Next →" : "Create experiment"}
             </button>
@@ -350,7 +350,7 @@ export default function Experiments() {
         </div>
         <button onClick={() => setShowCreate(true)}
           className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm text-white font-medium
-                     bg-gradient-to-r from-brand-violet to-brand-blue hover:opacity-90 transition-opacity
+                     bg-gradient-to-r from-brand-ember to-brand-gold hover:opacity-90 transition-opacity
                      shadow-[0_0_20px_rgba(108,92,231,0.3)]">
           <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24">
             <path strokeLinecap="round" d="M12 4v16m8-8H4" />
@@ -368,7 +368,7 @@ export default function Experiments() {
             <button key={f} onClick={() => setFilter(f)}
               className={`px-3 py-1.5 rounded-lg text-xs font-medium capitalize transition-all ${
                 filter === f
-                  ? "bg-brand-violet text-white shadow-sm"
+                  ? "bg-brand-ember text-white shadow-sm"
                   : isDark ? "text-white/40 hover:text-white" : "text-gray-500 hover:text-gray-900"
               }`}>
               {f}
@@ -382,7 +382,7 @@ export default function Experiments() {
           </svg>
           <input value={search} onChange={(e) => setSearch(e.target.value)}
             placeholder="Search experiments…"
-            className={`w-full pl-9 pr-3 py-2 rounded-xl text-sm border focus:outline-none focus:ring-2 focus:ring-brand-violet/25 ${
+            className={`w-full pl-9 pr-3 py-2 rounded-xl text-sm border focus:outline-none focus:ring-2 focus:ring-brand-ember/25 ${
               isDark
                 ? "bg-white/[0.03] border-white/[0.07] text-white placeholder:text-white/25"
                 : "bg-white border-gray-200 text-gray-900 placeholder:text-gray-400"
@@ -402,7 +402,7 @@ export default function Experiments() {
             {search || filter !== "all" ? "No experiments match your filter" : "No experiments yet"}
           </p>
           {!search && filter === "all" && (
-            <button onClick={() => setShowCreate(true)} className="mt-3 text-sm text-brand-violet hover:underline">
+            <button onClick={() => setShowCreate(true)} className="mt-3 text-sm text-brand-ember hover:underline">
               Create your first experiment →
             </button>
           )}
@@ -419,7 +419,7 @@ export default function Experiments() {
               >
                 <div className="flex items-start justify-between gap-2 mb-3">
                   <p
-                    className={`font-medium leading-snug cursor-pointer hover:text-brand-violet transition-colors ${
+                    className={`font-medium leading-snug cursor-pointer hover:text-brand-ember transition-colors ${
                     isDark ? "text-white/85" : "text-gray-900"
                     }`}
                     onClick={() => setDetailId(e.id)}
@@ -454,12 +454,12 @@ export default function Experiments() {
                     }`}>
                       <div className="flex items-center gap-1.5">
                         <div className={`w-4 h-4 rounded-full flex items-center justify-center text-white text-[9px] font-bold ${
-                          v.label === "A" ? "bg-brand-violet" : "bg-brand-blue"
+                          v.label === "A" ? "bg-brand-ember" : "bg-brand-gold"
                         }`}>{v.label}</div>
                         <span className={`text-xs truncate ${isDark ? "text-white/50" : "text-gray-600"}`}>{v.name}</span>
                       </div>
                       <div className={`mt-1.5 h-1 rounded-full ${isDark ? "bg-white/[0.06]" : "bg-gray-200"}`}>
-                        <div className={`h-full rounded-full ${v.label === "A" ? "bg-brand-violet" : "bg-brand-blue"}`}
+                        <div className={`h-full rounded-full ${v.label === "A" ? "bg-brand-ember" : "bg-brand-gold"}`}
                           style={{ width: `${v.traffic_split * 100}%` }} />
                       </div>
                       <p className={`text-[10px] mt-1 ${isDark ? "text-white/20" : "text-gray-400"}`}>
@@ -490,7 +490,7 @@ export default function Experiments() {
                         ▶ Resume
                       </button>
                       <button onClick={() => updateStatus(e.id, "completed")}
-                        className="flex-1 py-1.5 rounded-lg text-xs font-medium text-brand-violet bg-brand-violet/10 hover:bg-brand-violet/20 transition-colors">
+                        className="flex-1 py-1.5 rounded-lg text-xs font-medium text-brand-ember bg-brand-ember/10 hover:bg-brand-ember/20 transition-colors">
                         ✓ Complete
                       </button>
                     </>
@@ -499,8 +499,8 @@ export default function Experiments() {
                     onClick={() => setDetailId(e.id)}
                     className={`px-3 py-1.5 rounded-lg text-xs transition-colors ${
                       isDark
-                        ? "text-white/30 hover:text-brand-violet hover:bg-brand-violet/10"
-                        : "text-gray-400 hover:text-brand-violet hover:bg-brand-violet/5"
+                        ? "text-white/30 hover:text-brand-ember hover:bg-brand-ember/10"
+                        : "text-gray-400 hover:text-brand-ember hover:bg-brand-ember/5"
                     }`}
                   >
                     View →

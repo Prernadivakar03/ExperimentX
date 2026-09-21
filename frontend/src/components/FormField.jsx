@@ -21,7 +21,7 @@ export default function FormField({
         {Icon && (
           <div className={`absolute left-3 top-1/2 -translate-y-1/2 transition-colors duration-200 ${
             focused
-  ? "text-brand-violet"
+  ? "text-brand-ember"
   : isDark
   ? "text-white/25"
   : "text-gray-400"
@@ -63,7 +63,7 @@ export default function FormField({
 
         <motion.div
           className="absolute bottom-0 left-0 h-[2px] rounded-b-lg pointer-events-none
-                     bg-gradient-to-r from-brand-violet to-brand-blue"
+                     bg-gradient-to-r from-brand-ember to-brand-gold"
           animate={{ scaleX: focused ? 1 : 0, opacity: focused ? 1 : 0 }}
           style={{ transformOrigin: "left" }}
           transition={{ duration: 0.25 }}

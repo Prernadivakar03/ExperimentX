@@ -4,16 +4,16 @@ import AnimatedCounter from "../AnimatedCounter";
 
 const ACCENTS = {
   violet: {
-    glow: "from-brand-violet/25 via-brand-violet/5 to-transparent",
+    glow: "from-brand-ember/25 via-brand-ember/5 to-transparent",
     shadow: "group-hover:shadow-[0_0_0_1px_rgba(108,92,231,0.35),0_24px_50px_-18px_rgba(108,92,231,0.45)]",
-    bar: "bg-brand-violet",
-    iconBg: "bg-brand-violet/15 text-brand-violet",
+    bar: "bg-brand-ember",
+    iconBg: "bg-brand-ember/15 text-brand-ember",
   },
   blue: {
-    glow: "from-brand-blue/25 via-brand-blue/5 to-transparent",
+    glow: "from-brand-gold/25 via-brand-gold/5 to-transparent",
     shadow: "group-hover:shadow-[0_0_0_1px_rgba(79,140,255,0.35),0_24px_50px_-18px_rgba(79,140,255,0.45)]",
-    bar: "bg-brand-blue",
-    iconBg: "bg-brand-blue/15 text-brand-blue",
+    bar: "bg-brand-gold",
+    iconBg: "bg-brand-gold/15 text-brand-gold",
   },
   emerald: {
     glow: "from-emerald-500/25 via-emerald-500/5 to-transparent",

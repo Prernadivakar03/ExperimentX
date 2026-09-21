@@ -48,14 +48,14 @@
 //             ? "bg-gradient-to-br from-emerald-500/10 via-[#0D0E1A] to-[#0D0E1A] border-emerald-500/25"
 //             : "bg-gradient-to-br from-emerald-50 via-white to-white border-emerald-200"
 //           : isDark
-//           ? "bg-gradient-to-br from-brand-violet/10 via-[#0D0E1A] to-[#0D0E1A] border-white/[0.08]"
+//           ? "bg-gradient-to-br from-brand-ember/10 via-[#0D0E1A] to-[#0D0E1A] border-white/[0.08]"
 //           : "bg-gradient-to-br from-violet-50 via-white to-white border-gray-200"
 //       }`}
 //     >
 //       <div className="flex items-center gap-2 mb-3">
 //         <span
 //           className={`flex items-center justify-center w-6 h-6 rounded-lg ${
-//             significant ? "bg-emerald-500/15 text-emerald-500" : "bg-brand-violet/15 text-brand-violet"
+//             significant ? "bg-emerald-500/15 text-emerald-500" : "bg-brand-ember/15 text-brand-ember"
 //           }`}
 //         >
 //           <Zap size={13} strokeWidth={2.5} />
@@ -190,14 +190,14 @@ export default function ExperimentSignal({ statistics, variants, isDark }) {
             ? "bg-gradient-to-br from-emerald-500/10 via-[#0D0E1A] to-[#0D0E1A] border-emerald-500/25"
             : "bg-gradient-to-br from-emerald-50 via-white to-white border-emerald-200"
           : isDark
-          ? "bg-gradient-to-br from-brand-violet/10 via-[#0D0E1A] to-[#0D0E1A] border-white/[0.08]"
+          ? "bg-gradient-to-br from-brand-ember/10 via-[#0D0E1A] to-[#0D0E1A] border-white/[0.08]"
           : "bg-gradient-to-br from-violet-50 via-white to-white border-gray-200"
       }`}
     >
       <div className="flex items-center gap-2 mb-3">
         <span
           className={`flex items-center justify-center w-6 h-6 rounded-lg ${
-            significant ? "bg-emerald-500/15 text-emerald-500" : "bg-brand-violet/15 text-brand-violet"
+            significant ? "bg-emerald-500/15 text-emerald-500" : "bg-brand-ember/15 text-brand-ember"
           }`}
         >
           <Zap size={13} strokeWidth={2.5} />

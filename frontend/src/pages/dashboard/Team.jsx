@@ -10,8 +10,8 @@ import InviteMemberModal from "../../components/InviteMemberModal";
 
 const ROLE_LABEL = { admin: "Admin", editor: "Editor", viewer: "Viewer" };
 const ROLE_COLOR = {
-  admin: "bg-brand-violet/15 text-brand-violet",
-  editor: "bg-brand-blue/15 text-brand-blue",
+  admin: "bg-brand-ember/15 text-brand-ember",
+  editor: "bg-brand-gold/15 text-brand-gold",
   viewer: "bg-gray-400/15 text-gray-400",
 };
 
@@ -94,7 +94,7 @@ export default function Team() {
           <button
             onClick={() => setShowInvite(true)}
             className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm text-white font-medium
-                       bg-gradient-to-r from-brand-violet to-brand-blue hover:opacity-90 transition-opacity
+                       bg-gradient-to-r from-brand-ember to-brand-gold hover:opacity-90 transition-opacity
                        shadow-[0_0_20px_rgba(108,92,231,0.3)]"
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24">
@@ -119,7 +119,7 @@ export default function Team() {
               }`}
             >
               <div className="flex items-center gap-3 min-w-0">
-                <div className="w-9 h-9 rounded-full bg-gradient-to-br from-brand-violet to-brand-blue flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
+                <div className="w-9 h-9 rounded-full bg-gradient-to-br from-brand-ember to-brand-gold flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
                   {(m.user_name || m.user_email || "?")[0]?.toUpperCase()}
                 </div>
                 <div className="min-w-0">

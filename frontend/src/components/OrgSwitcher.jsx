@@ -72,7 +72,7 @@ export default function OrgSwitcher({ isDark }) {
                 onClick={() => switchOrg(org.id)}
                 className={`w-full text-left px-4 py-2.5 text-sm transition-colors ${
                   org.id === activeOrgId
-                    ? "text-brand-violet bg-brand-violet/10"
+                    ? "text-brand-ember bg-brand-ember/10"
                     : isDark
                       ? "text-white/70 hover:bg-white/[0.05]"
                       : "text-gray-700 hover:bg-gray-50"

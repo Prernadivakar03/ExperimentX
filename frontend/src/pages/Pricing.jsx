@@ -162,7 +162,7 @@ export default function Pricing() {
           viewport={{ once: true }}
           className="text-center mb-14"
         >
-          <span className="inline-block text-xs font-medium px-3 py-1 rounded-full bg-brand-violet/10 text-brand-violet mb-4">
+          <span className="inline-block text-xs font-medium px-3 py-1 rounded-full bg-brand-ember/10 text-brand-ember mb-4">
             Pricing
           </span>
           <h2 className={`text-3xl md:text-4xl font-display font-bold transition-colors ${
@@ -189,8 +189,8 @@ export default function Pricing() {
               className={`relative flex flex-col rounded-2xl border p-7 transition-all duration-300 ${
                 plan.highlight
                   ? isDark
-                    ? "bg-brand-violet/[0.08] border-brand-violet/40 shadow-[0_0_60px_rgba(108,92,231,0.2)]"
-                    : "bg-white border-brand-violet/40 shadow-[0_0_40px_rgba(108,92,231,0.12)]"
+                    ? "bg-brand-ember/[0.08] border-brand-ember/40 shadow-[0_0_60px_rgba(108,92,231,0.2)]"
+                    : "bg-white border-brand-ember/40 shadow-[0_0_40px_rgba(108,92,231,0.12)]"
                   : isDark
                     ? "bg-white/[0.03] border-white/[0.07] hover:border-white/[0.15]"
                     : "bg-white border-gray-200 hover:border-gray-300 shadow-sm"
@@ -198,7 +198,7 @@ export default function Pricing() {
             >
               {plan.highlight && (
                 <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                  <span className="text-xs font-bold px-3 py-1 rounded-full bg-gradient-to-r from-brand-violet to-brand-blue text-white shadow-lg">
+                  <span className="text-xs font-bold px-3 py-1 rounded-full bg-gradient-to-r from-brand-ember to-brand-gold text-white shadow-lg">
                     {plan.badge}
                   </span>
                 </div>
@@ -242,7 +242,7 @@ export default function Pricing() {
                 to={plan.href}
                 className={`block text-center py-2.5 rounded-xl text-sm font-medium transition-all ${
                   plan.highlight
-                    ? "bg-gradient-to-r from-brand-violet to-brand-blue text-white hover:opacity-90 shadow-[0_0_20px_rgba(108,92,231,0.35)]"
+                    ? "bg-gradient-to-r from-brand-ember to-brand-gold text-white hover:opacity-90 shadow-[0_0_20px_rgba(108,92,231,0.35)]"
                     : isDark
                       ? "border border-white/10 text-white/70 hover:text-white hover:border-white/25"
                       : "border border-gray-200 text-gray-600 hover:text-gray-900 hover:border-gray-300 bg-gray-50 hover:bg-white"
@@ -280,7 +280,7 @@ export default function Pricing() {
                   {PLANS.map((p) => (
                     <th key={p.name} className={`text-center px-6 py-3 text-xs font-semibold ${
                       p.highlight
-                        ? "text-brand-violet"
+                        ? "text-brand-ember"
                         : isDark ? "text-white/40" : "text-gray-500"
                     }`}>{p.name}</th>
                   ))}
@@ -319,7 +319,7 @@ export default function Pricing() {
                             : v === "—"
                               ? isDark ? "text-white/15" : "text-gray-300"
                               : PLANS[i].highlight
-                                ? "text-brand-violet"
+                                ? "text-brand-ember"
                                 : isDark ? "text-white/55" : "text-gray-600"
                         }`}
                       >

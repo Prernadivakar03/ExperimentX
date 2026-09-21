@@ -5,7 +5,7 @@ function CustomTooltip({ active, payload, label, isDark }) {
   return (
     <div className={`rounded-xl border px-3.5 py-2.5 text-xs backdrop-blur-xl ${isDark ? "bg-[#0D0E1A]/95 border-white/10 text-white" : "bg-white/95 border-gray-200 text-gray-900"}`}>
       <p className="opacity-50 mb-1">{label}</p>
-      <p className="font-display font-semibold text-brand-violet">{payload[0].value}% conversion</p>
+      <p className="font-display font-semibold text-brand-ember">{payload[0].value}% conversion</p>
     </div>
   );
 }

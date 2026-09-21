@@ -10,10 +10,10 @@ export default function InviteMemberModal({ orgId, onClose, onInvited, isDark })
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const inputCls = `w-full px-3.5 py-2.5 rounded-xl text-sm border focus:outline-none focus:ring-2 focus:ring-brand-violet/25 transition-all ${
+  const inputCls = `w-full px-3.5 py-2.5 rounded-xl text-sm border focus:outline-none focus:ring-2 focus:ring-brand-ember/25 transition-all ${
     isDark
-      ? "bg-white/[0.04] border-white/[0.08] text-white placeholder:text-white/25 focus:border-brand-violet/50"
-      : "bg-white border-gray-200 text-gray-900 placeholder:text-gray-400 focus:border-brand-violet"
+      ? "bg-white/[0.04] border-white/[0.08] text-white placeholder:text-white/25 focus:border-brand-ember/50"
+      : "bg-white border-gray-200 text-gray-900 placeholder:text-gray-400 focus:border-brand-ember"
   }`;
   const labelCls = `block text-xs font-medium mb-1.5 ${isDark ? "text-white/45" : "text-gray-600"}`;
 
@@ -89,7 +89,7 @@ export default function InviteMemberModal({ orgId, onClose, onInvited, isDark })
             onClick={handleSubmit}
             disabled={loading}
             className="flex-1 py-2.5 rounded-xl text-sm text-white font-medium
-                       bg-gradient-to-r from-brand-violet to-brand-blue disabled:opacity-60
+                       bg-gradient-to-r from-brand-ember to-brand-gold disabled:opacity-60
                        hover:opacity-90 transition-opacity"
           >
             {loading ? "Sending…" : "Send Invitation"}

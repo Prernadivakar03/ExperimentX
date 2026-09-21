@@ -15,10 +15,10 @@ function CreateHoldoutModal({ onClose, onCreated, isDark, hasActiveGroup }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const inputCls = `w-full px-3.5 py-2.5 rounded-xl text-sm border focus:outline-none focus:ring-2 focus:ring-brand-violet/25 transition-all ${
+  const inputCls = `w-full px-3.5 py-2.5 rounded-xl text-sm border focus:outline-none focus:ring-2 focus:ring-brand-ember/25 transition-all ${
     isDark
-      ? "bg-white/[0.04] border-white/[0.08] text-white placeholder:text-white/25 focus:border-brand-violet/50"
-      : "bg-white border-gray-200 text-gray-900 placeholder:text-gray-400 focus:border-brand-violet"
+      ? "bg-white/[0.04] border-white/[0.08] text-white placeholder:text-white/25 focus:border-brand-ember/50"
+      : "bg-white border-gray-200 text-gray-900 placeholder:text-gray-400 focus:border-brand-ember"
   }`;
   const labelCls = `block text-xs font-medium mb-1.5 ${isDark ? "text-white/45" : "text-gray-600"}`;
 
@@ -83,7 +83,7 @@ function CreateHoldoutModal({ onClose, onCreated, isDark, hasActiveGroup }) {
           <input
             type="range" min="1" max="50" value={percentage}
             onChange={(e) => setPercentage(Number(e.target.value))}
-            className="flex-1 accent-brand-violet"
+            className="flex-1 accent-brand-ember"
           />
           <span className={`text-sm font-mono w-12 text-right ${isDark ? "text-white/70" : "text-gray-700"}`}>
             {percentage}%
@@ -105,7 +105,7 @@ function CreateHoldoutModal({ onClose, onCreated, isDark, hasActiveGroup }) {
           </button>
           <button onClick={handleSubmit} disabled={loading}
             className="flex-1 py-2.5 rounded-xl text-sm text-white font-medium
-                       bg-gradient-to-r from-brand-violet to-brand-blue disabled:opacity-60
+                       bg-gradient-to-r from-brand-ember to-brand-gold disabled:opacity-60
                        hover:opacity-90 transition-opacity">
             {loading ? "Creating…" : "Create holdout group"}
           </button>
@@ -224,7 +224,7 @@ export default function HoldoutGroups() {
         {canEdit && (
           <button onClick={() => setShowCreate(true)}
             className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm text-white font-medium
-                       bg-gradient-to-r from-brand-violet to-brand-blue hover:opacity-90 transition-opacity
+                       bg-gradient-to-r from-brand-ember to-brand-gold hover:opacity-90 transition-opacity
                        shadow-[0_0_20px_rgba(108,92,231,0.3)]">
             <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24">
               <path strokeLinecap="round" d="M12 4v16m8-8H4" />
@@ -244,7 +244,7 @@ export default function HoldoutGroups() {
         }`}>
           <p className={`text-sm ${isDark ? "text-white/30" : "text-gray-400"}`}>No holdout groups yet</p>
           {canEdit && (
-            <button onClick={() => setShowCreate(true)} className="mt-3 text-sm text-brand-violet hover:underline">
+            <button onClick={() => setShowCreate(true)} className="mt-3 text-sm text-brand-ember hover:underline">
               Create your first holdout group →
             </button>
           )}
@@ -282,7 +282,7 @@ export default function HoldoutGroups() {
 
               <button
                 onClick={() => setExpandedId(expandedId === g.id ? null : g.id)}
-                className="text-xs text-brand-violet hover:underline mt-3"
+                className="text-xs text-brand-ember hover:underline mt-3"
               >
                 {expandedId === g.id ? "Hide impact" : "View impact →"}
               </button>

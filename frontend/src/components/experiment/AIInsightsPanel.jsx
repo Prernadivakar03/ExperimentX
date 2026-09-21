@@ -80,13 +80,13 @@ export default function AIInsightsPanel({ experimentId, isDark }) {
       <div className={cardCls}>
         <div className="flex items-center justify-between mb-1">
           <p className={`text-sm font-semibold ${isDark ? "text-white/85" : "text-gray-900"}`}>Pre-launch Risk</p>
-          <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-brand-violet/15 text-brand-violet font-medium">AI</span>
+          <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-brand-ember/15 text-brand-ember font-medium">AI</span>
         </div>
         <p className={`text-xs mb-3 ${isDark ? "text-white/35" : "text-gray-500"}`}>
           Deterministic checks on sample size, SRM, guardrails — AI only phrases the reasoning.
         </p>
         <button onClick={runRiskScore} disabled={riskLoading}
-          className="w-full py-2 rounded-lg text-xs font-medium text-white bg-brand-violet hover:opacity-90 disabled:opacity-50 transition-opacity">
+          className="w-full py-2 rounded-lg text-xs font-medium text-white bg-brand-ember hover:opacity-90 disabled:opacity-50 transition-opacity">
           {riskLoading ? "Analyzing…" : risk ? "Re-check" : "Check risk"}
         </button>
 
@@ -117,13 +117,13 @@ export default function AIInsightsPanel({ experimentId, isDark }) {
       <div className={cardCls}>
         <div className="flex items-center justify-between mb-1">
           <p className={`text-sm font-semibold ${isDark ? "text-white/85" : "text-gray-900"}`}>Explain Results</p>
-          <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-brand-violet/15 text-brand-violet font-medium">AI</span>
+          <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-brand-ember/15 text-brand-ember font-medium">AI</span>
         </div>
         <p className={`text-xs mb-3 ${isDark ? "text-white/35" : "text-gray-500"}`}>
           Grounded strictly in your funnel event data — never invents design causes.
         </p>
         <button onClick={runExplain} disabled={explainLoading}
-          className="w-full py-2 rounded-lg text-xs font-medium text-white bg-brand-violet hover:opacity-90 disabled:opacity-50 transition-opacity">
+          className="w-full py-2 rounded-lg text-xs font-medium text-white bg-brand-ember hover:opacity-90 disabled:opacity-50 transition-opacity">
           {explainLoading ? "Analyzing…" : explain ? "Re-check" : "Explain results"}
         </button>
 
@@ -145,13 +145,13 @@ export default function AIInsightsPanel({ experimentId, isDark }) {
       <div className={cardCls}>
         <div className="flex items-center justify-between mb-1">
           <p className={`text-sm font-semibold ${isDark ? "text-white/85" : "text-gray-900"}`}>Traffic Anomaly</p>
-          <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-brand-violet/15 text-brand-violet font-medium">AI</span>
+          <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-brand-ember/15 text-brand-ember font-medium">AI</span>
         </div>
         <p className={`text-xs mb-3 ${isDark ? "text-white/35" : "text-gray-500"}`}>
           Z-score check on daily traffic — AI only suggests what to investigate.
         </p>
         <button onClick={runAnomalyCheck} disabled={anomalyLoading}
-          className="w-full py-2 rounded-lg text-xs font-medium text-white bg-brand-violet hover:opacity-90 disabled:opacity-50 transition-opacity">
+          className="w-full py-2 rounded-lg text-xs font-medium text-white bg-brand-ember hover:opacity-90 disabled:opacity-50 transition-opacity">
           {anomalyLoading ? "Checking…" : anomaly ? "Re-check" : "Check for anomalies"}
         </button>
 
@@ -169,7 +169,7 @@ export default function AIInsightsPanel({ experimentId, isDark }) {
                   <ul className="space-y-1">
                     {(Array.isArray(anomaly.ai_investigation_suggestions) ? anomaly.ai_investigation_suggestions : []).map((s, i) => (
                       <li key={i} className={`text-[11px] flex gap-1.5 ${isDark ? "text-white/40" : "text-gray-500"}`}>
-                        <span className="text-brand-violet flex-shrink-0">→</span>{typeof s === "string" ? s : JSON.stringify(s)}
+                        <span className="text-brand-ember flex-shrink-0">→</span>{typeof s === "string" ? s : JSON.stringify(s)}
                       </li>
                     ))}
                   </ul>

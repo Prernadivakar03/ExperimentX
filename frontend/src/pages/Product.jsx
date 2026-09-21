@@ -36,7 +36,7 @@ const capabilities = [
     icon: Brain,
     title: "AI Copilot",
     desc: "Generate experiments instantly from a business goal.",
-    accent: "text-brand-violet",
+    accent: "text-brand-ember",
     proof: {
       type: "chat",
       prompt: "Improve checkout conversion for mobile users",
@@ -48,7 +48,7 @@ const capabilities = [
     icon: Zap,
     title: "Experiment Management",
     desc: "Launch and manage A/B tests with a powerful dashboard.",
-    accent: "text-brand-blue",
+    accent: "text-brand-gold",
     proof: { type: "split", a: 50, b: 50, status: "Running · Day 6 of 14" },
   },
   {
@@ -100,8 +100,8 @@ const steps = [
 ];
 
 const agents = [
-  { name: "Planner", icon: Brain, desc: "Turns goals into full experiment plans.", accent: "bg-brand-violet", status: "idle" },
-  { name: "Reviewer", icon: CheckCircle, desc: "Checks your experiment before launch.", accent: "bg-brand-blue", status: "idle" },
+  { name: "Planner", icon: Brain, desc: "Turns goals into full experiment plans.", accent: "bg-brand-ember", status: "idle" },
+  { name: "Reviewer", icon: CheckCircle, desc: "Checks your experiment before launch.", accent: "bg-brand-gold", status: "idle" },
   { name: "Variant Generator", icon: Sparkles, desc: "Generates copy and design variants.", accent: "bg-emerald-500", status: "idle" },
   { name: "Analytics", icon: BarChart3, desc: "Explains results in plain English.", accent: "bg-amber-500", status: "idle" },
   { name: "Guardian", icon: Shield, desc: "Monitors anomalies and alerts.", accent: "bg-rose-500", status: "watching" },
@@ -189,10 +189,10 @@ function ProofChat({ prompt, reply, isDark }) {
         {prompt}
       </div>
       <div className="flex items-start gap-1.5">
-        <span className="w-4 h-4 rounded-full bg-brand-violet/20 flex items-center justify-center flex-shrink-0 mt-0.5">
-          <Sparkles size={10} className="text-brand-violet" />
+        <span className="w-4 h-4 rounded-full bg-brand-ember/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+          <Sparkles size={10} className="text-brand-ember" />
         </span>
-        <div className={`px-3 py-1.5 rounded-lg rounded-bl-sm ${isDark ? "bg-brand-violet/10 text-white/80" : "bg-brand-violet/5 text-gray-800"}`}>
+        <div className={`px-3 py-1.5 rounded-lg rounded-bl-sm ${isDark ? "bg-brand-ember/10 text-white/80" : "bg-brand-ember/5 text-gray-800"}`}>
           {reply}
         </div>
       </div>
@@ -204,8 +204,8 @@ function ProofSplit({ a, b, status, isDark }) {
   return (
     <div className="w-full max-w-xs">
       <div className="flex h-3 rounded-full overflow-hidden">
-        <div className="bg-brand-violet" style={{ width: `${a}%` }} />
-        <div className="bg-brand-blue" style={{ width: `${b}%` }} />
+        <div className="bg-brand-ember" style={{ width: `${a}%` }} />
+        <div className="bg-brand-gold" style={{ width: `${b}%` }} />
       </div>
       <div className="flex justify-between mt-2 text-xs">
         <span className={isDark ? "text-white/50" : "text-gray-500"}>Variant A · {a}%</span>
@@ -332,9 +332,9 @@ function TimelineStep({ label, icon: Icon, isDark, index, total }) {
     <div className="flex flex-col items-center flex-1 relative">
       <motion.div
         whileHover={{ scale: 1.1 }}
-        className="relative z-10 w-12 h-12 rounded-full flex items-center justify-center border-2 border-brand-violet bg-brand-violet/5 dark:bg-brand-violet/10"
+        className="relative z-10 w-12 h-12 rounded-full flex items-center justify-center border-2 border-brand-ember bg-brand-ember/5 dark:bg-brand-ember/10"
       >
-        <Icon size={20} className="text-brand-violet" />
+        <Icon size={20} className="text-brand-ember" />
       </motion.div>
       <p className={`text-xs font-medium mt-2 text-center ${isDark ? "text-white/60" : "text-gray-600"}`}>{label}</p>
       {index < total - 1 && (
@@ -343,7 +343,7 @@ function TimelineStep({ label, icon: Icon, isDark, index, total }) {
           whileInView={{ scaleX: 1 }}
           transition={{ duration: 1, delay: 0.2 }}
           viewport={{ once: true }}
-          className="hidden md:block absolute top-6 left-[calc(50%+1.5rem)] w-[calc(100%-3rem)] h-[2px] origin-left bg-brand-violet/30"
+          className="hidden md:block absolute top-6 left-[calc(50%+1.5rem)] w-[calc(100%-3rem)] h-[2px] origin-left bg-brand-ember/30"
         />
       )}
     </div>
@@ -423,7 +423,7 @@ export default function ProductPage() {
           x: [0, 10, 0],
         }}
         transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute top-40 left-10 w-96 h-96 rounded-full blur-3xl bg-brand-violet/5 dark:bg-brand-violet/10 pointer-events-none"
+        className="absolute top-40 left-10 w-96 h-96 rounded-full blur-3xl bg-brand-ember/5 dark:bg-brand-ember/10 pointer-events-none"
       />
       <motion.div
         animate={{
@@ -431,20 +431,20 @@ export default function ProductPage() {
           x: [0, -10, 0],
         }}
         transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-        className="absolute bottom-20 right-10 w-80 h-80 rounded-full blur-3xl bg-brand-blue/5 dark:bg-brand-blue/10 pointer-events-none"
+        className="absolute bottom-20 right-10 w-80 h-80 rounded-full blur-3xl bg-brand-gold/5 dark:bg-brand-gold/10 pointer-events-none"
       />
       <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-[0.02] pointer-events-none" />
 
       {/* ── Hero ── */}
       <section className="relative px-4 pt-20 pb-12 text-center">
         <Reveal>
-          <span className="inline-block px-4 py-1.5 rounded-full text-xs font-medium bg-brand-violet/10 text-brand-violet border border-brand-violet/20 mb-6">
+          <span className="inline-block px-4 py-1.5 rounded-full text-xs font-medium bg-brand-ember/10 text-brand-ember border border-brand-ember/20 mb-6">
             Product
           </span>
           <h1 className="text-4xl md:text-6xl font-display font-bold leading-tight">
             <span className={isDark ? "text-white" : "text-gray-900"}>AI‑Powered</span>
             <br />
-            <span className="bg-gradient-to-r from-brand-violet via-purple-500 to-brand-blue bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-brand-ember via-purple-500 to-brand-gold bg-clip-text text-transparent">
               Experimentation Platform
             </span>
           </h1>
@@ -455,7 +455,7 @@ export default function ProductPage() {
             <motion.button
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
-              className="px-6 py-3 rounded-xl text-sm font-medium text-white bg-gradient-to-r from-brand-violet to-brand-blue shadow-lg hover:shadow-xl transition-shadow"
+              className="px-6 py-3 rounded-xl text-sm font-medium text-white bg-gradient-to-r from-brand-ember to-brand-gold shadow-lg hover:shadow-xl transition-shadow"
             >
               Start Free Trial
             </motion.button>
@@ -630,7 +630,7 @@ export default function ProductPage() {
             </div>
 
             {/* Chart */}
-            <div className="aspect-[16/5] rounded-xl bg-gradient-to-r from-brand-violet/10 via-brand-blue/10 to-transparent flex items-center justify-center">
+            <div className="aspect-[16/5] rounded-xl bg-gradient-to-r from-brand-ember/10 via-brand-gold/10 to-transparent flex items-center justify-center">
               <div className="w-full h-full flex items-end gap-1 px-4">
                 {[40, 55, 48, 62, 70, 58, 65, 80, 75, 90, 85, 72].map((h, i) => (
                   <motion.div
@@ -638,7 +638,7 @@ export default function ProductPage() {
                     initial={{ height: 0 }}
                     whileInView={{ height: `${h}%` }}
                     transition={{ duration: 0.8, delay: i * 0.05 }}
-                    className="flex-1 bg-brand-violet/30 rounded-t"
+                    className="flex-1 bg-brand-ember/30 rounded-t"
                     style={{ height: `${h}%` }}
                   />
                 ))}
@@ -647,7 +647,7 @@ export default function ProductPage() {
 
             <div className="flex justify-center gap-8 mt-4 text-sm">
               <div className="flex items-center gap-2">
-                <span className="w-3 h-3 rounded-full bg-brand-violet/60"></span>
+                <span className="w-3 h-3 rounded-full bg-brand-ember/60"></span>
                 Variant A – 48%
               </div>
               <div className="flex items-center gap-2">
@@ -679,7 +679,7 @@ export default function ProductPage() {
                 onClick={() => setActiveFramework(fw)}
                 className={`px-3 py-1.5 rounded-lg text-xs font-medium transition ${
                   activeFramework === fw
-                    ? isDark ? "bg-brand-violet/20 text-brand-violet" : "bg-brand-violet/10 text-brand-violet"
+                    ? isDark ? "bg-brand-ember/20 text-brand-ember" : "bg-brand-ember/10 text-brand-ember"
                     : isDark ? "text-white/30 hover:text-white" : "text-gray-500 hover:text-gray-900"
                 }`}
               >
@@ -741,7 +741,7 @@ export default function ProductPage() {
 
       {/* ── Final CTA ── */}
       <section className="py-16 px-4 text-center relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-brand-violet/5 via-transparent to-transparent pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-b from-brand-ember/5 via-transparent to-transparent pointer-events-none" />
         <Reveal>
           <div className="relative max-w-3xl mx-auto">
             <h2 className={`text-3xl md:text-4xl font-display font-bold ${isDark ? "text-white" : "text-gray-900"}`}>
@@ -754,7 +754,7 @@ export default function ProductPage() {
               <motion.button
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                className="px-6 py-3 rounded-xl text-sm font-medium text-white bg-gradient-to-r from-brand-violet to-brand-blue shadow-lg hover:shadow-xl transition-shadow"
+                className="px-6 py-3 rounded-xl text-sm font-medium text-white bg-gradient-to-r from-brand-ember to-brand-gold shadow-lg hover:shadow-xl transition-shadow"
               >
                 Start Free Trial
               </motion.button>

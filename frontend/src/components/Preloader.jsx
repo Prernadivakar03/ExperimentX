@@ -261,7 +261,7 @@ export default function Preloader({ onComplete }) {
 
           {/* Subtle centered glow for depth behind text */}
           <div className="absolute inset-0 pointer-events-none">
-            <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full bg-brand-violet/10 blur-[120px]" />
+            <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full bg-brand-ember/10 blur-[120px]" />
           </div>
 
           {/* Interactive wordmark, no icon */}

@@ -20,7 +20,7 @@ const STEPS = [
     desc: "Name it, set a goal (purchase, signup, click), and define two variants. Takes 2 minutes.",
     action: "Go to Experiments",
     target: "/experiments",
-    color: "from-brand-violet to-purple-600",
+    color: "from-brand-ember to-purple-600",
   },
   {
     n: 2,
@@ -29,7 +29,7 @@ const STEPS = [
     desc: "One npm install and three lines of code. Works with React, Next.js, Vue, Node.js, and Python.",
     action: "View SDK docs",
     target: "/sdk",
-    color: "from-brand-blue to-cyan-500",
+    color: "from-brand-gold to-cyan-500",
   },
   {
     n: 3,
@@ -56,8 +56,8 @@ export default function Onboarding() {
     }`}>
       {/* Background pattern + glow */}
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-brand-violet/10 rounded-full blur-3xl" />
-        <div className="absolute bottom-0 right-0 w-96 h-96 bg-brand-blue/10 rounded-full blur-3xl" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-brand-ember/10 rounded-full blur-3xl" />
+        <div className="absolute bottom-0 right-0 w-96 h-96 bg-brand-gold/10 rounded-full blur-3xl" />
         <div
           className={`absolute inset-0 transition-opacity duration-500 ${
             isDark ? "opacity-[0.04]" : "opacity-[0.06]"
@@ -114,7 +114,7 @@ export default function Onboarding() {
               transition={{ delay: 0.3 + i * 0.1, type: "spring", stiffness: 200 }}
               className={`h-1.5 w-8 rounded-full transition-all duration-500 ${
                 i === 0
-                  ? "bg-gradient-to-r from-brand-violet to-brand-blue"
+                  ? "bg-gradient-to-r from-brand-ember to-brand-gold"
                   : isDark
                   ? "bg-white/10"
                   : "bg-gray-200"
@@ -142,13 +142,13 @@ export default function Onboarding() {
                 }}
                 className={`relative flex items-start gap-5 p-5 rounded-2xl border transition-all group cursor-pointer ${
                   isDark
-                    ? "bg-[#0D0E1A] border-white/[0.07] hover:border-brand-violet/30"
-                    : "bg-white border-gray-200 shadow-sm hover:border-brand-violet/20 hover:shadow-md"
+                    ? "bg-[#0D0E1A] border-white/[0.07] hover:border-brand-ember/30"
+                    : "bg-white border-gray-200 shadow-sm hover:border-brand-ember/20 hover:shadow-md"
                 }`}
                 onClick={() => navigate(step.target)}
               >
                 {/* Step number badge */}
-                <div className="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-gradient-to-br from-brand-violet to-brand-blue flex items-center justify-center text-white text-[10px] font-bold shadow-lg">
+                <div className="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-gradient-to-br from-brand-ember to-brand-gold flex items-center justify-center text-white text-[10px] font-bold shadow-lg">
                   {step.n}
                 </div>
 
@@ -170,7 +170,7 @@ export default function Onboarding() {
 
                 <div
                   className={`flex items-center gap-1 text-xs font-medium flex-shrink-0 mt-1 ${
-                    isDark ? "text-brand-violet" : "text-brand-violet"
+                    isDark ? "text-brand-ember" : "text-brand-ember"
                   } opacity-0 group-hover:opacity-100 transition-all duration-300 group-hover:translate-x-0 translate-x-2`}
                 >
                   {step.action}
@@ -197,13 +197,13 @@ export default function Onboarding() {
           whileHover={{ scale: 1.01 }}
           className={`mt-8 flex items-start gap-4 p-5 rounded-xl border relative overflow-hidden ${
             isDark
-              ? "bg-gradient-to-br from-brand-violet/10 to-brand-blue/5 border-brand-violet/20"
-              : "bg-gradient-to-br from-brand-violet/[0.06] to-brand-blue/[0.04] border-brand-violet/15"
+              ? "bg-gradient-to-br from-brand-ember/10 to-brand-gold/5 border-brand-ember/20"
+              : "bg-gradient-to-br from-brand-ember/[0.06] to-brand-gold/[0.04] border-brand-ember/15"
           }`}
         >
           <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full animate-shimmer" />
 
-          <div className="w-9 h-9 rounded-full bg-gradient-to-br from-brand-violet to-brand-blue flex items-center justify-center text-white flex-shrink-0 shadow-md">
+          <div className="w-9 h-9 rounded-full bg-gradient-to-br from-brand-ember to-brand-gold flex items-center justify-center text-white flex-shrink-0 shadow-md">
             <Sparkles size={18} strokeWidth={2} />
           </div>
           <div>
@@ -212,7 +212,7 @@ export default function Onboarding() {
             </p>
             <p className={`text-xs mt-0.5 ${isDark ? "text-white/40" : "text-gray-500"}`}>
               Not sure what to test? Go to{" "}
-              <span className="font-medium text-brand-violet">AI Insights → Experiment Planner</span> and type your business goal. The AI will generate a complete experiment for you in seconds.
+              <span className="font-medium text-brand-ember">AI Insights → Experiment Planner</span> and type your business goal. The AI will generate a complete experiment for you in seconds.
             </p>
           </div>
         </motion.div>

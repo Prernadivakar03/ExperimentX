@@ -13,10 +13,10 @@
 //   const [loading, setLoading] = useState(false);
 //   const [error, setError] = useState("");
 
-//   const inputCls = `w-full px-3.5 py-2.5 rounded-xl text-sm border focus:outline-none focus:ring-2 focus:ring-brand-violet/25 transition-all ${
+//   const inputCls = `w-full px-3.5 py-2.5 rounded-xl text-sm border focus:outline-none focus:ring-2 focus:ring-brand-ember/25 transition-all ${
 //     isDark
-//       ? "bg-white/[0.04] border-white/[0.08] text-white placeholder:text-white/25 focus:border-brand-violet/50"
-//       : "bg-white border-gray-200 text-gray-900 placeholder:text-gray-400 focus:border-brand-violet"
+//       ? "bg-white/[0.04] border-white/[0.08] text-white placeholder:text-white/25 focus:border-brand-ember/50"
+//       : "bg-white border-gray-200 text-gray-900 placeholder:text-gray-400 focus:border-brand-ember"
 //   }`;
 //   const labelCls = `block text-xs font-medium mb-1.5 ${isDark ? "text-white/45" : "text-gray-600"}`;
 
@@ -96,7 +96,7 @@
 //             </div>
 //             <input type="range" min={0} max={100} value={form.rollout_percentage}
 //               onChange={(e) => setForm({ ...form, rollout_percentage: Number(e.target.value) })}
-//               className="w-full accent-brand-violet" />
+//               className="w-full accent-brand-ember" />
 //           </div>
 
 //           {error && (
@@ -114,7 +114,7 @@
 //             </button>
 //             <button onClick={handleSubmit} disabled={loading}
 //               className="flex-1 py-2.5 rounded-xl text-sm text-white font-medium
-//                          bg-gradient-to-r from-brand-violet to-brand-blue disabled:opacity-60
+//                          bg-gradient-to-r from-brand-ember to-brand-gold disabled:opacity-60
 //                          hover:opacity-90 transition-opacity">
 //               {loading ? "Creating…" : "Create flag"}
 //             </button>
@@ -202,7 +202,7 @@
 //         </div>
 //         <button onClick={() => setShowCreate(true)}
 //           className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm text-white font-medium
-//                      bg-gradient-to-r from-brand-violet to-brand-blue hover:opacity-90 transition-opacity
+//                      bg-gradient-to-r from-brand-ember to-brand-gold hover:opacity-90 transition-opacity
 //                      shadow-[0_0_20px_rgba(108,92,231,0.3)]">
 //           <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24">
 //             <path strokeLinecap="round" d="M12 4v16m8-8H4" />
@@ -219,7 +219,7 @@
 //             <path strokeLinecap="round" d="M3 3l18 18M10.5 10.677V6a1.5 1.5 0 013 0v4.5m-3 0h3m-3 0L6 21m4.5-10.323L18 21" />
 //           </svg>
 //           <p className={`text-sm ${isDark ? "text-white/30" : "text-gray-400"}`}>No feature flags yet</p>
-//           <button onClick={() => setShowCreate(true)} className="mt-3 text-sm text-brand-violet hover:underline">
+//           <button onClick={() => setShowCreate(true)} className="mt-3 text-sm text-brand-ember hover:underline">
 //             Create your first flag →
 //           </button>
 //         </div>
@@ -267,7 +267,7 @@
 //                 <input type="range" min={0} max={100} value={f.rollout_percentage}
 //                   onChange={(e) => updateRollout(f, Number(e.target.value))}
 //                   disabled={!f.is_enabled}
-//                   className="w-full accent-brand-violet disabled:opacity-40" />
+//                   className="w-full accent-brand-ember disabled:opacity-40" />
 //                 {!f.is_enabled && (
 //                   <p className={`text-[10px] mt-1 ${isDark ? "text-white/25" : "text-gray-400"}`}>
 //                     Enable the flag to adjust rollout
@@ -449,10 +449,10 @@ function CreateFlagModal({ onClose, onCreated, isDark }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const inputCls = `w-full px-3.5 py-2.5 rounded-xl text-sm border focus:outline-none focus:ring-2 focus:ring-brand-violet/25 transition-all ${
+  const inputCls = `w-full px-3.5 py-2.5 rounded-xl text-sm border focus:outline-none focus:ring-2 focus:ring-brand-ember/25 transition-all ${
     isDark
-      ? "bg-white/[0.04] border-white/[0.08] text-white placeholder:text-white/25 focus:border-brand-violet/50"
-      : "bg-white border-gray-200 text-gray-900 placeholder:text-gray-400 focus:border-brand-violet"
+      ? "bg-white/[0.04] border-white/[0.08] text-white placeholder:text-white/25 focus:border-brand-ember/50"
+      : "bg-white border-gray-200 text-gray-900 placeholder:text-gray-400 focus:border-brand-ember"
   }`;
   const labelCls = `block text-xs font-medium mb-1.5 ${isDark ? "text-white/45" : "text-gray-600"}`;
 
@@ -532,7 +532,7 @@ function CreateFlagModal({ onClose, onCreated, isDark }) {
             </div>
             <input type="range" min={0} max={100} value={form.rollout_percentage}
               onChange={(e) => setForm({ ...form, rollout_percentage: Number(e.target.value) })}
-              className="w-full accent-brand-violet" />
+              className="w-full accent-brand-ember" />
           </div>
 
           {error && (
@@ -550,7 +550,7 @@ function CreateFlagModal({ onClose, onCreated, isDark }) {
             </button>
             <button onClick={handleSubmit} disabled={loading}
               className="flex-1 py-2.5 rounded-xl text-sm text-white font-medium
-                         bg-gradient-to-r from-brand-violet to-brand-blue disabled:opacity-60
+                         bg-gradient-to-r from-brand-ember to-brand-gold disabled:opacity-60
                          hover:opacity-90 transition-opacity">
               {loading ? "Creating…" : "Create flag"}
             </button>
@@ -642,7 +642,7 @@ export default function FeatureFlags() {
         {canEdit && (
           <button onClick={() => setShowCreate(true)}
             className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm text-white font-medium
-                       bg-gradient-to-r from-brand-violet to-brand-blue hover:opacity-90 transition-opacity
+                       bg-gradient-to-r from-brand-ember to-brand-gold hover:opacity-90 transition-opacity
                        shadow-[0_0_20px_rgba(108,92,231,0.3)]">
             <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24">
               <path strokeLinecap="round" d="M12 4v16m8-8H4" />
@@ -661,7 +661,7 @@ export default function FeatureFlags() {
           </svg>
           <p className={`text-sm ${isDark ? "text-white/30" : "text-gray-400"}`}>No feature flags yet</p>
           {canEdit && (
-            <button onClick={() => setShowCreate(true)} className="mt-3 text-sm text-brand-violet hover:underline">
+            <button onClick={() => setShowCreate(true)} className="mt-3 text-sm text-brand-ember hover:underline">
               Create your first flag →
             </button>
           )}
@@ -710,7 +710,7 @@ export default function FeatureFlags() {
                 <input type="range" min={0} max={100} value={f.rollout_percentage}
                   onChange={(e) => updateRollout(f, Number(e.target.value))}
                   disabled={!f.is_enabled}
-                  className="w-full accent-brand-violet disabled:opacity-40" />
+                  className="w-full accent-brand-ember disabled:opacity-40" />
                 {!f.is_enabled && (
                   <p className={`text-[10px] mt-1 ${isDark ? "text-white/25" : "text-gray-400"}`}>
                     Enable the flag to adjust rollout
